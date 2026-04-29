@@ -96,7 +96,7 @@ export function VideoSettingsPanel({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Output Format + Video Codec + Remove Audio */}
-        <div className="grid grid-cols-[1fr_1fr_auto] gap-3">
+        <div className="grid grid-cols-[1fr_1fr_auto] gap-2 sm:gap-3">
           <div className="space-y-2">
             <Label className="text-xs">输出格式</Label>
             <Select value={options.outputFormat} onValueChange={handleFormatChange}>

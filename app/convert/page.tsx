@@ -33,7 +33,7 @@ export default function ConvertPage() {
   };
 
   return (
-    <div className="container py-6 space-y-6  m-auto">
+    <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
       <div className="flex items-center gap-2">
         <ArrowRightLeft className="h-5 w-5" />
         <h1 className="text-2xl font-bold">批量格式转换</h1>
@@ -53,11 +53,11 @@ export default function ConvertPage() {
 
       {tasks.length > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <p className="text-sm text-muted-foreground">
               {tasks.length} 个文件
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"

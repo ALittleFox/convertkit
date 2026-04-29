@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="container py-10 max-w-2xl mx-auto">
+    <div className="container py-10 px-4 sm:px-6 max-w-2xl mx-auto">
       <div className="flex items-center gap-2 mb-8">
         <Shield className="h-6 w-6" />
         <h1 className="text-2xl font-bold">隐私声明</h1>

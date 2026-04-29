@@ -10,6 +10,7 @@ interface DropZoneProps {
   disabled?: boolean;
   accept?: string;
   label?: string;
+  mobileLabel?: string;
   hint?: string;
 }
 
@@ -18,6 +19,7 @@ export function DropZone({
   disabled,
   accept = "image/jpeg,image/png,image/webp,image/avif",
   label = "拖拽图片到此处",
+  mobileLabel = "添加图片到此处",
   hint = "或点击选择文件 · 支持 JPEG, PNG, WebP, AVIF · 最大 100MB",
 }: DropZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -91,25 +93,30 @@ export function DropZone({
         className="hidden"
         onChange={handleFileChange}
       />
-      <div className="flex flex-col items-center justify-center py-12 px-4">
+      <div className="flex flex-col items-center justify-center py-5 sm:py-12 px-4">
         <div
           className={cn(
-            "rounded-2xl p-4 mb-4 transition-colors duration-200",
+            "rounded-2xl p-3 sm:p-4 mb-3 sm:mb-4 transition-colors duration-200",
             isDragOver && !disabled
               ? "bg-primary/15 text-primary"
               : "bg-muted text-muted-foreground"
           )}
         >
           {isDragOver ? (
-            <ImageIcon className="h-8 w-8" />
+            <ImageIcon className="h-6 w-6 sm:h-8 sm:w-8" />
           ) : (
-            <Upload className="h-8 w-8" />
+            <Upload className="h-6 w-6 sm:h-8 sm:w-8" />
           )}
         </div>
-        <p className="text-lg font-medium mb-1">
-          {isDragOver ? "释放以添加文件" : label}
+        <p className="text-base sm:text-lg font-medium mb-1">
+          {isDragOver ? "释放以添加文件" : (
+            <>
+              <span className="sm:hidden">{mobileLabel}</span>
+              <span className="hidden sm:inline">{label}</span>
+            </>
+          )}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs sm:text-sm text-muted-foreground">
           {hint}
         </p>
       </div>

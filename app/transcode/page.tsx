@@ -33,7 +33,7 @@ export default function TranscodePage() {
   };
 
   return (
-    <div className="container py-6 space-y-6 m-auto">
+    <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
       <div className="flex items-center gap-2">
         <Film className="h-5 w-5" />
         <h1 className="text-2xl font-bold">视频转码</h1>
@@ -45,6 +45,7 @@ export default function TranscodePage() {
           disabled={isProcessing}
           accept="video/mp4,video/webm,video/quicktime,video/x-msvideo"
           label="拖拽视频到此处"
+          mobileLabel="添加视频到此处"
           hint="或点击选择文件 · 支持 MP4, WebM, MOV, AVI · 最大 500MB"
         />
         <div className="space-y-4">
@@ -55,11 +56,11 @@ export default function TranscodePage() {
 
       {tasks.length > 0 && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <p className="text-sm text-muted-foreground">
               {tasks.length} 个视频
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"
                 size="sm"
