@@ -41,7 +41,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold mb-3">技术宅可以看这里</h2>
+          <h2 className="text-lg font-semibold mb-3">底层原理</h2>
           <ul className="list-disc pl-6 text-muted-foreground leading-7 space-y-2">
             <li>全部跑在浏览器沙箱里，比你家门锁还安全</li>
             <li>图片数据只存在于浏览器内存中，关掉页面就灰飞烟灭</li>
