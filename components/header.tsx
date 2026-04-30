@@ -18,8 +18,8 @@ export function Header() {
   const navItems = [
     { href: "/compress", label: t("compress"), icon: Shrink },
     { href: "/convert", label: t("convert"), icon: ArrowRightLeft },
-    { href: "/transcode", label: t("transcode"), icon: Film },
     { href: "/favicon", label: t("favicon"), icon: Palette },
+    { href: "/transcode", label: t("transcode"), icon: Film },
   ];
 
   return (
