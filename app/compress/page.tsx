@@ -10,11 +10,16 @@ import { SettingsPanel } from "@/components/settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
 import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
-import { type FileTask } from "@/lib/batch-engine";
+import { filterValidFiles } from "@/lib/file-utils";
+import { processBatch } from "@/lib/batch-engine";
+import { formatSize, mimeToName } from "@/lib/utils";
+import type { FileTask } from "@/lib/task-types";
+import type { ProcessOptions } from "@/lib/batch-engine";
 
 export default function CompressPage() {
   const t = useTranslations("compress");
   const tc = useTranslations("common");
+
   const {
     tasks,
     options,
@@ -27,13 +32,26 @@ export default function CompressPage() {
     downloadAll,
     isProcessing,
     stats,
-  } = useBatchProcess("compress");
+  } = useBatchProcess<FileTask, ProcessOptions>({
+    defaultOptions: { quality: 80, lossless: false, effort: 6 },
+    validator: { filterValid: filterValidFiles },
+    createTask: (file, counter) => ({
+      id: `task-${counter}`,
+      file,
+      status: "pending",
+      progress: 0,
+      originalUrl: URL.createObjectURL(file),
+    }),
+    processBatch: (tasks, options, onProgress) =>
+      processBatch(tasks, "compress", options, onProgress),
+    createResultBlob: (task, result) => {
+      const blob = new Blob([result.data], { type: task.file.type });
+      return { blob, url: URL.createObjectURL(blob) };
+    },
+    getOutputFilename: (task) => task.file.name,
+  });
 
   const [previewTask, setPreviewTask] = useState<FileTask | null>(null);
-
-  const handlePreview = (task: FileTask) => {
-    setPreviewTask(task);
-  };
 
   return (
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
@@ -97,9 +115,27 @@ export default function CompressPage() {
                 key={task.id}
                 task={task}
                 onRemove={removeTask}
-                onPreview={handlePreview}
+                onPreview={setPreviewTask}
                 onDownload={downloadResult}
-                type="compress"
+                thumbnail={
+                  task.originalUrl ? (
+                    <img
+                      src={task.originalUrl}
+                      alt={task.file.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : null
+                }
+                metadata={
+                  <>
+                    <span className="text-xs text-muted-foreground">
+                      {mimeToName(task.file.type)}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatSize(task.file.size)}
+                    </span>
+                  </>
+                }
               />
             ))}
           </div>
@@ -112,6 +148,28 @@ export default function CompressPage() {
         onOpenChange={(open) => {
           if (!open) setPreviewTask(null);
         }}
+        renderMedia={(url) => (
+          <img
+            src={url}
+            alt=""
+            className="max-w-full max-h-[60vh] object-contain"
+          />
+        )}
+        originalFormat={
+          previewTask ? mimeToName(previewTask.file.type) : ""
+        }
+        resultFormat={
+          previewTask?.resultBlob
+            ? mimeToName(previewTask.resultBlob.type)
+            : undefined
+        }
+        renderStats={(task) =>
+          task.result && "width" in task.result ? (
+            <span className="text-muted-foreground">
+              {(task.result as any).width} x {(task.result as any).height}
+            </span>
+          ) : null
+        }
       />
     </div>
   );

@@ -10,11 +10,16 @@ import { SettingsPanel } from "@/components/settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
 import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
-import { type FileTask } from "@/lib/batch-engine";
+import { filterValidFiles, getFilenameWithoutExt } from "@/lib/file-utils";
+import { processBatch } from "@/lib/batch-engine";
+import { formatSize, mimeToExt, mimeToName } from "@/lib/utils";
+import type { FileTask } from "@/lib/task-types";
+import type { ProcessOptions } from "@/lib/batch-engine";
 
 export default function ConvertPage() {
   const t = useTranslations("convert");
   const tc = useTranslations("common");
+
   const {
     tasks,
     options,
@@ -27,13 +32,36 @@ export default function ConvertPage() {
     downloadAll,
     isProcessing,
     stats,
-  } = useBatchProcess("convert");
+  } = useBatchProcess<FileTask, ProcessOptions>({
+    defaultOptions: { quality: 80, lossless: false, effort: 6, targetFormat: "webp" },
+    validator: { filterValid: filterValidFiles },
+    createTask: (file, counter) => ({
+      id: `task-${counter}`,
+      file,
+      status: "pending",
+      progress: 0,
+      originalUrl: URL.createObjectURL(file),
+    }),
+    processBatch: (tasks, options, onProgress) =>
+      processBatch(tasks, "convert", options, onProgress),
+    createResultBlob: (task, result, options) => {
+      const mime = options.targetFormat
+        ? `image/${options.targetFormat}`
+        : task.file.type;
+      const blob = new Blob([result.data], { type: mime });
+      return { blob, url: URL.createObjectURL(blob) };
+    },
+    getOutputFilename: (task, options) => {
+      if (options.targetFormat) {
+        const ext = options.targetFormat;
+        const baseName = getFilenameWithoutExt(task.file.name);
+        return `${baseName}.${ext}`;
+      }
+      return task.file.name;
+    },
+  });
 
   const [previewTask, setPreviewTask] = useState<FileTask | null>(null);
-
-  const handlePreview = (task: FileTask) => {
-    setPreviewTask(task);
-  };
 
   return (
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
@@ -96,9 +124,27 @@ export default function ConvertPage() {
                 key={task.id}
                 task={task}
                 onRemove={removeTask}
-                onPreview={handlePreview}
+                onPreview={setPreviewTask}
                 onDownload={downloadResult}
-                type="convert"
+                thumbnail={
+                  task.originalUrl ? (
+                    <img
+                      src={task.originalUrl}
+                      alt={task.file.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : null
+                }
+                metadata={
+                  <>
+                    <span className="text-xs text-muted-foreground">
+                      {mimeToName(task.file.type)}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatSize(task.file.size)}
+                    </span>
+                  </>
+                }
               />
             ))}
           </div>
@@ -111,6 +157,28 @@ export default function ConvertPage() {
         onOpenChange={(open) => {
           if (!open) setPreviewTask(null);
         }}
+        renderMedia={(url) => (
+          <img
+            src={url}
+            alt=""
+            className="max-w-full max-h-[60vh] object-contain"
+          />
+        )}
+        originalFormat={
+          previewTask ? mimeToName(previewTask.file.type) : ""
+        }
+        resultFormat={
+          previewTask?.resultBlob
+            ? mimeToName(previewTask.resultBlob.type)
+            : undefined
+        }
+        renderStats={(task) =>
+          task.result && "width" in task.result ? (
+            <span className="text-muted-foreground">
+              {(task.result as any).width} x {(task.result as any).height}
+            </span>
+          ) : null
+        }
       />
     </div>
   );

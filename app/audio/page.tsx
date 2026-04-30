@@ -1,16 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Music, Download, Trash2, Play } from "lucide-react";
+import { Music, Download, Trash2, Play, Film } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
-import { AudioFileCard } from "@/components/audio-file-card";
+import { FileCard } from "@/components/file-card";
 import { AudioSettingsPanel } from "@/components/audio-settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
-import { AudioPreviewModal } from "@/components/audio-preview-modal";
-import { useAudioBatchProcess } from "@/hooks/use-audio-batch-process";
-import { type AudioFileTask } from "@/lib/audio-batch-engine";
+import { PreviewModal } from "@/components/preview-modal";
+import { useBatchProcess } from "@/hooks/use-batch-process";
+import { filterValidAudioFiles, getAudioOutputMime, getAudioDuration, isVideoFile } from "@/lib/audio-utils";
+import { processAudioBatch, type AudioProcessOptions } from "@/lib/audio-batch-engine";
+import { getFilenameWithoutExt } from "@/lib/file-utils";
+import { formatSize } from "@/lib/utils";
+import { formatDuration } from "@/lib/video-utils";
+import type { AudioFileTask } from "@/lib/task-types";
 
 export default function AudioPage() {
   const t = useTranslations("audio");
@@ -29,13 +34,39 @@ export default function AudioPage() {
     downloadAll,
     isProcessing,
     stats,
-  } = useAudioBatchProcess();
+  } = useBatchProcess<AudioFileTask, AudioProcessOptions>({
+    defaultOptions: { outputFormat: "mp3", bitrate: 192 },
+    validator: { filterValid: filterValidAudioFiles },
+    createTask: async (file, counter) => {
+      let duration: number | undefined;
+      try {
+        duration = await getAudioDuration(file);
+      } catch {
+        // Duration detection failed
+      }
+      return {
+        id: `atask-${counter}`,
+        file,
+        status: "pending" as const,
+        progress: 0,
+        originalUrl: URL.createObjectURL(file),
+        duration,
+      };
+    },
+    processBatch: processAudioBatch,
+    createResultBlob: (task, result, options) => {
+      const mime = getAudioOutputMime(options.outputFormat);
+      const blob = new Blob([result.data], { type: mime });
+      return { blob, url: URL.createObjectURL(blob) };
+    },
+    getOutputFilename: (task, options) => {
+      const baseName = getFilenameWithoutExt(task.file.name);
+      return `${baseName}.${options.outputFormat}`;
+    },
+    zipName: "audio.zip",
+  });
 
   const [previewTask, setPreviewTask] = useState<AudioFileTask | null>(null);
-
-  const handlePreview = (task: AudioFileTask) => {
-    setPreviewTask(task);
-  };
 
   return (
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
@@ -97,24 +128,69 @@ export default function AudioPage() {
 
           <div className="space-y-2">
             {tasks.map((task) => (
-              <AudioFileCard
+              <FileCard
                 key={task.id}
                 task={task}
                 onRemove={removeTask}
-                onPreview={handlePreview}
+                onPreview={setPreviewTask}
                 onDownload={downloadResult}
+                thumbnail={
+                  isVideoFile(task.file) ? (
+                    <Film className="h-5 w-5 text-muted-foreground" />
+                  ) : (
+                    <Music className="h-5 w-5 text-muted-foreground" />
+                  )
+                }
+                metadata={
+                  <>
+                    <span className="text-xs text-muted-foreground uppercase">
+                      {task.file.name.split(".").pop()}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatSize(task.file.size)}
+                    </span>
+                    {task.duration !== undefined && (
+                      <span className="text-xs text-muted-foreground">
+                        {formatDuration(task.duration)}
+                      </span>
+                    )}
+                  </>
+                }
               />
             ))}
           </div>
         </div>
       )}
 
-      <AudioPreviewModal
+      <PreviewModal
         task={previewTask}
         open={!!previewTask}
         onOpenChange={(open) => {
           if (!open) setPreviewTask(null);
         }}
+        renderMedia={(url) => (
+          <audio
+            src={url}
+            controls
+            preload="metadata"
+            className="w-full"
+          />
+        )}
+        originalFormat={
+          previewTask?.file.name.split(".").pop()?.toUpperCase() || ""
+        }
+        resultFormat={
+          previewTask?.resultBlob?.type
+            ?.split("/")[1]
+            ?.toUpperCase() || undefined
+        }
+        renderStats={(task) =>
+          task.duration !== undefined ? (
+            <span className="text-muted-foreground">
+              {formatDuration(task.duration)}
+            </span>
+          ) : null
+        }
       />
     </div>
   );

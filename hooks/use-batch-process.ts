@@ -1,46 +1,74 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { type FileTask, type ProcessOptions, processBatch } from "@/lib/batch-engine";
 import { downloadAsZip, downloadSingle } from "@/lib/zip-stream";
-import {  mimeToExt } from "@/lib/utils";
-import { filterValidFiles, getFilenameWithoutExt } from "@/lib/file-utils";
+import type { BaseTask, BaseTaskResult } from "@/lib/task-types";
 import { toast } from "sonner";
 
-export function useBatchProcess(type: "compress" | "convert") {
-  const [tasks, setTasks] = useState<FileTask[]>([]);
+export interface Stats {
+  total: number;
+  pending: number;
+  processing: number;
+  done: number;
+  error: number;
+  originalSize: number;
+  resultSize: number;
+}
+
+export interface UseBatchProcessConfig<T extends BaseTask, O> {
+  defaultOptions: O;
+  validator: {
+    filterValid(files: File[]): { valid: File[]; invalid: { file: File; error: string }[] };
+  };
+  createTask: (file: File, counter: number) => T | Promise<T>;
+  processBatch: (
+    tasks: T[],
+    options: O,
+    onProgress: (
+      taskId: string,
+      status: T["status"],
+      result?: BaseTaskResult,
+      error?: string,
+      progress?: number
+    ) => void
+  ) => Promise<void>;
+  createResultBlob: (task: T, result: BaseTaskResult, options: O) => { blob: Blob; url: string };
+  getOutputFilename: (task: T, options: O) => string;
+  zipName?: string;
+}
+
+export function useBatchProcess<T extends BaseTask, O>(
+  config: UseBatchProcessConfig<T, O>
+) {
+  const [tasks, setTasks] = useState<T[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [options, setOptions] = useState<ProcessOptions>({
-    quality: 80,
-    lossless: false,
-    effort: 6,
-    targetFormat: type === "convert" ? "webp" : undefined,
-  });
+  const [options, setOptions] = useState<O>(config.defaultOptions);
   const taskIdCounter = useRef(0);
 
-  const addFiles = useCallback((files: File[]) => {
-    const { valid, invalid } = filterValidFiles(files);
+  const addFiles = useCallback(
+    async (files: File[]) => {
+      const { valid, invalid } = config.validator.filterValid(files);
 
-    if (invalid.length > 0) {
-      toast.error(`${invalid.length} 个文件被跳过`, {
-        description: invalid.map((i) => `${i.file.name}: ${i.error}`).join("\n"),
-      });
-    }
+      if (invalid.length > 0) {
+        toast.error(`${invalid.length} 个文件被跳过`, {
+          description: invalid
+            .map((i) => `${i.file.name}: ${i.error}`)
+            .join("\n"),
+        });
+      }
 
-    const newTasks: FileTask[] = valid.map((file) => ({
-      id: `task-${++taskIdCounter.current}`,
-      file,
-      status: "pending",
-      progress: 0,
-      originalUrl: URL.createObjectURL(file),
-    }));
+      const newTasks = await Promise.all(
+        valid.map((file) => config.createTask(file, ++taskIdCounter.current))
+      );
 
-    setTasks((prev) => [...prev, ...newTasks]);
+      setTasks((prev) => [...prev, ...newTasks]);
 
-    if (valid.length > 0) {
-      toast.success(`已添加 ${valid.length} 个文件`);
-    }
-  }, []);
+      if (valid.length > 0) {
+        toast.success(`已添加 ${valid.length} 个文件`);
+      }
+    },
+    [config]
+  );
 
   const removeTask = useCallback((taskId: string) => {
     setTasks((prev) => {
@@ -52,15 +80,17 @@ export function useBatchProcess(type: "compress" | "convert") {
   }, []);
 
   const clearTasks = useCallback(() => {
-    tasks.forEach((task) => {
-      if (task.originalUrl) URL.revokeObjectURL(task.originalUrl);
-      if (task.resultUrl) URL.revokeObjectURL(task.resultUrl);
+    setTasks((prev) => {
+      prev.forEach((task) => {
+        if (task.originalUrl) URL.revokeObjectURL(task.originalUrl);
+        if (task.resultUrl) URL.revokeObjectURL(task.resultUrl);
+      });
+      return [];
     });
-    setTasks([]);
-  }, [tasks]);
+  }, []);
 
   const updateTask = useCallback(
-    (taskId: string, updates: Partial<FileTask>) => {
+    (taskId: string, updates: Partial<T>) => {
       setTasks((prev) =>
         prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t))
       );
@@ -68,66 +98,74 @@ export function useBatchProcess(type: "compress" | "convert") {
     []
   );
 
-  const startProcess = useCallback(
-    async (processOptions?: ProcessOptions) => {
-      const opts = processOptions || options;
-      const pendingTasks = tasks.filter((t) => t.status === "pending");
+  const startProcess = useCallback(async () => {
+    const pendingTasks = tasks.filter((t) => t.status === "pending");
+    if (pendingTasks.length === 0) {
+      toast.warning("没有待处理的文件");
+      return;
+    }
 
-      if (pendingTasks.length === 0) {
-        toast.warning("没有待处理的文件");
-        return;
-      }
+    setIsProcessing(true);
+    let errorCount = 0;
 
-      setIsProcessing(true);
-
-      await processBatch(pendingTasks, type, opts, (taskId, status, result, error) => {
+    await config.processBatch(
+      pendingTasks,
+      options,
+      (taskId, status, result, error, progress) => {
         if (status === "done" && result) {
           const task = tasks.find((t) => t.id === taskId);
-          const mime =
-            type === "convert" && opts.targetFormat
-              ? `image/${opts.targetFormat}`
-              : task?.file.type || "image/jpeg";
-
-          const blob = new Blob([result.data], { type: mime });
-          const resultUrl = URL.createObjectURL(blob);
-
-          updateTask(taskId, {
-            status: "done",
-            result,
-            resultBlob: blob,
-            resultUrl,
-            progress: 100,
-          });
+          if (task) {
+            const { blob, url } = config.createResultBlob(task, result, options);
+            updateTask(taskId, {
+              status: "done",
+              result,
+              resultBlob: blob,
+              resultUrl: url,
+              progress: 100,
+            } as Partial<T>);
+          }
         } else if (status === "error") {
-          updateTask(taskId, { status: "error", error });
-        } else {
-          updateTask(taskId, { status });
+          errorCount++;
+          updateTask(taskId, { status: "error", error } as Partial<T>);
+          const task = tasks.find((t) => t.id === taskId);
+          toast.error(`${task?.file.name || "文件"} 处理失败`, {
+            description: error || "未知错误",
+          });
+        } else if (status === "processing" && progress !== undefined) {
+          updateTask(taskId, {
+            status: "processing",
+            progress,
+          } as Partial<T>);
         }
-      });
+      }
+    );
 
-      setIsProcessing(false);
+    setIsProcessing(false);
+    if (errorCount === 0) {
       toast.success("处理完成");
-    },
-    [tasks, type, options, updateTask]
-  );
+    } else if (errorCount < pendingTasks.length) {
+      toast.warning(
+        `${pendingTasks.length - errorCount} 个成功，${errorCount} 个失败`
+      );
+    }
+  }, [tasks, options, config, updateTask]);
 
   const downloadResult = useCallback(
     async (taskId: string) => {
       const task = tasks.find((t) => t.id === taskId);
       if (!task?.resultBlob) return;
 
-      const ext = mimeToExt(task.resultBlob.type);
-      const baseName = getFilenameWithoutExt(task.file.name);
-      const filename = type === "convert" ? `${baseName}.${ext}` : task.file.name;
-
+      const filename = config.getOutputFilename(task, options);
       const buffer = await task.resultBlob.arrayBuffer();
       downloadSingle(buffer, filename, task.resultBlob.type);
     },
-    [tasks, type]
+    [tasks, options, config]
   );
 
   const downloadAll = useCallback(async () => {
-    const completedTasks = tasks.filter((t) => t.status === "done" && t.resultBlob);
+    const completedTasks = tasks.filter(
+      (t) => t.status === "done" && t.resultBlob
+    );
 
     if (completedTasks.length === 0) {
       toast.warning("没有可下载的文件");
@@ -135,23 +173,17 @@ export function useBatchProcess(type: "compress" | "convert") {
     }
 
     const files = await Promise.all(
-      completedTasks.map(async (task) => {
-        const ext = mimeToExt(task.resultBlob!.type);
-        const baseName = getFilenameWithoutExt(task.file.name);
-        const filename = type === "convert" ? `${baseName}.${ext}` : task.file.name;
-
-        return {
-          name: filename,
-          data: await task.resultBlob!.arrayBuffer(),
-        };
-      })
+      completedTasks.map(async (task) => ({
+        name: config.getOutputFilename(task, options),
+        data: await task.resultBlob!.arrayBuffer(),
+      }))
     );
 
-    await downloadAsZip(files);
+    await downloadAsZip(files, config.zipName ?? "files.zip");
     toast.success("ZIP 下载完成");
-  }, [tasks, type]);
+  }, [tasks, options, config]);
 
-  const stats = {
+  const stats: Stats = {
     total: tasks.length,
     pending: tasks.filter((t) => t.status === "pending").length,
     processing: tasks.filter((t) => t.status === "processing").length,

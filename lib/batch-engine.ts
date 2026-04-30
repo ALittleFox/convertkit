@@ -1,22 +1,13 @@
 import { getPool, type WorkerResult } from "./worker-manager";
+import type { FileTask } from "./task-types";
+
+export type { FileTask };
 
 export interface ProcessOptions {
   quality?: number;
   lossless?: boolean;
   effort?: number;
   targetFormat?: string;
-}
-
-export interface FileTask {
-  id: string;
-  file: File;
-  status: "pending" | "processing" | "done" | "error";
-  progress: number;
-  result?: WorkerResult;
-  resultBlob?: Blob;
-  error?: string;
-  originalUrl?: string;
-  resultUrl?: string;
 }
 
 export async function processFile(

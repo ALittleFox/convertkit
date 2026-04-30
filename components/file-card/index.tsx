@@ -7,8 +7,6 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
-  Music,
-  Film,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,30 +14,33 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useTranslations } from "next-intl";
 import { cn, formatSize, getCompressionRate } from "@/lib/utils";
-import { formatDuration } from "@/lib/video-utils";
-import { isVideoFile } from "@/lib/audio-utils";
-import { type AudioFileTask } from "@/lib/audio-batch-engine";
+import type { BaseTask } from "@/lib/task-types";
 
-interface AudioFileCardProps {
-  task: AudioFileTask;
+interface FileCardProps<T extends BaseTask> {
+  task: T;
   onRemove: (taskId: string) => void;
-  onPreview: (task: AudioFileTask) => void;
+  onPreview: (task: T) => void;
   onDownload: (taskId: string) => void;
+  thumbnail: React.ReactNode;
+  metadata?: React.ReactNode;
 }
 
-export function AudioFileCard({
+const statusIcon = {
+  pending: null,
+  processing: <Loader2 className="h-4 w-4 animate-spin text-primary" />,
+  done: <CheckCircle2 className="h-4 w-4 text-success" />,
+  error: <AlertCircle className="h-4 w-4 text-destructive" />,
+};
+
+export function FileCard<T extends BaseTask>({
   task,
   onRemove,
   onPreview,
   onDownload,
-}: AudioFileCardProps) {
+  thumbnail,
+  metadata,
+}: FileCardProps<T>) {
   const tc = useTranslations("common");
-  const statusIcon = {
-    pending: null,
-    processing: <Loader2 className="h-4 w-4 animate-spin text-primary" />,
-    done: <CheckCircle2 className="h-4 w-4 text-success" />,
-    error: <AlertCircle className="h-4 w-4 text-destructive" />,
-  };
 
   const statusBadge = {
     pending: <Badge variant="secondary">{tc("pending")}</Badge>,
@@ -55,19 +56,13 @@ export function AudioFileCard({
     error: <Badge variant="destructive">{tc("error")}</Badge>,
   };
 
-  const isVideo = isVideoFile(task.file);
-
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-3">
         <div className="flex gap-3">
-          {/* Icon */}
-          <div className="relative w-14 h-14 rounded overflow-hidden bg-muted flex-shrink-0 flex items-center justify-center">
-            {isVideo ? (
-              <Film className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <Music className="h-5 w-5 text-muted-foreground" />
-            )}
+          {/* Thumbnail */}
+          <div className="relative w-16 h-16 rounded overflow-hidden bg-muted flex-shrink-0 flex items-center justify-center">
+            {thumbnail}
             {task.status === "processing" && (
               <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-primary" />
@@ -81,17 +76,7 @@ export function AudioFileCard({
               <div className="min-w-0">
                 <p className="text-sm font-medium truncate">{task.file.name}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-xs text-muted-foreground uppercase">
-                    {task.file.name.split(".").pop()}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {formatSize(task.file.size)}
-                  </span>
-                  {task.duration !== undefined && (
-                    <span className="text-xs text-muted-foreground">
-                      {formatDuration(task.duration)}
-                    </span>
-                  )}
+                  {metadata}
                   {statusIcon[task.status]}
                 </div>
               </div>
@@ -100,12 +85,10 @@ export function AudioFileCard({
               </div>
             </div>
 
-            {/* Progress bar */}
             {task.status === "processing" && (
               <Progress value={task.progress} className="mt-2 h-1" />
             )}
 
-            {/* Result info */}
             {task.status === "done" && task.result && (() => {
               const rate = getCompressionRate(task.file.size, task.result.resultSize);
               return (
@@ -126,7 +109,6 @@ export function AudioFileCard({
               );
             })()}
 
-            {/* Error */}
             {task.status === "error" && (
               <p className="text-xs text-destructive mt-1">{task.error}</p>
             )}

@@ -1,53 +1,13 @@
-const ALLOWED_VIDEO_TYPES = [
-  "video/mp4",
-  "video/webm",
-  "video/quicktime",
-  "video/x-msvideo",
-];
+import { createFileValidator } from "./file-utils";
 
-const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB
+const videoValidator = createFileValidator(
+  ["video/mp4", "video/webm", "video/quicktime", "video/x-msvideo"],
+  500 * 1024 * 1024,
+  "500MB"
+);
 
-export interface VideoValidationResult {
-  valid: boolean;
-  error?: string;
-}
-
-export function validateVideoFile(file: File): VideoValidationResult {
-  if (!ALLOWED_VIDEO_TYPES.includes(file.type)) {
-    return {
-      valid: false,
-      error: `不支持的格式: ${file.type || "未知"}`,
-    };
-  }
-
-  if (file.size > MAX_VIDEO_SIZE) {
-    return {
-      valid: false,
-      error: `文件过大: ${(file.size / 1024 / 1024).toFixed(1)}MB (最大 500MB)`,
-    };
-  }
-
-  return { valid: true };
-}
-
-export function filterValidVideoFiles(files: File[]): {
-  valid: File[];
-  invalid: { file: File; error: string }[];
-} {
-  const valid: File[] = [];
-  const invalid: { file: File; error: string }[] = [];
-
-  for (const file of files) {
-    const result = validateVideoFile(file);
-    if (result.valid) {
-      valid.push(file);
-    } else {
-      invalid.push({ file, error: result.error! });
-    }
-  }
-
-  return { valid, invalid };
-}
+export const validateVideoFile = videoValidator.validate;
+export const filterValidVideoFiles = videoValidator.filterValid;
 
 export function formatDuration(seconds: number): string {
   if (!isFinite(seconds) || seconds < 0) return "0:00";

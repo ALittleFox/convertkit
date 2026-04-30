@@ -1,3 +1,6 @@
+import { downloadBlob } from "./zip-stream";
+export { downloadBlob };
+
 export interface FaviconSize {
   size: number;
   label: string;
@@ -137,15 +140,4 @@ export async function generateIco(
   }
 
   return new Blob([buffer], { type: "image/x-icon" });
-}
-
-export function downloadBlob(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 }

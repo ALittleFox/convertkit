@@ -5,12 +5,17 @@ import { Film, Download, Trash2, Play, Monitor } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
-import { VideoFileCard } from "@/components/video-file-card";
+import { FileCard } from "@/components/file-card";
 import { VideoSettingsPanel } from "@/components/video-settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
-import { VideoPreviewModal } from "@/components/video-preview-modal";
-import { useVideoBatchProcess } from "@/hooks/use-video-batch-process";
-import { type VideoFileTask } from "@/lib/video-batch-engine";
+import { PreviewModal } from "@/components/preview-modal";
+import { useBatchProcess } from "@/hooks/use-batch-process";
+import { filterValidVideoFiles, getVideoOutputMime, generateVideoThumbnail } from "@/lib/video-utils";
+import { processVideoBatch, type VideoProcessOptions } from "@/lib/video-batch-engine";
+import { getFilenameWithoutExt } from "@/lib/file-utils";
+import { formatSize } from "@/lib/utils";
+import { formatDuration } from "@/lib/video-utils";
+import type { VideoFileTask } from "@/lib/task-types";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -18,9 +23,7 @@ function useIsMobile() {
   useEffect(() => {
     const ua = navigator.userAgent;
     const mobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        ua
-      ) ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
       ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 1);
     setIsMobile(mobile);
   }, []);
@@ -46,13 +49,39 @@ export default function TranscodePage() {
     downloadAll,
     isProcessing,
     stats,
-  } = useVideoBatchProcess();
+  } = useBatchProcess<VideoFileTask, VideoProcessOptions>({
+    defaultOptions: { outputFormat: "mp4", videoCodec: "h264", crf: 23, removeAudio: false },
+    validator: { filterValid: filterValidVideoFiles },
+    createTask: async (file, counter) => {
+      let thumbnail: string | undefined;
+      try {
+        thumbnail = await generateVideoThumbnail(file);
+      } catch {
+        // Thumbnail generation failed
+      }
+      return {
+        id: `vtask-${counter}`,
+        file,
+        status: "pending" as const,
+        progress: 0,
+        originalUrl: URL.createObjectURL(file),
+        thumbnail,
+      };
+    },
+    processBatch: processVideoBatch,
+    createResultBlob: (task, result, options) => {
+      const mime = getVideoOutputMime(options.outputFormat);
+      const blob = new Blob([result.data], { type: mime });
+      return { blob, url: URL.createObjectURL(blob) };
+    },
+    getOutputFilename: (task, options) => {
+      const baseName = getFilenameWithoutExt(task.file.name);
+      return `${baseName}.${options.outputFormat}`;
+    },
+    zipName: "videos.zip",
+  });
 
   const [previewTask, setPreviewTask] = useState<VideoFileTask | null>(null);
-
-  const handlePreview = (task: VideoFileTask) => {
-    setPreviewTask(task);
-  };
 
   if (isMobile) {
     return (
@@ -62,9 +91,7 @@ export default function TranscodePage() {
             <Monitor className="h-12 w-12" />
           </div>
           <h2 className="text-xl font-semibold mb-2">{t("mobileNotice")}</h2>
-          <p className="text-muted-foreground text-sm">
-            {t("mobileNoticeDesc")}
-          </p>
+          <p className="text-muted-foreground text-sm">{t("mobileNoticeDesc")}</p>
         </div>
       </div>
     );
@@ -130,24 +157,73 @@ export default function TranscodePage() {
 
           <div className="space-y-2">
             {tasks.map((task) => (
-              <VideoFileCard
+              <FileCard
                 key={task.id}
                 task={task}
                 onRemove={removeTask}
-                onPreview={handlePreview}
+                onPreview={setPreviewTask}
                 onDownload={downloadResult}
+                thumbnail={
+                  task.thumbnail ? (
+                    <img
+                      src={task.thumbnail}
+                      alt={task.file.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Film className="h-5 w-5 text-muted-foreground" />
+                  )
+                }
+                metadata={
+                  <>
+                    <span className="text-xs text-muted-foreground uppercase">
+                      {task.file.name.split(".").pop()}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatSize(task.file.size)}
+                    </span>
+                    {task.duration !== undefined && (
+                      <span className="text-xs text-muted-foreground">
+                        {formatDuration(task.duration)}
+                      </span>
+                    )}
+                  </>
+                }
               />
             ))}
           </div>
         </div>
       )}
 
-      <VideoPreviewModal
+      <PreviewModal
         task={previewTask}
         open={!!previewTask}
         onOpenChange={(open) => {
           if (!open) setPreviewTask(null);
         }}
+        renderMedia={(url) => (
+          <video
+            src={url}
+            controls
+            preload="metadata"
+            className="w-full max-h-[60vh]"
+          />
+        )}
+        originalFormat={
+          previewTask?.file.name.split(".").pop()?.toUpperCase() || ""
+        }
+        resultFormat={
+          previewTask?.resultBlob?.type
+            ?.split("/")[1]
+            ?.toUpperCase() || undefined
+        }
+        renderStats={(task) =>
+          task.duration !== undefined ? (
+            <span className="text-muted-foreground">
+              {formatDuration(task.duration)}
+            </span>
+          ) : null
+        }
       />
     </div>
   );
