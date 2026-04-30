@@ -159,6 +159,12 @@
     "metaDescription": "免费在线音频转码工具，支持 MP3、AAC、OGG、FLAC、WAV 格式转换。支持从视频提取音频，可调节比特率和采样率，所有处理在浏览器本地完成。",
     "metaKeywords": ["音频转码", "音频转换", "MP3转换", "音频提取", "视频转音频", "音频格式", "在线音频工具"]
   },
+  "errors": {
+    "notFound": "页面不存在",
+    "serverError": "服务器错误",
+    "backHome": "返回首页",
+    "retry": "重试"
+  },
   "theme": {
     "light": "浅色模式",
     "dark": "深色模式",

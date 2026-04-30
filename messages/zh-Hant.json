@@ -159,6 +159,12 @@
     "metaDescription": "免費線上音訊轉碼工具，支援 MP3、AAC、OGG、FLAC、WAV 格式轉換。支援從影片提取音訊，可調節位元率和取樣率，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["音訊轉碼", "音訊轉換", "MP3轉換", "音訊提取", "影片轉音訊", "音訊格式", "線上音訊工具"]
   },
+  "errors": {
+    "notFound": "頁面不存在",
+    "serverError": "伺服器錯誤",
+    "backHome": "返回首頁",
+    "retry": "重試"
+  },
   "theme": {
     "light": "淺色模式",
     "dark": "深色模式",

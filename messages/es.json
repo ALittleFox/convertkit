@@ -159,6 +159,12 @@
     "metaDescription": "Herramienta gratuita online de transcodificación de audio que soporta MP3, AAC, OGG, FLAC, WAV. Extrae audio de video, ajusta tasa de bits y frecuencia de muestreo. Todo procesado localmente en tu navegador.",
     "metaKeywords": ["transcodificación de audio", "conversión de audio", "convertidor MP3", "extractor de audio", "video a audio", "formato de audio", "herramienta de audio online"]
   },
+  "errors": {
+    "notFound": "Página No Encontrada",
+    "serverError": "Error del Servidor",
+    "backHome": "Volver al Inicio",
+    "retry": "Reintentar"
+  },
   "theme": {
     "light": "Modo Claro",
     "dark": "Modo Oscuro",

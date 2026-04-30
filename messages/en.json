@@ -159,6 +159,12 @@
     "metaDescription": "Free online audio transcoding tool supporting MP3, AAC, OGG, FLAC, WAV. Extract audio from video, adjust bitrate and sample rate. All processed locally in your browser.",
     "metaKeywords": ["audio transcoding", "audio conversion", "MP3 converter", "audio extractor", "video to audio", "audio format", "online audio tool"]
   },
+  "errors": {
+    "notFound": "Page Not Found",
+    "serverError": "Server Error",
+    "backHome": "Back to Home",
+    "retry": "Retry"
+  },
   "theme": {
     "light": "Light Mode",
     "dark": "Dark Mode",
