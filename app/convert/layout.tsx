@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+export const revalidate = 31536000; // 1 year
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("convert");
   return {

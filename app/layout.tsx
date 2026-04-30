@@ -8,6 +8,8 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 
+export const revalidate = 31536000; // 1 year
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

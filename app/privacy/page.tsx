@@ -2,6 +2,8 @@ import { Shield } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
+export const revalidate = 31536000; // 1 year
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("privacy");
   return {
