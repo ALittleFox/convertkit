@@ -109,6 +109,7 @@ export function useVideoBatchProcess() {
     }
 
     setIsProcessing(true);
+    let errorCount = 0;
 
     await processVideoBatch(
       currentTasks,
@@ -127,7 +128,12 @@ export function useVideoBatchProcess() {
             progress: 100,
           });
         } else if (status === "error") {
+          errorCount++;
           updateTask(taskId, { status: "error", error });
+          const task = currentTasks.find((t) => t.id === taskId);
+          toast.error(`${task?.file.name || "视频"} 转码失败`, {
+            description: error || "未知错误",
+          });
         } else if (status === "processing" && progress !== undefined) {
           updateTask(taskId, { status: "processing", progress });
         }
@@ -135,7 +141,11 @@ export function useVideoBatchProcess() {
     );
 
     setIsProcessing(false);
-    toast.success("转码完成");
+    if (errorCount === 0) {
+      toast.success("转码完成");
+    } else if (errorCount < currentTasks.length) {
+      toast.warning(`${currentTasks.length - errorCount} 个成功，${errorCount} 个失败`);
+    }
   }, [tasks, options, updateTask]);
 
   const downloadResult = useCallback(

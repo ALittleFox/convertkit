@@ -98,6 +98,7 @@ function buildArgs(
 
 self.onmessage = async (e: MessageEvent<TranscodeMessage>) => {
   const { id, fileData, fileName, options } = e.data;
+  const errorLogs: string[] = [];
 
   try {
     await loadFFmpeg();
@@ -118,7 +119,7 @@ self.onmessage = async (e: MessageEvent<TranscodeMessage>) => {
       self.postMessage({ id, type: "progress", progress: pct });
     };
 
-    // Parse duration from logs
+    // Collect error-relevant log lines
     const logHandler = ({ message }: { message: string }) => {
       if (duration === null) {
         const durationMatch = message.match(
@@ -130,6 +131,9 @@ self.onmessage = async (e: MessageEvent<TranscodeMessage>) => {
           const s = parseFloat(durationMatch[3]);
           duration = h * 3600 + m * 60 + s;
         }
+      }
+      if (message.includes("Error") || message.includes("error") || message.includes("Invalid")) {
+        errorLogs.push(message.trim());
       }
     };
 
@@ -169,7 +173,11 @@ self.onmessage = async (e: MessageEvent<TranscodeMessage>) => {
       id,
       type: "error",
       success: false,
-      error: error instanceof Error ? error.message : "转码失败",
+      error: errorLogs.length > 0
+        ? errorLogs.slice(-3).join("; ")
+        : error instanceof Error
+        ? error.message.slice(0, 200)
+        : "转码失败",
     });
   }
 };

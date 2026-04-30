@@ -27,7 +27,7 @@ export function AudioPreviewModal({
   if (!task) return null;
 
   const compressionRate = task.result
-    ? getCompressionRate(task.result.originalSize, task.result.resultSize)
+    ? getCompressionRate(task.file.size, task.result.resultSize)
     : 0;
 
   return (
@@ -109,7 +109,7 @@ export function AudioPreviewModal({
             >
               {compressionRate > 0 ? tc("saved") : tc("increase")}{" "}
               {formatSize(
-                Math.abs(task.result.originalSize - task.result.resultSize)
+                Math.abs(task.file.size - task.result.resultSize)
               )}{" "}
               ({Math.abs(compressionRate)}%)
             </span>

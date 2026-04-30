@@ -109,7 +109,7 @@ export function VideoFileCard({
 
             {/* Result info */}
             {task.status === "done" && task.result && (() => {
-              const rate = getCompressionRate(task.result.originalSize, task.result.resultSize);
+              const rate = getCompressionRate(task.file.size, task.result.resultSize);
               return (
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-xs text-muted-foreground">→</span>
