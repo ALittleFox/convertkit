@@ -1,15 +1,11 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 const LOCALES = [
   { value: "zh-Hans", label: "简体中文" },
@@ -20,39 +16,62 @@ const LOCALES = [
 
 const LOCALE_VALUES = LOCALES.map((l) => l.value);
 
+function buildLocalePath(pathname: string, locale: string) {
+  const segments = pathname.split("/").filter(Boolean);
+
+  if (segments.length >= 2 && LOCALE_VALUES.includes(segments[1])) {
+    segments[1] = locale;
+  } else {
+    segments.splice(1, 0, locale);
+  }
+
+  return "/" + segments.join("/");
+}
+
 export function LanguageSwitcher() {
   const locale = useLocale();
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const handleChange = (newLocale: string | null) => {
-    if (!newLocale) return;
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-    const segments = window.location.pathname.split("/").filter(Boolean);
-
-    // URL pattern: /{feature}/{locale}
-    if (segments.length >= 2 && LOCALE_VALUES.includes(segments[1])) {
-      // Replace existing locale: /convert/zh-Hans → /convert/en
-      segments[1] = newLocale;
-    } else {
-      // Insert locale: /convert → /convert/en
-      segments.splice(1, 0, newLocale);
-    }
-
-    window.location.href = "/" + segments.join("/");
-  };
+  const current = LOCALES.find((l) => l.value === locale);
 
   return (
-    <Select value={locale} onValueChange={handleChange}>
-      <SelectTrigger className="w-auto h-8 gap-1 border-0 bg-transparent hover:bg-accent text-muted-foreground hover:text-foreground">
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="inline-flex items-center gap-1 h-8 px-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors text-sm"
+      >
         <Globe className="h-4 w-4" />
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
+        {current?.label}
+      </button>
+      <div
+        hidden={!open}
+        className="absolute right-0 mt-1 min-w-[120px] rounded-md border bg-popover p-1 shadow-md z-50"
+      >
         {LOCALES.map((l) => (
-          <SelectItem key={l.value} value={l.value}>
+          <a
+            key={l.value}
+            href={buildLocalePath(pathname, l.value)}
+            className={cn(
+              "block w-full rounded-sm px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground transition-colors",
+              l.value === locale && "bg-accent text-accent-foreground font-medium"
+            )}
+          >
             {l.label}
-          </SelectItem>
+          </a>
         ))}
-      </SelectContent>
-    </Select>
+      </div>
+    </div>
   );
 }
