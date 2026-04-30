@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Image, Shrink, ArrowRightLeft, Film, Shield, Menu, X } from "lucide-react";
+import { Image, Shrink, ArrowRightLeft, Film, Palette, Shield, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/compress", label: "压缩", icon: Shrink },
   { href: "/convert", label: "转换", icon: ArrowRightLeft },
   { href: "/transcode", label: "转码", icon: Film },
+  { href: "/favicon", label: "Favicon", icon: Palette },
 ];
 
 export function Header() {
