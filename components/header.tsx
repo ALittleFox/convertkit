@@ -20,12 +20,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 shadow-[0_1px_3px_-1px_oklch(0_0_0/0.06)] dark:shadow-[0_1px_3px_-1px_oklch(0_0_0/0.3)]">
-      <div className="container flex h-14 items-center m-auto">
+      <div className="container flex h-14 items-center m-auto px-4 sm:px-6">
         <Link href="/" className="mr-6 flex items-center space-x-2.5 group">
           <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
             <Image className="h-4.5 w-4.5" />
           </div>
-          <span className="font-bold tracking-tight text-foreground hidden sm:inline">ConvertKit</span>
+          <span className="font-bold tracking-tight text-foreground">ConvertKit</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -71,8 +71,8 @@ export function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-background">
-          <nav className="container py-2 space-y-1">
+        <div className="absolute top-full left-0 right-0 md:hidden border-t bg-background shadow-lg">
+          <nav className="container py-2 space-y-1 px-4 sm:px-6">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
