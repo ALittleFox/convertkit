@@ -7,9 +7,9 @@
   },
   "common": {
     "appName": "ConvertKit",
-    "compress": "Comprimir",
+    "compress": "Imágenes",
     "convert": "Convertir",
-    "transcode": "Transcodificar",
+    "transcode": "Video",
     "audio": "Audio",
     "favicon": "Favicon",
     "privacy": "Privacidad",
