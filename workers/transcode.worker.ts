@@ -29,7 +29,7 @@ async function loadFFmpeg(): Promise<void> {
     // progress is 0-1 from FFmpeg
   });
 
-  const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+  const baseURL = "/ffmpeg";
 
   await ffmpeg.load({
     coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
