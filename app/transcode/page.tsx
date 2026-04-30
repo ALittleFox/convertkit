@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Film, Download, Trash2, Play } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Film, Download, Trash2, Play, Monitor } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -12,10 +12,28 @@ import { VideoPreviewModal } from "@/components/video-preview-modal";
 import { useVideoBatchProcess } from "@/hooks/use-video-batch-process";
 import { type VideoFileTask } from "@/lib/video-batch-engine";
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    const mobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        ua
+      ) ||
+      ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 1);
+    setIsMobile(mobile);
+  }, []);
+
+  return isMobile;
+}
+
 export default function TranscodePage() {
   const t = useTranslations("transcode");
   const tc = useTranslations("common");
   const td = useTranslations("dropzone");
+  const isMobile = useIsMobile();
+
   const {
     tasks,
     options,
@@ -35,6 +53,22 @@ export default function TranscodePage() {
   const handlePreview = (task: VideoFileTask) => {
     setPreviewTask(task);
   };
+
+  if (isMobile) {
+    return (
+      <div className="container py-20 px-4 sm:px-6 m-auto">
+        <div className="flex flex-col items-center justify-center text-center max-w-md mx-auto">
+          <div className="rounded-2xl p-4 mb-6 bg-muted text-muted-foreground">
+            <Monitor className="h-12 w-12" />
+          </div>
+          <h2 className="text-xl font-semibold mb-2">{t("mobileNotice")}</h2>
+          <p className="text-muted-foreground text-sm">
+            {t("mobileNoticeDesc")}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">

@@ -71,6 +71,8 @@
     "height": "Alto",
     "resolutionHint": "Dejar vacío para mantener resolución original",
     "removeAudio": "Eliminar Audio",
+    "mobileNotice": "Transcodificación solo en escritorio",
+    "mobileNoticeDesc": "La transcodificación de video requiere mucha memoria y potencia de procesamiento. Usa esta función en una computadora.",
     "metaTitle": "Transcodificación de Video",
     "metaDescription": "Herramienta gratuita online de transcodificación de video que soporta MP4, WebM, MOV, GIF. Códec y calidad ajustables, todo procesado localmente en tu navegador.",
     "metaKeywords": ["transcodificación de video", "conversión de formato", "conversión MP4", "conversión WebM", "compresión de video", "transcodificación online", "creador de GIF"]

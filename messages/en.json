@@ -71,6 +71,8 @@
     "height": "Height",
     "resolutionHint": "Leave empty to keep original resolution",
     "removeAudio": "Remove Audio",
+    "mobileNotice": "Video Transcoding is Desktop Only",
+    "mobileNoticeDesc": "Video transcoding requires significant memory and processing power. Please use this feature on a computer.",
     "metaTitle": "Video Transcoding",
     "metaDescription": "Free online video transcoding tool supporting MP4, WebM, MOV, GIF. Adjustable codec and quality, all processed locally in your browser.",
     "metaKeywords": ["video transcoding", "format conversion", "MP4 conversion", "WebM conversion", "video compression", "online transcoding", "GIF maker"]

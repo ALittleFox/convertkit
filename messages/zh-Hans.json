@@ -71,6 +71,8 @@
     "height": "高",
     "resolutionHint": "留空保持原始分辨率",
     "removeAudio": "移除音频",
+    "mobileNotice": "视频转码仅支持桌面端",
+    "mobileNoticeDesc": "视频转码需要较大的内存和算力，请在电脑上使用此功能。",
     "metaTitle": "视频转码",
     "metaDescription": "免费在线视频转码工具，支持 MP4、WebM、MOV、GIF 格式转换。可调节编码和质量，所有处理在浏览器本地完成。",
     "metaKeywords": ["视频转码", "格式转换", "MP4转换", "WebM转换", "视频压缩", "在线转码", "GIF制作"]

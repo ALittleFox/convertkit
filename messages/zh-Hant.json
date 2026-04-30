@@ -71,6 +71,8 @@
     "height": "高",
     "resolutionHint": "留空保持原始解析度",
     "removeAudio": "移除音訊",
+    "mobileNotice": "影片轉碼僅支援桌面端",
+    "mobileNoticeDesc": "影片轉碼需要較大的記憶體和算力，請在電腦上使用此功能。",
     "metaTitle": "影片轉碼",
     "metaDescription": "免費線上影片轉碼工具，支援 MP4、WebM、MOV、GIF 格式轉換。可調節編碼和品質，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["影片轉碼", "格式轉換", "MP4轉換", "WebM轉換", "影片壓縮", "線上轉碼", "GIF製作"]
