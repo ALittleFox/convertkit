@@ -21,6 +21,7 @@ interface AudioSettingsPanelProps {
 const FORMAT_OPTIONS = [
   { value: "mp3", label: "MP3" },
   { value: "aac", label: "AAC" },
+  { value: "m4a", label: "M4A (iTunes)" },
   { value: "ogg", label: "OGG (Opus)" },
   { value: "flac", label: "FLAC" },
   { value: "wav", label: "WAV" },

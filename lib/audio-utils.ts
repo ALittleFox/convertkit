@@ -63,6 +63,7 @@ export function getAudioOutputMime(format: string): string {
   const map: Record<string, string> = {
     mp3: "audio/mpeg",
     aac: "audio/aac",
+    m4a: "audio/mp4",
     ogg: "audio/ogg",
     flac: "audio/flac",
     wav: "audio/wav",

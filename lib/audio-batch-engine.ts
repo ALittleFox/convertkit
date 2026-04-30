@@ -1,5 +1,5 @@
 export interface AudioProcessOptions {
-  outputFormat: "mp3" | "aac" | "ogg" | "flac" | "wav";
+  outputFormat: "mp3" | "aac" | "m4a" | "ogg" | "flac" | "wav";
   bitrate: number;
   sampleRate?: number;
 }

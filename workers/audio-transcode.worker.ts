@@ -52,6 +52,7 @@ function buildArgs(
       args.push("-b:a", `${options.bitrate || 192}k`);
       break;
     case "aac":
+    case "m4a":
       args.push("-c:a", "aac");
       args.push("-b:a", `${options.bitrate || 192}k`);
       break;
