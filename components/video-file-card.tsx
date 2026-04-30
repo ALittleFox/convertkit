@@ -108,32 +108,25 @@ export function VideoFileCard({
             )}
 
             {/* Result info */}
-            {task.status === "done" && task.result && (
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-xs text-muted-foreground">→</span>
-                <span className="text-xs font-medium">
-                  {formatSize(task.result.resultSize)}
-                </span>
-                <span
-                  className={cn(
-                    "text-xs font-medium",
-                    getCompressionRate(
-                      task.result.originalSize,
-                      task.result.resultSize
-                    ) > 0
-                      ? "text-success"
-                      : "text-destructive"
-                  )}
-                >
-                  {getCompressionRate(
-                    task.result.originalSize,
-                    task.result.resultSize
-                  ) > 0
-                    ? `-${getCompressionRate(task.result.originalSize, task.result.resultSize)}%`
-                    : `+${Math.abs(getCompressionRate(task.result.originalSize, task.result.resultSize))}%`}
-                </span>
-              </div>
-            )}
+            {task.status === "done" && task.result && (() => {
+              const rate = getCompressionRate(task.result.originalSize, task.result.resultSize);
+              return (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-xs text-muted-foreground">→</span>
+                  <span className="text-xs font-medium">
+                    {formatSize(task.result.resultSize)}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-xs font-medium",
+                      rate > 0 ? "text-success" : "text-destructive"
+                    )}
+                  >
+                    {rate > 0 ? `-${rate}%` : `+${Math.abs(rate)}%`}
+                  </span>
+                </div>
+              );
+            })()}
 
             {/* Error */}
             {task.status === "error" && (

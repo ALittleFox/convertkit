@@ -19,6 +19,7 @@ interface SummaryBarProps {
 
 export function SummaryBar({ stats }: SummaryBarProps) {
   const t = useTranslations("summary");
+  const tc = useTranslations("common");
   const savedSize = stats.originalSize - stats.resultSize;
   const savedPercent =
     stats.originalSize > 0
@@ -49,9 +50,10 @@ export function SummaryBar({ stats }: SummaryBarProps) {
     },
     {
       icon: TrendingDown,
-      label: t("saved"),
-      value: stats.done > 0 ? `${formatSize(savedSize)} (${savedPercent}%)` : "-",
+      label: savedSize >= 0 ? t("saved") : tc("increase"),
+      value: stats.done > 0 ? `${formatSize(Math.abs(savedSize))} (${Math.abs(savedPercent)}%)` : "-",
       highlight: savedPercent > 0,
+      warn: savedPercent < 0,
     },
   ];
 
@@ -67,7 +69,8 @@ export function SummaryBar({ stats }: SummaryBarProps) {
                 <p
                   className={cn(
                     "text-sm font-medium",
-                    item.highlight && "text-success"
+                    item.highlight && "text-success",
+                    item.warn && "text-destructive"
                   )}
                 >
                   {item.value}

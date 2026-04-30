@@ -7,10 +7,12 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatSize(bytes: number): string {
   if (bytes === 0) return "0 B";
+  const sign = bytes < 0 ? "-" : "";
+  const abs = Math.abs(bytes);
   const k = 1024;
   const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  const i = Math.floor(Math.log(abs) / Math.log(k));
+  return `${sign}${parseFloat((abs / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
 export function mimeToName(mime: string): string {
