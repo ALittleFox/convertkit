@@ -18,14 +18,26 @@ const LOCALES = [
   { value: "es", label: "Español" },
 ];
 
+const LOCALE_VALUES = LOCALES.map((l) => l.value);
+
 export function LanguageSwitcher() {
   const locale = useLocale();
 
   const handleChange = (newLocale: string | null) => {
     if (!newLocale) return;
-    const url = new URL(window.location.href);
-    url.searchParams.set("locale", newLocale);
-    window.location.href = url.toString();
+
+    const segments = window.location.pathname.split("/").filter(Boolean);
+
+    // URL pattern: /{feature}/{locale}
+    if (segments.length >= 2 && LOCALE_VALUES.includes(segments[1])) {
+      // Replace existing locale: /convert/zh-Hans → /convert/en
+      segments[1] = newLocale;
+    } else {
+      // Insert locale: /convert → /convert/en
+      segments.splice(1, 0, newLocale);
+    }
+
+    window.location.href = "/" + segments.join("/");
   };
 
   return (

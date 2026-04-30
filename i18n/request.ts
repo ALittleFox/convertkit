@@ -31,7 +31,7 @@ function parseAcceptLanguage(acceptLanguage: string): Locale {
 export default getRequestConfig(async () => {
   const headerStore = await headers();
 
-  // Middleware sets x-locale header from ?locale= URL param
+  // Middleware sets x-locale header from URL path (e.g. /convert/zh-Hans) or ?locale= param
   const overrideLocale = headerStore.get("x-locale");
   const locale =
     overrideLocale && LOCALES.includes(overrideLocale as Locale)
