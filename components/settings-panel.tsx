@@ -3,6 +3,7 @@
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ type, options, onChange, files }: SettingsPanelProps) {
+  const t = useTranslations(type);
   const isPng =
     type === "convert"
       ? options.targetFormat === "png"
@@ -36,13 +38,13 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-base">
-          {type === "compress" ? "压缩设置" : "转换设置"}
+          {t("settings")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {type === "convert" && (
           <div className="space-y-2">
-            <Label>目标格式</Label>
+            <Label>{t("targetFormat")}</Label>
             <Select
               value={options.targetFormat || "webp"}
               onValueChange={(value) => updateOption("targetFormat", value || undefined)}
@@ -63,7 +65,7 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
         {!isPng && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label>质量</Label>
+              <Label>{t("quality")}</Label>
               <span className="text-sm text-muted-foreground">{options.quality}%</span>
             </div>
             <Slider
@@ -74,7 +76,7 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
               step={1}
             />
             <p className="text-xs text-muted-foreground">
-              仅影响 JPEG、WebP、AVIF，PNG 使用无损优化
+              {t("qualityHint")}
             </p>
           </div>
         )}
@@ -87,7 +89,7 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
               onCheckedChange={(checked) => updateOption("lossless", !!checked)}
             />
             <Label htmlFor="lossless" className="text-sm font-normal">
-              无损压缩
+              {t("lossless")}
             </Label>
           </div>
         )}
@@ -95,7 +97,7 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
         {(type === "compress" || options.targetFormat === "avif") && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label>压缩力度</Label>
+              <Label>{t("effort")}</Label>
               <span className="text-sm text-muted-foreground">{options.effort}</span>
             </div>
             <Slider
@@ -106,7 +108,7 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
               step={1}
             />
             <p className="text-xs text-muted-foreground">
-              值越高速度越慢，质量越好
+              {t("effortHint")}
             </p>
           </div>
         )}

@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 import { formatSize, mimeToName } from "@/lib/utils";
 import { type FileTask } from "@/lib/batch-engine";
 
@@ -17,6 +18,7 @@ interface PreviewModalProps {
 }
 
 export function PreviewModal({ task, open, onOpenChange }: PreviewModalProps) {
+  const tc = useTranslations("common");
   if (!task) return null;
 
   return (
@@ -29,7 +31,7 @@ export function PreviewModal({ task, open, onOpenChange }: PreviewModalProps) {
         <div className="grid md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">原始</h3>
+              <h3 className="text-sm font-medium">{tc("original")}</h3>
               <div className="flex items-center gap-2">
                 <Badge variant="outline">{mimeToName(task.file.type)}</Badge>
                 <span className="text-sm text-muted-foreground">
@@ -50,7 +52,7 @@ export function PreviewModal({ task, open, onOpenChange }: PreviewModalProps) {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">结果</h3>
+              <h3 className="text-sm font-medium">{tc("result")}</h3>
               {task.result && (
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">
@@ -80,7 +82,7 @@ export function PreviewModal({ task, open, onOpenChange }: PreviewModalProps) {
               {task.result.width} × {task.result.height}
             </span>
             <span className="font-medium text-success">
-              节省 {formatSize(task.result.originalSize - task.result.resultSize)} (
+              {tc("saved")} {formatSize(task.result.originalSize - task.result.resultSize)} (
               {Math.round(
                 ((task.result.originalSize - task.result.resultSize) /
                   task.result.originalSize) *

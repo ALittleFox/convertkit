@@ -1,6 +1,7 @@
 "use client";
 
 import { File, HardDrive, TrendingDown, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn, formatSize } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ interface SummaryBarProps {
 }
 
 export function SummaryBar({ stats }: SummaryBarProps) {
+  const t = useTranslations("summary");
   const savedSize = stats.originalSize - stats.resultSize;
   const savedPercent =
     stats.originalSize > 0
@@ -26,28 +28,28 @@ export function SummaryBar({ stats }: SummaryBarProps) {
   const items = [
     {
       icon: File,
-      label: "文件",
+      label: t("files"),
       value: `${stats.done}/${stats.total}`,
       detail:
         stats.processing > 0
-          ? `${stats.processing} 处理中`
+          ? `${stats.processing} ${t("processing")}`
           : stats.error > 0
-          ? `${stats.error} 失败`
+          ? `${stats.error} ${t("failed")}`
           : undefined,
     },
     {
       icon: HardDrive,
-      label: "原始大小",
+      label: t("originalSize"),
       value: formatSize(stats.originalSize),
     },
     {
       icon: HardDrive,
-      label: "结果大小",
+      label: t("resultSize"),
       value: formatSize(stats.resultSize),
     },
     {
       icon: TrendingDown,
-      label: "节省",
+      label: t("saved"),
       value: stats.done > 0 ? `${formatSize(savedSize)} (${savedPercent}%)` : "-",
       highlight: savedPercent > 0,
     },

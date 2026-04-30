@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 import { formatSize, getCompressionRate } from "@/lib/utils";
 import { formatDuration } from "@/lib/video-utils";
 import { type VideoFileTask } from "@/lib/video-batch-engine";
@@ -22,6 +23,7 @@ export function VideoPreviewModal({
   open,
   onOpenChange,
 }: VideoPreviewModalProps) {
+  const tc = useTranslations("common");
   if (!task) return null;
 
   const compressionRate = task.result
@@ -39,7 +41,7 @@ export function VideoPreviewModal({
           {/* Original */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">原始</h3>
+              <h3 className="text-sm font-medium">{tc("original")}</h3>
               <div className="flex items-center gap-2">
                 <Badge variant="outline">
                   {task.file.name.split(".").pop()?.toUpperCase()}
@@ -64,7 +66,7 @@ export function VideoPreviewModal({
           {/* Result */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">结果</h3>
+              <h3 className="text-sm font-medium">{tc("result")}</h3>
               {task.result && (
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">
@@ -103,7 +105,7 @@ export function VideoPreviewModal({
                   : "font-medium text-destructive"
               }
             >
-              {compressionRate > 0 ? "节省" : "增加"}{" "}
+              {compressionRate > 0 ? tc("saved") : tc("increase")}{" "}
               {formatSize(
                 Math.abs(task.result.originalSize - task.result.resultSize)
               )}{" "}

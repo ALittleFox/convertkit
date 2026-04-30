@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useTranslations } from "next-intl";
 import { cn, formatSize, getCompressionRate } from "@/lib/utils";
 import { formatDuration } from "@/lib/video-utils";
 import { type VideoFileTask } from "@/lib/video-batch-engine";
@@ -30,6 +31,7 @@ export function VideoFileCard({
   onPreview,
   onDownload,
 }: VideoFileCardProps) {
+  const tc = useTranslations("common");
   const statusIcon = {
     pending: null,
     processing: <Loader2 className="h-4 w-4 animate-spin text-primary" />,
@@ -38,17 +40,17 @@ export function VideoFileCard({
   };
 
   const statusBadge = {
-    pending: <Badge variant="secondary">等待中</Badge>,
-    processing: <Badge variant="default">转码中</Badge>,
+    pending: <Badge variant="secondary">{tc("pending")}</Badge>,
+    processing: <Badge variant="default">{tc("processing")}</Badge>,
     done: (
       <Badge
         variant="default"
         className="bg-success text-success-foreground hover:bg-success"
       >
-        完成
+        {tc("done")}
       </Badge>
     ),
-    error: <Badge variant="destructive">失败</Badge>,
+    error: <Badge variant="destructive">{tc("error")}</Badge>,
   };
 
   return (

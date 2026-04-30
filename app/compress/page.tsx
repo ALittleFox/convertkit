@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Shrink, Download, Trash2, Play } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
 import { FileCard } from "@/components/file-card";
@@ -12,6 +13,8 @@ import { useBatchProcess } from "@/hooks/use-batch-process";
 import { type FileTask } from "@/lib/batch-engine";
 
 export default function CompressPage() {
+  const t = useTranslations("compress");
+  const tc = useTranslations("common");
   const {
     tasks,
     options,
@@ -36,7 +39,7 @@ export default function CompressPage() {
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
       <div className="flex items-center gap-2">
         <Shrink className="h-5 w-5" />
-        <h1 className="text-2xl font-bold">批量图片压缩</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
       </div>
 
       <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -56,7 +59,7 @@ export default function CompressPage() {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <p className="text-sm text-muted-foreground">
-              {tasks.length} 个文件
+              {tasks.length} {tc("files")}
             </p>
             <div className="flex flex-wrap gap-2">
               <Button
@@ -66,7 +69,7 @@ export default function CompressPage() {
                 disabled={isProcessing}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                清空
+                {tc("clear")}
               </Button>
               <Button
                 variant="outline"
@@ -75,7 +78,7 @@ export default function CompressPage() {
                 disabled={stats.done === 0}
               >
                 <Download className="mr-2 h-4 w-4" />
-                下载全部
+                {tc("downloadAll")}
               </Button>
               <Button
                 size="sm"
@@ -83,7 +86,7 @@ export default function CompressPage() {
                 disabled={isProcessing || stats.pending === 0}
               >
                 <Play className="mr-2 h-4 w-4" />
-                {isProcessing ? "处理中..." : "开始压缩"}
+                {isProcessing ? t("processing") : t("start")}
               </Button>
             </div>
           </div>

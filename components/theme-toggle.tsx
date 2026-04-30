@@ -4,10 +4,12 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations("theme");
 
   useEffect(() => {
     setMounted(true);
@@ -31,19 +33,21 @@ export function ThemeToggle() {
     }
   };
 
+  const label =
+    theme === "light"
+      ? t("light")
+      : theme === "dark"
+      ? t("dark")
+      : t("system");
+
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={cycleTheme}
       className="text-muted-foreground hover:text-foreground transition-colors"
-      aria-label={
-        theme === "light"
-          ? "切换到深色模式"
-          : theme === "dark"
-          ? "跟随系统"
-          : "切换到浅色模式"
-      }
+      aria-label={label}
+      title={label}
     >
       <span className="relative inline-flex h-[1.15rem] w-[1.15rem]">
         <Sun

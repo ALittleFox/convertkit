@@ -13,6 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useTranslations } from "next-intl";
 import { cn, formatSize, mimeToName, getCompressionRate } from "@/lib/utils";
 import { type FileTask } from "@/lib/batch-engine";
 
@@ -31,6 +32,7 @@ export function FileCard({
   onDownload,
   type,
 }: FileCardProps) {
+  const tc = useTranslations("common");
   const [thumbnail, setThumbnail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -52,10 +54,10 @@ export function FileCard({
   };
 
   const statusBadge = {
-    pending: <Badge variant="secondary">等待中</Badge>,
-    processing: <Badge variant="default">处理中</Badge>,
-    done: <Badge variant="default" className="bg-success text-success-foreground hover:bg-success">完成</Badge>,
-    error: <Badge variant="destructive">失败</Badge>,
+    pending: <Badge variant="secondary">{tc("pending")}</Badge>,
+    processing: <Badge variant="default">{tc("processing")}</Badge>,
+    done: <Badge variant="default" className="bg-success text-success-foreground hover:bg-success">{tc("done")}</Badge>,
+    error: <Badge variant="destructive">{tc("error")}</Badge>,
   };
 
   return (

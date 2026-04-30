@@ -6,27 +6,30 @@ import { usePathname } from "next/navigation";
 import { Image, Shrink, ArrowRightLeft, Film, Palette, Shield, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { href: "/compress", label: "压缩", icon: Shrink },
-  { href: "/convert", label: "转换", icon: ArrowRightLeft },
-  { href: "/transcode", label: "转码", icon: Film },
-  { href: "/favicon", label: "Favicon", icon: Palette },
-];
 
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = useTranslations("common");
+
+  const navItems = [
+    { href: "/compress", label: t("compress"), icon: Shrink },
+    { href: "/convert", label: t("convert"), icon: ArrowRightLeft },
+    { href: "/transcode", label: t("transcode"), icon: Film },
+    { href: "/favicon", label: t("favicon"), icon: Palette },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 shadow-[0_1px_3px_-1px_oklch(0_0_0/0.06)] dark:shadow-[0_1px_3px_-1px_oklch(0_0_0/0.3)]">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center m-auto px-4 sm:px-6">
         <Link href="/" className="mr-6 flex items-center space-x-2.5 group">
           <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
             <Image className="h-4.5 w-4.5" />
           </div>
-          <span className="font-bold tracking-tight text-foreground">ConvertKit</span>
+          <span className="font-bold tracking-tight text-foreground">{t("appName")}</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -55,9 +58,10 @@ export function Header() {
           <Link href="/privacy" className="hidden sm:inline-flex">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
               <Shield className="mr-2 h-4 w-4" />
-              隐私
+              {t("privacy")}
             </Button>
           </Link>
+          <LanguageSwitcher />
           <ThemeToggle />
           <Button
             variant="ghost"
@@ -98,7 +102,7 @@ export function Header() {
             <Link href="/privacy" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground">
                 <Shield className="mr-2 h-4 w-4" />
-                隐私
+                {t("privacy")}
               </Button>
             </Link>
           </nav>

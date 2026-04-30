@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Upload, Image as ImageIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -18,10 +19,14 @@ export function DropZone({
   onFilesAdded,
   disabled,
   accept = "image/jpeg,image/png,image/webp,image/avif",
-  label = "拖拽图片到此处",
-  mobileLabel = "添加图片到此处",
-  hint = "或点击选择文件 · 支持 JPEG, PNG, WebP, AVIF · 最大 100MB",
+  label,
+  mobileLabel,
+  hint,
 }: DropZoneProps) {
+  const t = useTranslations("dropzone");
+  const resolvedLabel = label ?? t("dragImage");
+  const resolvedMobileLabel = mobileLabel ?? t("addImage");
+  const resolvedHint = hint ?? t("imageHint");
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -76,7 +81,7 @@ export function DropZone({
       className={cn(
         "relative cursor-pointer border-2 border-dashed transition-all duration-200",
         isDragOver && !disabled
-          ? "border-primary bg-primary/5 shadow-[0_0_0_4px_oklch(0.45_0.14_265/0.08)] dark:shadow-[0_0_0_4px_oklch(0.65_0.15_265/0.12)]"
+          ? "border-primary bg-primary/5 ring-4 ring-primary/10"
           : "border-muted-foreground/20 hover:border-primary/40 hover:bg-accent/30",
         disabled && "opacity-50 cursor-not-allowed"
       )}
@@ -109,15 +114,15 @@ export function DropZone({
           )}
         </div>
         <p className="text-base sm:text-lg font-medium mb-1">
-          {isDragOver ? "释放以添加文件" : (
+          {isDragOver ? t("release") : (
             <>
-              <span className="sm:hidden">{mobileLabel}</span>
-              <span className="hidden sm:inline">{label}</span>
+              <span className="sm:hidden">{resolvedMobileLabel}</span>
+              <span className="hidden sm:inline">{resolvedLabel}</span>
             </>
           )}
         </p>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          {hint}
+          {resolvedHint}
         </p>
       </div>
     </Card>

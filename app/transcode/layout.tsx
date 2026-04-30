@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "视频转码",
-  description:
-    "免费在线视频转码工具，支持 MP4、WebM、MOV、GIF 格式转换。可调节编码和质量，所有处理在浏览器本地完成。",
-  keywords: [
-    "视频转码",
-    "格式转换",
-    "MP4转换",
-    "WebM转换",
-    "视频压缩",
-    "在线转码",
-    "GIF制作",
-  ],
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("transcode");
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    keywords: t.raw("metaKeywords") as string[],
+  };
+}
 
 export default function TranscodeLayout({
   children,

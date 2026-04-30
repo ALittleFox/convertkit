@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { Palette, Download, Upload, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,6 +19,8 @@ import {
 import { cn } from "@/lib/utils";
 
 export default function FaviconPage() {
+  const t = useTranslations("favicon");
+  const tc = useTranslations("common");
   const [sourceImage, setSourceImage] = useState<string | null>(null);
   const [sourceElement, setSourceElement] = useState<HTMLImageElement | null>(
     null
@@ -124,10 +127,7 @@ export default function FaviconPage() {
     const selectedSizes = sizes.filter((s) => s.selected);
     if (selectedSizes.length === 0) return;
 
-    // ICO typically contains 16x16 and 32x32
-    const icoSizes = selectedSizes.filter(
-      (s) => s.size <= 256
-    );
+    const icoSizes = selectedSizes.filter((s) => s.size <= 256);
 
     const images = await Promise.all(
       icoSizes.map(async (s) => {
@@ -157,12 +157,13 @@ export default function FaviconPage() {
   }, [sourceImage]);
 
   const selectedCount = sizes.filter((s) => s.selected).length;
+  const usageTips = t.raw("usageTips") as string[];
 
   return (
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
       <div className="flex items-center gap-2">
         <Palette className="h-5 w-5" />
-        <h1 className="text-2xl font-bold">Favicon 生成器</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
       </div>
 
       <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -174,7 +175,7 @@ export default function FaviconPage() {
               className={cn(
                 "relative cursor-pointer border-2 border-dashed transition-all duration-200",
                 isDragging
-                  ? "border-primary bg-primary/5 shadow-[0_0_0_4px_oklch(0.45_0.14_265/0.08)] dark:shadow-[0_0_0_4px_oklch(0.65_0.15_265/0.12)]"
+                  ? "border-primary bg-primary/5 ring-4 ring-primary/10"
                   : "border-muted-foreground/20 hover:border-primary/40 hover:bg-accent/30"
               )}
               onDragOver={handleDragOver}
@@ -194,10 +195,10 @@ export default function FaviconPage() {
                   <Upload className="h-6 w-6 sm:h-8 sm:w-8" />
                 </div>
                 <p className="text-base sm:text-lg font-medium mb-1">
-                  {isDragging ? "释放以上传图片" : "上传图片生成 Favicon"}
+                  {isDragging ? t("dragRelease") : t("upload")}
                 </p>
                 <p className="text-xs sm:text-sm text-muted-foreground">
-                  支持 PNG, JPG, WebP, SVG · 建议使用正方形图片
+                  {t("uploadHint")}
                 </p>
               </div>
             </Card>
@@ -215,7 +216,7 @@ export default function FaviconPage() {
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium mb-2">原始图片</p>
+                    <p className="text-sm font-medium mb-2">{t("sourceImage")}</p>
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
@@ -223,7 +224,7 @@ export default function FaviconPage() {
                         onClick={() => inputRef.current?.click()}
                       >
                         <Upload className="mr-2 h-4 w-4" />
-                        更换
+                        {t("change")}
                       </Button>
                       <Button
                         variant="outline"
@@ -231,7 +232,7 @@ export default function FaviconPage() {
                         onClick={clearImage}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
-                        移除
+                        {tc("remove")}
                       </Button>
                     </div>
                     <input
@@ -250,7 +251,7 @@ export default function FaviconPage() {
           {/* Generate Button */}
           {sourceImage && previews.length === 0 && (
             <Button onClick={generatePreviews} className="w-full">
-              生成预览
+              {t("generatePreview")}
             </Button>
           )}
 
@@ -258,15 +259,15 @@ export default function FaviconPage() {
           {previews.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">预览</h2>
+                <h2 className="text-lg font-semibold">{t("previewTitle")}</h2>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={downloadAllPng}>
                     <Download className="mr-2 h-4 w-4" />
-                    下载全部 PNG
+                    {t("downloadAllPng")}
                   </Button>
                   <Button size="sm" onClick={downloadIco}>
                     <Download className="mr-2 h-4 w-4" />
-                    下载 ICO
+                    {t("downloadIco")}
                   </Button>
                 </div>
               </div>
@@ -287,16 +288,16 @@ export default function FaviconPage() {
                             width: Math.min(preview.size, 64),
                             height: Math.min(preview.size, 64),
                             imageRendering:
-                              preview.size <= 32
-                                ? "pixelated"
-                                : "auto",
+                              preview.size <= 32 ? "pixelated" : "auto",
                           }}
                         />
                       </div>
                       <p className="text-sm font-medium">
-                        {preview.size}×{preview.size}
+                        {preview.size}x{preview.size}
                       </p>
-                      <p className="text-xs text-muted-foreground">点击下载</p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("clickToDownload")}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
@@ -309,15 +310,15 @@ export default function FaviconPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">尺寸选择</CardTitle>
+              <CardTitle className="text-sm">{t("sizeSelect")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" onClick={selectAll}>
-                  全选
+                  {t("selectAll")}
                 </Button>
                 <Button variant="outline" size="sm" onClick={selectNone}>
-                  全不选
+                  {t("selectNone")}
                 </Button>
               </div>
               <div className="space-y-2">
@@ -350,22 +351,20 @@ export default function FaviconPage() {
                 ))}
               </div>
               <p className="text-xs text-muted-foreground">
-                已选 {selectedCount} 个尺寸
+                {t("selectedCount", { count: selectedCount })}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">使用说明</CardTitle>
+              <CardTitle className="text-sm">{t("usage")}</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="text-xs text-muted-foreground space-y-2">
-                <li>• 上传正方形图片效果最佳</li>
-                <li>• 16×16 和 32×32 用于浏览器标签页</li>
-                <li>• 180×180 用于 Apple Touch Icon</li>
-                <li>• 192×192 和 512×512 用于 PWA</li>
-                <li>• ICO 文件包含所有选中的尺寸</li>
+                {usageTips.map((tip: string, i: number) => (
+                  <li key={i}>- {tip}</li>
+                ))}
               </ul>
             </CardContent>
           </Card>

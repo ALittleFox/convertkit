@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Film, Download, Trash2, Play } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
 import { VideoFileCard } from "@/components/video-file-card";
@@ -12,6 +13,9 @@ import { useVideoBatchProcess } from "@/hooks/use-video-batch-process";
 import { type VideoFileTask } from "@/lib/video-batch-engine";
 
 export default function TranscodePage() {
+  const t = useTranslations("transcode");
+  const tc = useTranslations("common");
+  const td = useTranslations("dropzone");
   const {
     tasks,
     options,
@@ -36,7 +40,7 @@ export default function TranscodePage() {
     <div className="container py-6 px-4 sm:px-6 space-y-6 m-auto">
       <div className="flex items-center gap-2">
         <Film className="h-5 w-5" />
-        <h1 className="text-2xl font-bold">视频转码</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
       </div>
 
       <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
@@ -44,9 +48,9 @@ export default function TranscodePage() {
           onFilesAdded={addFiles}
           disabled={isProcessing}
           accept="video/mp4,video/webm,video/quicktime,video/x-msvideo"
-          label="拖拽视频到此处"
-          mobileLabel="添加视频到此处"
-          hint="或点击选择文件 · 支持 MP4, WebM, MOV, AVI · 最大 500MB"
+          label={td("dragVideo")}
+          mobileLabel={td("addVideo")}
+          hint={td("videoHint")}
         />
         <div className="space-y-4">
           <VideoSettingsPanel options={options} onChange={setOptions} />
@@ -58,7 +62,7 @@ export default function TranscodePage() {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <p className="text-sm text-muted-foreground">
-              {tasks.length} 个视频
+              {tasks.length} {tc("videos")}
             </p>
             <div className="flex flex-wrap gap-2">
               <Button
@@ -68,7 +72,7 @@ export default function TranscodePage() {
                 disabled={isProcessing}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                清空
+                {tc("clear")}
               </Button>
               <Button
                 variant="outline"
@@ -77,7 +81,7 @@ export default function TranscodePage() {
                 disabled={stats.done === 0}
               >
                 <Download className="mr-2 h-4 w-4" />
-                下载全部
+                {tc("downloadAll")}
               </Button>
               <Button
                 size="sm"
@@ -85,7 +89,7 @@ export default function TranscodePage() {
                 disabled={isProcessing || stats.pending === 0}
               >
                 <Play className="mr-2 h-4 w-4" />
-                {isProcessing ? "转码中..." : "开始转码"}
+                {isProcessing ? t("processing") : t("start")}
               </Button>
             </div>
           </div>

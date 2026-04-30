@@ -1,6 +1,7 @@
 "use client";
 
 import { Lock, Unlock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
@@ -45,6 +46,7 @@ export function VideoSettingsPanel({
   options,
   onChange,
 }: VideoSettingsPanelProps) {
+  const t = useTranslations("transcode");
   const [aspectLocked, setAspectLocked] = useState(true);
 
   const availableCodecs = CODEC_MAP[options.outputFormat] || [];
@@ -92,13 +94,13 @@ export function VideoSettingsPanel({
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm">转码设置</CardTitle>
+        <CardTitle className="text-sm">{t("settings")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Output Format + Video Codec + Remove Audio */}
         <div className="grid grid-cols-[1fr_1fr_auto] gap-2 sm:gap-3">
           <div className="space-y-2">
-            <Label className="text-xs">输出格式</Label>
+            <Label className="text-xs">{t("outputFormat")}</Label>
             <Select value={options.outputFormat} onValueChange={handleFormatChange}>
               <SelectTrigger className="h-8 w-full">
                 <SelectValue />
@@ -114,7 +116,7 @@ export function VideoSettingsPanel({
           </div>
           {availableCodecs.length > 0 && (
             <div className="space-y-2">
-              <Label className="text-xs">视频编码</Label>
+              <Label className="text-xs">{t("videoCodec")}</Label>
               <Select
                 value={options.videoCodec}
                 onValueChange={(value) =>
@@ -148,7 +150,7 @@ export function VideoSettingsPanel({
                 }
               />
               <Label htmlFor="remove-audio" className="text-xs cursor-pointer whitespace-nowrap">
-                移除音频
+                {t("removeAudio")}
               </Label>
             </div>
           </div>
@@ -158,7 +160,7 @@ export function VideoSettingsPanel({
         {options.outputFormat !== "gif" && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs">质量 (CRF)</Label>
+              <Label className="text-xs">{t("crf")}</Label>
               <span className="text-xs text-muted-foreground">
                 {options.crf}
               </span>
@@ -176,7 +178,7 @@ export function VideoSettingsPanel({
               }
             />
             <p className="text-[10px] text-muted-foreground">
-              值越低质量越好，文件越大
+              {t("crfHint")}
             </p>
           </div>
         )}
@@ -184,7 +186,7 @@ export function VideoSettingsPanel({
         {/* Resolution */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label className="text-xs">分辨率缩放</Label>
+            <Label className="text-xs">{t("resolution")}</Label>
             <Button
               variant="ghost"
               size="icon"
@@ -201,7 +203,7 @@ export function VideoSettingsPanel({
           <div className="flex items-center gap-1.5">
             <input
               type="number"
-              placeholder="宽"
+              placeholder={t("width")}
               value={options.scaleWidth ?? ""}
               onChange={handleWidthChange}
               className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -210,7 +212,7 @@ export function VideoSettingsPanel({
             <span className="text-xs text-muted-foreground">×</span>
             <input
               type="number"
-              placeholder="高"
+              placeholder={t("height")}
               value={options.scaleHeight ?? ""}
               onChange={handleHeightChange}
               className="flex h-8 w-full rounded-md border border-input bg-transparent px-2 py-1 text-xs shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
@@ -218,7 +220,7 @@ export function VideoSettingsPanel({
             />
           </div>
           <p className="text-[10px] text-muted-foreground">
-            留空保持原始分辨率
+            {t("resolutionHint")}
           </p>
         </div>
       </CardContent>
