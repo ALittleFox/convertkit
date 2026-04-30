@@ -18,9 +18,9 @@ export function Header() {
   const navItems = [
     { href: "/compress", label: t("compress"), icon: Shrink },
     { href: "/convert", label: t("convert"), icon: ArrowRightLeft },
-    { href: "/audio", label: t("audio"), icon: Music },
     { href: "/favicon", label: t("favicon"), icon: Palette },
     { href: "/transcode", label: t("transcode"), icon: Film },
+    { href: "/audio", label: t("audio"), icon: Music },
   ];
 
   return (
