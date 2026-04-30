@@ -10,6 +10,7 @@
     "compress": "Comprimir",
     "convert": "Convertir",
     "transcode": "Transcodificar",
+    "audio": "Audio",
     "favicon": "Favicon",
     "privacy": "Privacidad",
     "clear": "Limpiar",
@@ -131,7 +132,10 @@
     "addVideo": "Añadir videos aquí",
     "release": "Soltar para añadir archivos",
     "imageHint": "o haz clic para seleccionar archivos · Soporta JPEG, PNG, WebP, AVIF · Máx 100MB",
-    "videoHint": "o haz clic para seleccionar archivos · Soporta MP4, WebM, MOV, AVI · Máx 500MB"
+    "videoHint": "o haz clic para seleccionar archivos · Soporta MP4, WebM, MOV, AVI · Máx 500MB",
+    "dragAudio": "Arrastra archivos de audio aquí",
+    "addAudio": "Añadir archivos de audio aquí",
+    "audioHint": "o haz clic para seleccionar archivos · Soporta MP3, AAC, OGG, FLAC, WAV, MP4 · Máx 500MB"
   },
   "summary": {
     "files": "Archivos",
@@ -140,6 +144,20 @@
     "saved": "Ahorrado",
     "processing": "Procesando",
     "failed": "Fallido"
+  },
+  "audio": {
+    "title": "Transcodificación de Audio",
+    "start": "Iniciar Transcodificación",
+    "processing": "Transcodificando...",
+    "settings": "Ajustes de Audio",
+    "outputFormat": "Formato de Salida",
+    "bitrate": "Tasa de Bits",
+    "bitrateHint": "Mayor tasa = mejor calidad, archivo más grande",
+    "sampleRate": "Frecuencia de Muestreo",
+    "sampleRateHint": "Dejar en Auto para mantener frecuencia original",
+    "metaTitle": "Transcodificación de Audio",
+    "metaDescription": "Herramienta gratuita online de transcodificación de audio que soporta MP3, AAC, OGG, FLAC, WAV. Extrae audio de video, ajusta tasa de bits y frecuencia de muestreo. Todo procesado localmente en tu navegador.",
+    "metaKeywords": ["transcodificación de audio", "conversión de audio", "convertidor MP3", "extractor de audio", "video a audio", "formato de audio", "herramienta de audio online"]
   },
   "theme": {
     "light": "Modo Claro",

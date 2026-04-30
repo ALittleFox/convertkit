@@ -10,6 +10,7 @@
     "compress": "压缩",
     "convert": "转换",
     "transcode": "转码",
+    "audio": "音频",
     "favicon": "Favicon",
     "privacy": "隐私",
     "clear": "清空",
@@ -131,7 +132,10 @@
     "addVideo": "添加视频到此处",
     "release": "释放以添加文件",
     "imageHint": "或点击选择文件 · 支持 JPEG, PNG, WebP, AVIF · 最大 100MB",
-    "videoHint": "或点击选择文件 · 支持 MP4, WebM, MOV, AVI · 最大 500MB"
+    "videoHint": "或点击选择文件 · 支持 MP4, WebM, MOV, AVI · 最大 500MB",
+    "dragAudio": "拖拽音频到此处",
+    "addAudio": "添加音频到此处",
+    "audioHint": "或点击选择文件 · 支持 MP3, AAC, OGG, FLAC, WAV, MP4 · 最大 500MB"
   },
   "summary": {
     "files": "文件",
@@ -140,6 +144,20 @@
     "saved": "节省",
     "processing": "处理中",
     "failed": "失败"
+  },
+  "audio": {
+    "title": "音频转码",
+    "start": "开始转码",
+    "processing": "转码中...",
+    "settings": "音频设置",
+    "outputFormat": "输出格式",
+    "bitrate": "比特率",
+    "bitrateHint": "值越高品质越好，文件越大",
+    "sampleRate": "采样率",
+    "sampleRateHint": "选择 Auto 保持原始采样率",
+    "metaTitle": "音频转码",
+    "metaDescription": "免费在线音频转码工具，支持 MP3、AAC、OGG、FLAC、WAV 格式转换。支持从视频提取音频，可调节比特率和采样率，所有处理在浏览器本地完成。",
+    "metaKeywords": ["音频转码", "音频转换", "MP3转换", "音频提取", "视频转音频", "音频格式", "在线音频工具"]
   },
   "theme": {
     "light": "浅色模式",

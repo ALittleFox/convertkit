@@ -10,6 +10,7 @@
     "compress": "壓縮",
     "convert": "轉換",
     "transcode": "轉碼",
+    "audio": "音訊",
     "favicon": "Favicon",
     "privacy": "隱私",
     "clear": "清空",
@@ -131,7 +132,10 @@
     "addVideo": "新增影片到此處",
     "release": "放開以新增檔案",
     "imageHint": "或點擊選擇檔案 · 支援 JPEG, PNG, WebP, AVIF · 最大 100MB",
-    "videoHint": "或點擊選擇檔案 · 支援 MP4, WebM, MOV, AVI · 最大 500MB"
+    "videoHint": "或點擊選擇檔案 · 支援 MP4, WebM, MOV, AVI · 最大 500MB",
+    "dragAudio": "拖曳音訊到此處",
+    "addAudio": "新增音訊到此處",
+    "audioHint": "或點擊選擇檔案 · 支援 MP3, AAC, OGG, FLAC, WAV, MP4 · 最大 500MB"
   },
   "summary": {
     "files": "檔案",
@@ -140,6 +144,20 @@
     "saved": "節省",
     "processing": "處理中",
     "failed": "失敗"
+  },
+  "audio": {
+    "title": "音訊轉碼",
+    "start": "開始轉碼",
+    "processing": "轉碼中...",
+    "settings": "音訊設定",
+    "outputFormat": "輸出格式",
+    "bitrate": "位元率",
+    "bitrateHint": "值越高品质越好，檔案越大",
+    "sampleRate": "取樣率",
+    "sampleRateHint": "選擇 Auto 保持原始取樣率",
+    "metaTitle": "音訊轉碼",
+    "metaDescription": "免費線上音訊轉碼工具，支援 MP3、AAC、OGG、FLAC、WAV 格式轉換。支援從影片提取音訊，可調節位元率和取樣率，所有處理在瀏覽器本地完成。",
+    "metaKeywords": ["音訊轉碼", "音訊轉換", "MP3轉換", "音訊提取", "影片轉音訊", "音訊格式", "線上音訊工具"]
   },
   "theme": {
     "light": "淺色模式",

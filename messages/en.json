@@ -10,6 +10,7 @@
     "compress": "Compress",
     "convert": "Convert",
     "transcode": "Transcode",
+    "audio": "Audio",
     "favicon": "Favicon",
     "privacy": "Privacy",
     "clear": "Clear",
@@ -131,7 +132,10 @@
     "addVideo": "Add videos here",
     "release": "Release to add files",
     "imageHint": "or click to select files · Supports JPEG, PNG, WebP, AVIF · Max 100MB",
-    "videoHint": "or click to select files · Supports MP4, WebM, MOV, AVI · Max 500MB"
+    "videoHint": "or click to select files · Supports MP4, WebM, MOV, AVI · Max 500MB",
+    "dragAudio": "Drag audio files here",
+    "addAudio": "Add audio files here",
+    "audioHint": "or click to select files · Supports MP3, AAC, OGG, FLAC, WAV, MP4 · Max 500MB"
   },
   "summary": {
     "files": "Files",
@@ -140,6 +144,20 @@
     "saved": "Saved",
     "processing": "Processing",
     "failed": "Failed"
+  },
+  "audio": {
+    "title": "Audio Transcoding",
+    "start": "Start Transcoding",
+    "processing": "Transcoding...",
+    "settings": "Audio Settings",
+    "outputFormat": "Output Format",
+    "bitrate": "Bitrate",
+    "bitrateHint": "Higher bitrate = better quality, larger file",
+    "sampleRate": "Sample Rate",
+    "sampleRateHint": "Leave as Auto to keep original sample rate",
+    "metaTitle": "Audio Transcoding",
+    "metaDescription": "Free online audio transcoding tool supporting MP3, AAC, OGG, FLAC, WAV. Extract audio from video, adjust bitrate and sample rate. All processed locally in your browser.",
+    "metaKeywords": ["audio transcoding", "audio conversion", "MP3 converter", "audio extractor", "video to audio", "audio format", "online audio tool"]
   },
   "theme": {
     "light": "Light Mode",
