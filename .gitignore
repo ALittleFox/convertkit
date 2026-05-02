@@ -57,3 +57,6 @@ next-env.d.ts
 *.swo
 *~
 .env*.local
+
+.open-next
+
