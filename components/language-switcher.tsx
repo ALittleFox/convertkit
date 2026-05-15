@@ -12,6 +12,9 @@ const LOCALES = [
   { value: "zh-Hant", label: "繁體中文" },
   { value: "en", label: "English" },
   { value: "es", label: "Español" },
+  { value: "fr", label: "Français" },
+  { value: "pt", label: "Português" },
+  { value: "ar", label: "العربية" },
 ];
 
 const LOCALE_VALUES = LOCALES.map((l) => l.value);

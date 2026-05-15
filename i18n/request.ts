@@ -1,7 +1,7 @@
 import { getRequestConfig } from "next-intl/server";
 import { headers } from "next/headers";
 
-const LOCALES = ["zh-Hans", "zh-Hant", "en", "es"] as const;
+const LOCALES = ["zh-Hans", "zh-Hant", "en", "es", "fr", "pt", "ar"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const locales = LOCALES;
@@ -22,6 +22,9 @@ function parseAcceptLanguage(acceptLanguage: string): Locale {
     if (code === "zh-CN" || code === "zh-Hans" || code === "zh-Hans-CN") return "zh-Hans";
     if (code.startsWith("zh")) return "zh-Hans";
     if (code.startsWith("es")) return "es";
+    if (code.startsWith("fr")) return "fr";
+    if (code.startsWith("pt")) return "pt";
+    if (code.startsWith("ar")) return "ar";
     if (code.startsWith("en")) return "en";
   }
 

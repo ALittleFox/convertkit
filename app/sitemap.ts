@@ -4,7 +4,7 @@ export const dynamic = "force-static";
 
 const BASE_URL = "https://convertkit.huangmizhou.com";
 
-const LOCALES = ["zh-Hans", "zh-Hant", "en", "es",""];
+const LOCALES = ["zh-Hans", "zh-Hant", "en", "es", "fr", "pt", "ar", ""];
 
 const PAGES = [
   { path: "/compress", priority: 1.0 },

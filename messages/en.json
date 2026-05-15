@@ -169,5 +169,6 @@
     "light": "Light Mode",
     "dark": "Dark Mode",
     "system": "System"
-  }
+  },
+  "translationDisclaimer": "All translations are AI-generated. If there are any errors, please forgive us."
 }
