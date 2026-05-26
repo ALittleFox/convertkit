@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Shrink, Download, Trash2, Loader2 } from "lucide-react";
+import { Shrink, Download, Trash2, Loader2, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -27,9 +27,12 @@ export default function CompressPage() {
     addFiles,
     removeTask,
     clearTasks,
+    startProcess,
     downloadResult,
     downloadAll,
     isProcessing,
+    autoProcess,
+    setAutoProcess,
     stats,
   } = useBatchProcess<FileTask, ProcessOptions>({
     defaultOptions: { quality: 80, lossless: false, effort: 6 },
@@ -67,6 +70,8 @@ export default function CompressPage() {
             options={options}
             onChange={setOptions}
             files={tasks.map((t) => t.file)}
+            autoProcess={autoProcess}
+            onAutoProcessChange={setAutoProcess}
           />
           {tasks.length > 0 && <SummaryBar stats={stats} />}
         </div>
@@ -78,7 +83,7 @@ export default function CompressPage() {
             <p className="text-sm text-muted-foreground">
               {tasks.length} {tc("files")}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 items-center">
               <Button
                 variant="outline"
                 size="sm"
@@ -97,10 +102,21 @@ export default function CompressPage() {
                 <Download className="mr-2 h-4 w-4" />
                 {tc("downloadAll")}
               </Button>
-              {isProcessing && (
-                <Button size="sm" disabled>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t("processing")}
+              {autoProcess ? (
+                isProcessing && (
+                  <Button size="sm" disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("processing")}
+                  </Button>
+                )
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => startProcess()}
+                  disabled={isProcessing || stats.pending === 0}
+                >
+                  <Play className="mr-2 h-4 w-4" />
+                  {isProcessing ? t("processing") : t("start")}
                 </Button>
               )}
             </div>

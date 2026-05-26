@@ -37,6 +37,7 @@
     "quality": "Qualité",
     "lossless": "Compression sans perte",
     "effort": "Effort",
+    "autoCompress": "Compression Auto",
     "effortHint": "Valeur plus élevée = vitesse plus lente, meilleure qualité",
     "qualityHint": "N'affecte que JPEG, WebP, AVIF. PNG utilise l'optimisation sans perte",
     "metaTitle": "Compression d'images par lots",

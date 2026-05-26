@@ -3,6 +3,7 @@
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
 import {
   Select,
@@ -19,9 +20,11 @@ interface SettingsPanelProps {
   options: ProcessOptions;
   onChange: (options: ProcessOptions) => void;
   files?: File[];
+  autoProcess?: boolean;
+  onAutoProcessChange?: (value: boolean) => void;
 }
 
-export function SettingsPanel({ type, options, onChange, files }: SettingsPanelProps) {
+export function SettingsPanel({ type, options, onChange, files, autoProcess, onAutoProcessChange }: SettingsPanelProps) {
   const t = useTranslations(type);
   const isPng =
     type === "convert"
@@ -110,6 +113,19 @@ export function SettingsPanel({ type, options, onChange, files }: SettingsPanelP
             <p className="text-xs text-muted-foreground">
               {t("effortHint")}
             </p>
+          </div>
+        )}
+
+        {type === "compress" && onAutoProcessChange && (
+          <div className="flex items-center justify-between pt-2 border-t">
+            <Label htmlFor="auto-process" className="text-sm cursor-pointer">
+              {t("autoCompress")}
+            </Label>
+            <Switch
+              id="auto-process"
+              checked={autoProcess}
+              onCheckedChange={onAutoProcessChange}
+            />
           </div>
         )}
       </CardContent>

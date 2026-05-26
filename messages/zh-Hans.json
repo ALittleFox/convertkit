@@ -37,6 +37,7 @@
     "quality": "质量",
     "lossless": "无损压缩",
     "effort": "压缩力度",
+    "autoCompress": "自动压缩",
     "effortHint": "值越高速度越慢，质量越好",
     "qualityHint": "仅影响 JPEG、WebP、AVIF，PNG 使用无损优化",
     "metaTitle": "批量图片压缩",

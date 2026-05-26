@@ -43,11 +43,14 @@ export function useBatchProcess<T extends BaseTask, O>(
   const [tasks, setTasks] = useState<T[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [options, setOptions] = useState<O>(config.defaultOptions);
+  const [autoProcess, setAutoProcess] = useState(true);
   const taskIdCounter = useRef(0);
   const tasksRef = useRef<T[]>([]);
   tasksRef.current = tasks;
   const optionsRef = useRef<O>(options);
   optionsRef.current = options;
+  const autoProcessRef = useRef(autoProcess);
+  autoProcessRef.current = autoProcess;
 
   const updateTask = useCallback(
     (taskId: string, updates: Partial<T>) => {
@@ -126,10 +129,12 @@ export function useBatchProcess<T extends BaseTask, O>(
 
       setTasks((prev) => [...prev, ...newTasks]);
 
-      toast.success(`已添加 ${valid.length} 个文件，正在压缩…`);
-
-      // Auto-start processing for the new files
-      processTaskList(newTasks);
+      if (autoProcessRef.current) {
+        toast.success(`已添加 ${valid.length} 个文件，正在压缩…`);
+        processTaskList(newTasks);
+      } else {
+        toast.success(`已添加 ${valid.length} 个文件`);
+      }
     },
     [config, processTaskList]
   );
@@ -217,6 +222,8 @@ export function useBatchProcess<T extends BaseTask, O>(
     downloadResult,
     downloadAll,
     isProcessing,
+    autoProcess,
+    setAutoProcess,
     stats,
   };
 }
