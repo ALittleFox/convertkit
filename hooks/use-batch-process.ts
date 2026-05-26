@@ -44,6 +44,67 @@ export function useBatchProcess<T extends BaseTask, O>(
   const [isProcessing, setIsProcessing] = useState(false);
   const [options, setOptions] = useState<O>(config.defaultOptions);
   const taskIdCounter = useRef(0);
+  const tasksRef = useRef<T[]>([]);
+  tasksRef.current = tasks;
+  const optionsRef = useRef<O>(options);
+  optionsRef.current = options;
+
+  const updateTask = useCallback(
+    (taskId: string, updates: Partial<T>) => {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t))
+      );
+    },
+    []
+  );
+
+  const processTaskList = useCallback(
+    async (tasksToProcess: T[]) => {
+      if (tasksToProcess.length === 0) return;
+
+      setIsProcessing(true);
+      let errorCount = 0;
+
+      await config.processBatch(
+        tasksToProcess,
+        optionsRef.current,
+        (taskId, status, result, error, progress) => {
+          const task = tasksRef.current.find((t) => t.id === taskId);
+          if (status === "done" && result && task) {
+            const { blob, url } = config.createResultBlob(task, result, optionsRef.current);
+            updateTask(taskId, {
+              status: "done",
+              result,
+              resultBlob: blob,
+              resultUrl: url,
+              progress: 100,
+            } as Partial<T>);
+          } else if (status === "error") {
+            errorCount++;
+            updateTask(taskId, { status: "error", error } as Partial<T>);
+            toast.error(`${task?.file.name || "文件"} 处理失败`, {
+              description: error || "未知错误",
+            });
+          } else if (status === "processing" && progress !== undefined) {
+            updateTask(taskId, {
+              status: "processing",
+              progress,
+            } as Partial<T>);
+          }
+        }
+      );
+
+      setIsProcessing(false);
+      if (errorCount === 0) {
+        toast.success("处理完成");
+      } else if (errorCount < tasksToProcess.length) {
+        toast.warning(
+          `${tasksToProcess.length - errorCount} 个成功，${errorCount} 个失败`
+        );
+      }
+    },
+    [config, updateTask]
+  );
 
   const addFiles = useCallback(
     async (files: File[]) => {
@@ -57,17 +118,20 @@ export function useBatchProcess<T extends BaseTask, O>(
         });
       }
 
+      if (valid.length === 0) return;
+
       const newTasks = await Promise.all(
         valid.map((file) => config.createTask(file, ++taskIdCounter.current))
       );
 
       setTasks((prev) => [...prev, ...newTasks]);
 
-      if (valid.length > 0) {
-        toast.success(`已添加 ${valid.length} 个文件`);
-      }
+      toast.success(`已添加 ${valid.length} 个文件，正在压缩…`);
+
+      // Auto-start processing for the new files
+      processTaskList(newTasks);
     },
-    [config]
+    [config, processTaskList]
   );
 
   const removeTask = useCallback((taskId: string) => {
@@ -89,66 +153,15 @@ export function useBatchProcess<T extends BaseTask, O>(
     });
   }, []);
 
-  const updateTask = useCallback(
-    (taskId: string, updates: Partial<T>) => {
-      setTasks((prev) =>
-        prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t))
-      );
-    },
-    []
-  );
-
   const startProcess = useCallback(async () => {
-    const pendingTasks = tasks.filter((t) => t.status === "pending");
+    const pendingTasks = tasksRef.current.filter((t) => t.status === "pending");
     if (pendingTasks.length === 0) {
       toast.warning("没有待处理的文件");
       return;
     }
 
-    setIsProcessing(true);
-    let errorCount = 0;
-
-    await config.processBatch(
-      pendingTasks,
-      options,
-      (taskId, status, result, error, progress) => {
-        if (status === "done" && result) {
-          const task = tasks.find((t) => t.id === taskId);
-          if (task) {
-            const { blob, url } = config.createResultBlob(task, result, options);
-            updateTask(taskId, {
-              status: "done",
-              result,
-              resultBlob: blob,
-              resultUrl: url,
-              progress: 100,
-            } as Partial<T>);
-          }
-        } else if (status === "error") {
-          errorCount++;
-          updateTask(taskId, { status: "error", error } as Partial<T>);
-          const task = tasks.find((t) => t.id === taskId);
-          toast.error(`${task?.file.name || "文件"} 处理失败`, {
-            description: error || "未知错误",
-          });
-        } else if (status === "processing" && progress !== undefined) {
-          updateTask(taskId, {
-            status: "processing",
-            progress,
-          } as Partial<T>);
-        }
-      }
-    );
-
-    setIsProcessing(false);
-    if (errorCount === 0) {
-      toast.success("处理完成");
-    } else if (errorCount < pendingTasks.length) {
-      toast.warning(
-        `${pendingTasks.length - errorCount} 个成功，${errorCount} 个失败`
-      );
-    }
-  }, [tasks, options, config, updateTask]);
+    await processTaskList(pendingTasks);
+  }, [processTaskList]);
 
   const downloadResult = useCallback(
     async (taskId: string) => {

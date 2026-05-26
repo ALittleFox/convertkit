@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Shrink, Download, Trash2, Play } from "lucide-react";
+import { Shrink, Download, Trash2, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -27,7 +27,6 @@ export default function CompressPage() {
     addFiles,
     removeTask,
     clearTasks,
-    startProcess,
     downloadResult,
     downloadAll,
     isProcessing,
@@ -98,14 +97,12 @@ export default function CompressPage() {
                 <Download className="mr-2 h-4 w-4" />
                 {tc("downloadAll")}
               </Button>
-              <Button
-                size="sm"
-                onClick={() => startProcess()}
-                disabled={isProcessing || stats.pending === 0}
-              >
-                <Play className="mr-2 h-4 w-4" />
-                {isProcessing ? t("processing") : t("start")}
-              </Button>
+              {isProcessing && (
+                <Button size="sm" disabled>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {t("processing")}
+                </Button>
+              )}
             </div>
           </div>
 
