@@ -27,7 +27,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const t = await getTranslations("home");
   const tc = await getTranslations("common");
-  const root = await getTranslations();
 
   const features = [
     {
@@ -124,11 +123,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {root("translationDisclaimer") && (
-        <p className="text-center text-xs text-muted-foreground pb-8 px-4">
-          {root("translationDisclaimer")}
-        </p>
-      )}
     </div>
   );
 }
