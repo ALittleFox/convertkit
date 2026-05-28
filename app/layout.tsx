@@ -30,6 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t("rootDescription"),
     keywords: t.raw("metaKeywords") as string[],
     authors: [{ name: "ConvertKit" }],
+    other: {
+      "baidu-site-verification": "codeva-fIhejOzbzb",
+    },
     openGraph: {
       type: "website",
       title: t("rootTitle"),
