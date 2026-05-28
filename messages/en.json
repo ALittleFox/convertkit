@@ -171,5 +171,21 @@
     "dark": "Dark Mode",
     "system": "System"
   },
+  "home": {
+    "title": "Free Online Media Processing Tool",
+    "description": "Process images, videos, and audio entirely in your browser. No file uploads, no servers — everything happens locally on your device.",
+    "compressTitle": "Image Compression",
+    "compressDesc": "Batch compress JPEG, PNG, WebP, and AVIF images with adjustable quality and lossless options.",
+    "convertTitle": "Format Conversion",
+    "convertDesc": "Convert images between formats in batch — WebP, AVIF, JPEG, PNG.",
+    "faviconTitle": "Favicon Generator",
+    "faviconDesc": "Generate favicon.ico and multiple PNG sizes from a single image for your website.",
+    "transcodeTitle": "Video Transcoding",
+    "transcodeDesc": "Transcode videos between MP4, WebM, MOV, and GIF with codec and quality settings.",
+    "audioTitle": "Audio Transcoding",
+    "audioDesc": "Convert audio files between MP3, AAC, OGG, FLAC, WAV with bitrate options.",
+    "privacyTitle": "100% Private & Secure",
+    "privacyDesc": "All processing happens locally in your browser. Your files never leave your device — no servers, no uploads, no data collection."
+  },
   "translationDisclaimer": "All translations are AI-generated. If there are any errors, please forgive us."
 }

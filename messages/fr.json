@@ -171,5 +171,21 @@
     "dark": "Mode sombre",
     "system": "Système"
   },
+  "home": {
+    "title": "Outil Gratuit de Traitement Multimédia en Ligne",
+    "description": "Traitez des images, vidéos et audio entièrement dans votre navigateur. Sans téléchargement de fichiers, sans serveurs — tout se passe localement sur votre appareil.",
+    "compressTitle": "Compression d'Images",
+    "compressDesc": "Compressez par lots des images JPEG, PNG, WebP et AVIF avec une qualité réglable et des options sans perte.",
+    "convertTitle": "Conversion de Format",
+    "convertDesc": "Convertissez des images entre formats par lots — WebP, AVIF, JPEG, PNG.",
+    "faviconTitle": "Générateur de Favicon",
+    "faviconDesc": "Générez un favicon.ico et plusieurs tailles PNG à partir d'une seule image pour votre site web.",
+    "transcodeTitle": "Transcodage Vidéo",
+    "transcodeDesc": "Transcodez des vidéos entre MP4, WebM, MOV et GIF avec des paramètres de codec et de qualité.",
+    "audioTitle": "Transcodage Audio",
+    "audioDesc": "Convertissez des fichiers audio entre MP3, AAC, OGG, FLAC, WAV avec des options de débit.",
+    "privacyTitle": "100% Privé et Sécurisé",
+    "privacyDesc": "Tout le traitement se fait localement dans votre navigateur. Vos fichiers ne quittent jamais votre appareil — aucun serveur, aucun téléchargement, aucune collecte de données."
+  },
   "translationDisclaimer": "Toutes les traductions sont générées par IA. En cas d'erreur, nous vous prions de bien vouloir nous excuser."
 }

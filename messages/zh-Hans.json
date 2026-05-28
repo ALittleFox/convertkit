@@ -171,5 +171,21 @@
     "dark": "深色模式",
     "system": "跟随系统"
   },
+  "home": {
+    "title": "免费在线媒体处理工具",
+    "description": "在浏览器中处理图片、视频和音频。无需上传文件，不经过服务器——一切都在您的设备上本地完成。",
+    "compressTitle": "图片压缩",
+    "compressDesc": "批量压缩 JPEG、PNG、WebP、AVIF 图片，支持可调质量和无损选项。",
+    "convertTitle": "格式转换",
+    "convertDesc": "批量转换图片格式——WebP、AVIF、JPEG、PNG。",
+    "faviconTitle": "Favicon 生成器",
+    "faviconDesc": "从一张图片生成 favicon.ico 和多种尺寸的 PNG 图标。",
+    "transcodeTitle": "视频转码",
+    "transcodeDesc": "在 MP4、WebM、MOV、GIF 之间转码视频，支持编码器和质量设置。",
+    "audioTitle": "音频转码",
+    "audioDesc": "转换音频格式——MP3、AAC、OGG、FLAC、WAV，支持比特率设置。",
+    "privacyTitle": "100% 隐私安全",
+    "privacyDesc": "所有处理在浏览器本地完成。您的文件不会离开设备——无服务器、无上传、无数据收集。"
+  },
   "translationDisclaimer": "所有翻译均由AI生成，如有错误敬请包涵。"
 }

@@ -171,5 +171,21 @@
     "dark": "Modo Oscuro",
     "system": "Sistema"
   },
+  "home": {
+    "title": "Herramienta Gratuita de Procesamiento de Medios",
+    "description": "Procesa imágenes, videos y audio completamente en tu navegador. Sin subidas de archivos, sin servidores — todo ocurre localmente en tu dispositivo.",
+    "compressTitle": "Compresión de Imágenes",
+    "compressDesc": "Comprime por lotes imágenes JPEG, PNG, WebP y AVIF con calidad ajustable y opciones sin pérdida.",
+    "convertTitle": "Conversión de Formato",
+    "convertDesc": "Convierte imágenes entre formatos por lotes — WebP, AVIF, JPEG, PNG.",
+    "faviconTitle": "Generador de Favicon",
+    "faviconDesc": "Genera favicon.ico y múltiples tamaños PNG desde una sola imagen para tu sitio web.",
+    "transcodeTitle": "Transcodificación de Video",
+    "transcodeDesc": "Transcodifica videos entre MP4, WebM, MOV y GIF con ajustes de códec y calidad.",
+    "audioTitle": "Transcodificación de Audio",
+    "audioDesc": "Convierte archivos de audio entre MP3, AAC, OGG, FLAC, WAV con opciones de bitrate.",
+    "privacyTitle": "100% Privado y Seguro",
+    "privacyDesc": "Todo el procesamiento ocurre localmente en tu navegador. Tus archivos nunca salen de tu dispositivo — sin servidores, sin subidas, sin recolección de datos."
+  },
   "translationDisclaimer": "Todas las traducciones son generadas por IA. Si hay errores, por favor disculpen."
 }

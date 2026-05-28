@@ -171,5 +171,21 @@
     "dark": "深色模式",
     "system": "跟隨系統"
   },
+  "home": {
+    "title": "免費線上媒體處理工具",
+    "description": "在瀏覽器中處理圖片、影片和音訊。無需上傳檔案，不經過伺服器——一切都在您的裝置上本地完成。",
+    "compressTitle": "圖片壓縮",
+    "compressDesc": "批次壓縮 JPEG、PNG、WebP、AVIF 圖片，支援可調品質和無損選項。",
+    "convertTitle": "格式轉換",
+    "convertDesc": "批次轉換圖片格式——WebP、AVIF、JPEG、PNG。",
+    "faviconTitle": "Favicon 產生器",
+    "faviconDesc": "從一張圖片產生 favicon.ico 和多種尺寸的 PNG 圖示。",
+    "transcodeTitle": "影片轉碼",
+    "transcodeDesc": "在 MP4、WebM、MOV、GIF 之間轉碼影片，支援編碼器和品質設定。",
+    "audioTitle": "音訊轉碼",
+    "audioDesc": "轉換音訊格式——MP3、AAC、OGG、FLAC、WAV，支援位元率設定。",
+    "privacyTitle": "100% 隱私安全",
+    "privacyDesc": "所有處理在瀏覽器本地完成。您的檔案不會離開裝置——無伺服器、無上傳、無資料收集。"
+  },
   "translationDisclaimer": "所有翻譯均由AI生成，如有錯誤敬請包涵。"
 }
