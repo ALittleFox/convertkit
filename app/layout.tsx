@@ -32,6 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: "ConvertKit" }],
     other: {
       "baidu-site-verification": "codeva-fIhejOzbzb",
+      "google-site-verification": "YmcZ6xh8ryQe9MJ49EI2du2VtIMKQNO7J9aaJTpckoM",
     },
     openGraph: {
       type: "website",
