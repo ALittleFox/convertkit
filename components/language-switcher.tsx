@@ -22,12 +22,20 @@ const LOCALE_VALUES = LOCALES.map((l) => l.value);
 function buildLocalePath(pathname: string, locale: string) {
   const segments = pathname.split("/").filter(Boolean);
 
+  // Case 1: /compress/zh-Hans → /compress/en
   if (segments.length >= 2 && LOCALE_VALUES.includes(segments[1])) {
     segments[1] = locale;
-  } else {
-    segments.splice(1, 0, locale);
+    return "/" + segments.join("/");
   }
 
+  // Case 2: /zh-Hans → /en (localized home page)
+  if (segments.length === 1 && LOCALE_VALUES.includes(segments[0])) {
+    return "/" + locale;
+  }
+
+  // Case 3: /compress → /compress/zh-Hans
+  // Case 4: / → /zh-Hans
+  segments.splice(1, 0, locale);
   return "/" + segments.join("/");
 }
 

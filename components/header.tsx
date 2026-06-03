@@ -36,7 +36,7 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link key={item.href} href={item.href}>
                 <Button
@@ -80,7 +80,7 @@ export function Header() {
         <div className="absolute top-full left-0 right-0 md:hidden border-t bg-background shadow-lg">
           <nav className="container py-2 space-y-1 px-4 sm:px-6">
             {navItems.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <Link
                   key={item.href}
