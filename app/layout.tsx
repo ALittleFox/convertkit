@@ -33,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
     other: {
       "baidu-site-verification": "codeva-fIhejOzbzb",
       "google-site-verification": "YmcZ6xh8ryQe9MJ49EI2du2VtIMKQNO7J9aaJTpckoM",
+      "msvalidate.01": "A4CA2B0F9721A1F0451209FC4AEE933D",
     },
     openGraph: {
       type: "website",
