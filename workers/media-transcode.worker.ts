@@ -110,25 +110,29 @@ function buildVideoArgs(
   const args: string[] = ["-i", inputName];
 
   // Video codec
-  if (options.outputFormat !== "gif") {
-    switch (options.videoCodec) {
-      case "h264":
-        args.push("-c:v", "libx264");
-        break;
-      case "h265":
-        args.push("-c:v", "libx265");
-        break;
-      case "vp9":
-        args.push("-c:v", "libvpx-vp9");
-        break;
-      default:
-        args.push("-c:v", "libx264");
-    }
-
-    // CRF quality
-    if (options.crf !== undefined) {
-      args.push("-crf", String(options.crf));
-    }
+  switch (options.videoCodec) {
+    case "h264":
+      args.push("-c:v", "libx264");
+      // CRF quality
+      if (options.crf !== undefined) {
+        args.push("-crf", String(options.crf));
+      }
+      // Ensure broad compatibility across players.
+      args.push("-pix_fmt", "yuv420p");
+      break;
+    case "h265":
+      args.push("-c:v", "libx265");
+      if (options.crf !== undefined) {
+        args.push("-crf", String(options.crf));
+      }
+      args.push("-pix_fmt", "yuv420p");
+      break;
+    default:
+      args.push("-c:v", "libx264");
+      if (options.crf !== undefined) {
+        args.push("-crf", String(options.crf));
+      }
+      args.push("-pix_fmt", "yuv420p");
   }
 
   // Resolution scaling
@@ -138,18 +142,12 @@ function buildVideoArgs(
     args.push("-vf", `scale=${w}:${h}`);
   }
 
-  // Audio
+  // Audio: MP4/MOV both accept AAC.
   if (options.removeAudio) {
     args.push("-an");
-  } else if (options.outputFormat !== "gif") {
-    // Re-encode audio to AAC at a sane bitrate for mp4/webm/mov.
+  } else {
     args.push("-c:a", "aac");
     args.push("-b:a", `${options.audioBitrate || 192}k`);
-  }
-
-  // GIF special handling
-  if (options.outputFormat === "gif") {
-    args.push("-f", "gif");
   }
 
   // Overwrite without asking

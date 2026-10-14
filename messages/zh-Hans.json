@@ -80,10 +80,10 @@
     "mobileNotice": "视频转码仅支持桌面端",
     "mobileNoticeDesc": "视频转码需要较大的内存和算力，请在电脑上使用此功能。",
     "metaTitle": "视频转码",
-    "pageIntro": "在 MP4、WebM、MOV、GIF 之间转码视频。可选择编码器、质量（CRF）、分辨率缩放和音频选项。",
+    "pageIntro": "在 MP4、MOV 之间转码视频。可选择编码器（H.264/H.265）、质量（CRF）、分辨率缩放和音频选项。",
     "privacyNote": "所有处理均在浏览器本地完成，视频不会被上传，始终不会离开你的设备。",
-    "metaDescription": "免费在线视频转码工具，支持 MP4、WebM、MOV、GIF 格式转换。可调节编码和质量，所有处理在浏览器本地完成。",
-    "metaKeywords": ["视频转码", "格式转换", "MP4转换", "WebM转换", "视频压缩", "在线转码", "GIF制作"]
+    "metaDescription": "免费在线视频转码工具，支持 MP4、MOV 格式转换。可调节编码和质量，所有处理在浏览器本地完成。",
+    "metaKeywords": ["视频转码", "格式转换", "MP4转换", "MOV转换", "视频压缩", "在线转码", "H.264", "H.265"]
   },
   "favicon": {
     "title": "Favicon 生成器",

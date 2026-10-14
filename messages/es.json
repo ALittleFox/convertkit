@@ -80,10 +80,10 @@
     "mobileNotice": "Transcodificación solo en escritorio",
     "mobileNoticeDesc": "La transcodificación de video requiere mucha memoria y potencia de procesamiento. Usa esta función en una computadora.",
     "metaTitle": "Transcodificación de Video",
-    "pageIntro": "Transcodifica vídeos entre MP4, WebM, MOV y GIF. Elige el códec, la calidad (CRF), el escalado de resolución y las opciones de audio.",
+    "pageIntro": "Transcodifica vídeos entre MP4 y MOV. Elige el códec (H.264/H.265), la calidad (CRF), el escalado de resolución y las opciones de audio.",
     "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tus vídeos nunca se suben — nunca salen de tu dispositivo.",
-    "metaDescription": "Herramienta gratuita online de transcodificación de video que soporta MP4, WebM, MOV, GIF. Códec y calidad ajustables, todo procesado localmente en tu navegador.",
-    "metaKeywords": ["transcodificación de video", "conversión de formato", "conversión MP4", "conversión WebM", "compresión de video", "transcodificación online", "creador de GIF"]
+    "metaDescription": "Herramienta gratuita online de transcodificación de video compatible con MP4 y MOV. Códec y calidad ajustables, todo procesado localmente en tu navegador.",
+    "metaKeywords": ["transcodificación de video", "conversión de formato", "conversión MP4", "conversión MOV", "compresión de video", "transcodificación online", "H.264", "H.265"]
   },
   "favicon": {
     "title": "Generador de Favicon",

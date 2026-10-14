@@ -35,9 +35,7 @@ export function videoMimeToExt(mime: string): string {
 export function getVideoOutputMime(format: string): string {
   const map: Record<string, string> = {
     mp4: "video/mp4",
-    webm: "video/webm",
     mov: "video/quicktime",
-    gif: "image/gif",
   };
   return map[format] || "video/mp4";
 }

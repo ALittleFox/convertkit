@@ -80,10 +80,10 @@
     "mobileNotice": "Video Transcoding is Desktop Only",
     "mobileNoticeDesc": "Video transcoding requires significant memory and processing power. Please use this feature on a computer.",
     "metaTitle": "Video Transcoding",
-    "pageIntro": "Transcode videos between MP4, WebM, MOV and GIF. Choose the codec, quality (CRF), resolution scaling and audio options.",
+    "pageIntro": "Transcode videos between MP4 and MOV. Choose the codec (H.264/H.265), quality (CRF), resolution scaling and audio options.",
     "privacyNote": "All processing runs locally in your browser. Your videos are never uploaded — they never leave your device.",
-    "metaDescription": "Free online video transcoding tool supporting MP4, WebM, MOV, GIF. Adjustable codec and quality, all processed locally in your browser.",
-    "metaKeywords": ["video transcoding", "format conversion", "MP4 conversion", "WebM conversion", "video compression", "online transcoding", "GIF maker"]
+    "metaDescription": "Free online video transcoding tool supporting MP4 and MOV. Adjustable codec and quality, all processed locally in your browser.",
+    "metaKeywords": ["video transcoding", "format conversion", "MP4 conversion", "MOV conversion", "video compression", "online transcoding", "H.264", "H.265"]
   },
   "favicon": {
     "title": "Favicon Generator",

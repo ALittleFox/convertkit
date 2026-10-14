@@ -80,10 +80,10 @@
     "mobileNotice": "影片轉碼僅支援桌面端",
     "mobileNoticeDesc": "影片轉碼需要較大的記憶體和算力，請在電腦上使用此功能。",
     "metaTitle": "影片轉碼",
-    "pageIntro": "在 MP4、WebM、MOV、GIF 之間轉碼影片。可選擇編碼器、品質（CRF）、解析度縮放和音訊選項。",
+    "pageIntro": "在 MP4、MOV 之間轉碼影片。可選擇編碼器（H.264/H.265）、品質（CRF）、解析度縮放和音訊選項。",
     "privacyNote": "所有處理均在瀏覽器本地完成，影片不會被上傳，始終不會離開你的裝置。",
-    "metaDescription": "免費線上影片轉碼工具，支援 MP4、WebM、MOV、GIF 格式轉換。可調節編碼和品質，所有處理在瀏覽器本地完成。",
-    "metaKeywords": ["影片轉碼", "格式轉換", "MP4轉換", "WebM轉換", "影片壓縮", "線上轉碼", "GIF製作"]
+    "metaDescription": "免費線上影片轉碼工具，支援 MP4、MOV 格式轉換。可調節編碼和品質，所有處理在瀏覽器本地完成。",
+    "metaKeywords": ["影片轉碼", "格式轉換", "MP4轉換", "MOV轉換", "影片壓縮", "線上轉碼", "H.264", "H.265"]
   },
   "favicon": {
     "title": "Favicon 產生器",

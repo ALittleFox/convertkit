@@ -24,9 +24,7 @@ interface VideoSettingsPanelProps {
 
 const FORMAT_OPTIONS = [
   { value: "mp4", label: "MP4" },
-  { value: "webm", label: "WebM" },
   { value: "mov", label: "MOV" },
-  { value: "gif", label: "GIF" },
 ];
 
 const CODEC_MAP: Record<string, { value: string; label: string }[]> = {
@@ -34,12 +32,10 @@ const CODEC_MAP: Record<string, { value: string; label: string }[]> = {
     { value: "h264", label: "H.264" },
     { value: "h265", label: "H.265" },
   ],
-  webm: [{ value: "vp9", label: "VP9" }],
   mov: [
     { value: "h264", label: "H.264" },
     { value: "h265", label: "H.265" },
   ],
-  gif: [],
 };
 
 export function VideoSettingsPanel({
@@ -157,31 +153,29 @@ export function VideoSettingsPanel({
         </div>
 
         {/* CRF Quality */}
-        {options.outputFormat !== "gif" && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label className="text-xs">{t("crf")}</Label>
-              <span className="text-xs text-muted-foreground">
-                {options.crf}
-              </span>
-            </div>
-            <Slider
-              value={[options.crf]}
-              min={0}
-              max={51}
-              step={1}
-              onValueChange={(value) =>
-                onChange({
-                  ...options,
-                  crf: Array.isArray(value) ? value[0] : value,
-                })
-              }
-            />
-            <p className="text-[10px] text-muted-foreground">
-              {t("crfHint")}
-            </p>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label className="text-xs">{t("crf")}</Label>
+            <span className="text-xs text-muted-foreground">
+              {options.crf}
+            </span>
           </div>
-        )}
+          <Slider
+            value={[options.crf]}
+            min={0}
+            max={51}
+            step={1}
+            onValueChange={(value) =>
+              onChange({
+                ...options,
+                crf: Array.isArray(value) ? value[0] : value,
+              })
+            }
+          />
+          <p className="text-[10px] text-muted-foreground">
+            {t("crfHint")}
+          </p>
+        </div>
 
         {/* Resolution */}
         <div className="space-y-2">

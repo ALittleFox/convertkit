@@ -5,12 +5,13 @@ export type { VideoFileTask };
 export type VideoWorkerResult = BaseTaskResult;
 
 export interface VideoProcessOptions {
-  outputFormat: "mp4" | "webm" | "mov" | "gif";
-  videoCodec: "h264" | "h265" | "vp9";
+  outputFormat: "mp4" | "mov";
+  videoCodec: "h264" | "h265";
   crf: number;
   scaleWidth?: number;
   scaleHeight?: number;
   removeAudio: boolean;
+  audioBitrate?: number;
 }
 
 const engine = createWorkerBatchEngine<VideoFileTask, VideoProcessOptions>(
@@ -31,6 +32,7 @@ const engine = createWorkerBatchEngine<VideoFileTask, VideoProcessOptions>(
         scaleWidth: options.scaleWidth,
         scaleHeight: options.scaleHeight,
         removeAudio: options.removeAudio,
+        audioBitrate: options.audioBitrate,
       },
     },
     transfers: [buffer],
