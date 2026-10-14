@@ -13,12 +13,13 @@ export interface AudioProcessOptions {
 const engine = createWorkerBatchEngine<AudioFileTask, AudioProcessOptions>(
   () =>
     new Worker(
-      new URL("../workers/audio-transcode.worker.ts", import.meta.url),
+      new URL("../workers/media-transcode.worker.ts", import.meta.url),
       { type: "module" }
     ),
   (task, buffer, options) => ({
     data: {
       id: task.id,
+      kind: "audio",
       fileData: buffer,
       fileName: task.file.name,
       options: {

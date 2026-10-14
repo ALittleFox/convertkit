@@ -86,10 +86,11 @@ pic-html/
 │   ├── zip-stream.ts           # ZIP 打包下载
 │   ├── worker-manager.ts       # WorkerPool 类
 │   ├── batch-engine.ts         # 图片批处理引擎
+│   ├── audio-batch-engine.ts   # 音频批处理引擎
 │   └── video-batch-engine.ts   # 视频批处理引擎
 ├── workers/
 │   ├── codec.worker.ts         # 图片 WASM 编解码 Worker
-│   └── transcode.worker.ts     # FFmpeg 视频转码 Worker
+│   └── media-transcode.worker.ts  # FFmpeg 音视频转码 Worker（音视频共用）
 └── e2e/                        # Playwright E2E 测试
 ```
 

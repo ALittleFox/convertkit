@@ -15,12 +15,13 @@ export interface VideoProcessOptions {
 
 const engine = createWorkerBatchEngine<VideoFileTask, VideoProcessOptions>(
   () =>
-    new Worker(new URL("../workers/transcode.worker.ts", import.meta.url), {
+    new Worker(new URL("../workers/media-transcode.worker.ts", import.meta.url), {
       type: "module",
     }),
   (task, buffer, options) => ({
     data: {
       id: task.id,
+      kind: "video",
       fileData: buffer,
       fileName: task.file.name,
       options: {

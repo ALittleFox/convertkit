@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Film, Download, Trash2, Play, Monitor } from "lucide-react";
+import { Film, Download, Trash2, Play, Monitor, Info, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -116,6 +116,21 @@ export default function TranscodePage() {
         <div className="space-y-4">
           <VideoSettingsPanel options={options} onChange={setOptions} />
           {tasks.length > 0 && <SummaryBar stats={stats} />}
+        </div>
+      </div>
+
+      <div className="rounded-xl border bg-muted/40 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("pageIntro")}
+          </p>
+        </div>
+        <div className="flex items-start gap-3 mt-3">
+          <Shield className="h-5 w-5 mt-0.5 shrink-0 text-green-500" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("privacyNote")}
+          </p>
         </div>
       </div>
 

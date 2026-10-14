@@ -41,6 +41,8 @@
     "effortHint": "值越高速度越慢，品質越好",
     "qualityHint": "僅影響 JPEG、WebP、AVIF，PNG 使用無損優化",
     "metaTitle": "批次圖片壓縮",
+    "pageIntro": "批次壓縮 JPEG、PNG、WebP、AVIF 圖片。可調節輸出品質，或使用無損優化，在保持畫質的同時減小檔案體積。",
+    "privacyNote": "所有處理均在瀏覽器本地完成，圖片不會被上傳，始終不會離開你的裝置。",
     "metaDescription": "免費線上批次圖片壓縮工具，支援 JPEG、PNG、WebP、AVIF 格式。可調節壓縮品質，支援無損壓縮，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["圖片壓縮", "批次壓縮", "JPEG壓縮", "PNG壓縮", "WebP壓縮", "AVIF壓縮", "無損壓縮", "線上壓縮"]
   },
@@ -56,6 +58,8 @@
     "effortHint": "值越高速度越慢，品質越好",
     "qualityHint": "僅影響 JPEG、WebP、AVIF，PNG 使用無損優化",
     "metaTitle": "批次格式轉換",
+    "pageIntro": "在 JPEG、PNG、WebP、AVIF 之間批次轉換圖片格式。選擇目標格式、調節品質並下載結果。",
+    "privacyNote": "所有處理均在瀏覽器本地完成，圖片不會被上傳，始終不會離開你的裝置。",
     "metaDescription": "免費線上批次圖片格式轉換工具，支援 JPEG、PNG、WebP、AVIF 互相轉換。可調節輸出品質，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["格式轉換", "圖片轉換", "WebP轉換", "AVIF轉換", "PNG轉JPEG", "JPEG轉PNG", "線上轉換", "批次轉換"]
   },
@@ -76,6 +80,8 @@
     "mobileNotice": "影片轉碼僅支援桌面端",
     "mobileNoticeDesc": "影片轉碼需要較大的記憶體和算力，請在電腦上使用此功能。",
     "metaTitle": "影片轉碼",
+    "pageIntro": "在 MP4、WebM、MOV、GIF 之間轉碼影片。可選擇編碼器、品質（CRF）、解析度縮放和音訊選項。",
+    "privacyNote": "所有處理均在瀏覽器本地完成，影片不會被上傳，始終不會離開你的裝置。",
     "metaDescription": "免費線上影片轉碼工具，支援 MP4、WebM、MOV、GIF 格式轉換。可調節編碼和品質，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["影片轉碼", "格式轉換", "MP4轉換", "WebM轉換", "影片壓縮", "線上轉碼", "GIF製作"]
   },
@@ -104,6 +110,8 @@
       "ICO 檔案包含所有選取的尺寸"
     ],
     "metaTitle": "Favicon 產生器",
+    "pageIntro": "用一張圖片生成多尺寸 favicon.ico 和 PNG 圖示，適用於瀏覽器分頁、Apple Touch 圖示和 PWA 清單。",
+    "privacyNote": "所有處理均在瀏覽器本地完成，圖片不會被上傳，始終不會離開你的裝置。",
     "metaDescription": "免費線上 Favicon 產生工具，上傳圖片自動產生多種尺寸的 favicon.ico 和 PNG 圖示。支援常見尺寸，純瀏覽器端處理。",
     "metaKeywords": ["favicon", "favicon產生", "ico產生", "網站圖示", "favicon.ico", "線上工具"]
   },
@@ -134,9 +142,9 @@
     "release": "放開以新增檔案",
     "imageHint": "或點擊選擇檔案 · 支援 JPEG, PNG, WebP, AVIF · 最大 100MB",
     "videoHint": "或點擊選擇檔案 · 支援 MP4, WebM, MOV, AVI · 最大 500MB",
-    "dragAudio": "拖曳音訊到此處",
-    "addAudio": "新增音訊到此處",
-    "audioHint": "或點擊選擇檔案 · 支援 MP3, AAC, OGG, FLAC, WAV, MP4 · 最大 500MB"
+    "dragAudio": "拖曳音訊或影片到此處",
+    "addAudio": "新增音訊或影片檔案",
+    "audioHint": "或點擊選擇檔案 · 支援 MP3、AAC、OGG、FLAC、WAV · 可從 MP4、WebM、MOV、AVI 影片提取音訊 · 最大 500MB"
   },
   "summary": {
     "files": "檔案",
@@ -157,6 +165,8 @@
     "sampleRate": "取樣率",
     "sampleRateHint": "選擇 Auto 保持原始取樣率",
     "metaTitle": "音訊轉碼",
+    "pageIntro": "在 MP3、AAC、OGG、FLAC、WAV 之間轉碼音訊。可調節位元率和取樣率，也可從影片中提取音訊。",
+    "privacyNote": "所有處理均在瀏覽器本地完成，音訊不會被上傳，始終不會離開你的裝置。",
     "metaDescription": "免費線上音訊轉碼工具，支援 MP3、AAC、OGG、FLAC、WAV 格式轉換。支援從影片提取音訊，可調節位元率和取樣率，所有處理在瀏覽器本地完成。",
     "metaKeywords": ["音訊轉碼", "音訊轉換", "MP3轉換", "音訊提取", "影片轉音訊", "音訊格式", "線上音訊工具"]
   },

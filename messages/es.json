@@ -41,6 +41,8 @@
     "effortHint": "Valor más alto = velocidad más lenta, mejor calidad",
     "qualityHint": "Solo afecta JPEG, WebP, AVIF. PNG usa optimización sin pérdida",
     "metaTitle": "Compresión por Lotes de Imágenes",
+    "pageIntro": "Comprime por lotes imágenes JPEG, PNG, WebP y AVIF. Ajusta la calidad de salida o usa la optimización sin pérdida para reducir el tamaño manteniendo la calidad visual.",
+    "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tus imágenes nunca se suben — nunca salen de tu dispositivo.",
     "metaDescription": "Herramienta gratuita online de compresión por lotes de imágenes que soporta JPEG, PNG, WebP, AVIF. Calidad ajustable, compresión sin pérdida, todo procesado localmente en tu navegador.",
     "metaKeywords": ["compresión de imágenes", "compresión por lotes", "compresión JPEG", "compresión PNG", "compresión WebP", "compresión AVIF", "compresión sin pérdida", "compresión online"]
   },
@@ -56,6 +58,8 @@
     "effortHint": "Valor más alto = velocidad más lenta, mejor calidad",
     "qualityHint": "Solo afecta JPEG, WebP, AVIF. PNG usa optimización sin pérdida",
     "metaTitle": "Conversión por Lotes de Formato",
+    "pageIntro": "Convierte imágenes por lotes entre JPEG, PNG, WebP y AVIF. Elige el formato de destino, ajusta la calidad y descarga los resultados.",
+    "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tus imágenes nunca se suben — nunca salen de tu dispositivo.",
     "metaDescription": "Herramienta gratuita online de conversión por lotes de formato de imagen que soporta JPEG, PNG, WebP, AVIF. Calidad de salida ajustable, todo procesado localmente en tu navegador.",
     "metaKeywords": ["conversión de formato", "conversión de imágenes", "conversión WebP", "conversión AVIF", "PNG a JPEG", "JPEG a PNG", "conversión online", "conversión por lotes"]
   },
@@ -76,6 +80,8 @@
     "mobileNotice": "Transcodificación solo en escritorio",
     "mobileNoticeDesc": "La transcodificación de video requiere mucha memoria y potencia de procesamiento. Usa esta función en una computadora.",
     "metaTitle": "Transcodificación de Video",
+    "pageIntro": "Transcodifica vídeos entre MP4, WebM, MOV y GIF. Elige el códec, la calidad (CRF), el escalado de resolución y las opciones de audio.",
+    "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tus vídeos nunca se suben — nunca salen de tu dispositivo.",
     "metaDescription": "Herramienta gratuita online de transcodificación de video que soporta MP4, WebM, MOV, GIF. Códec y calidad ajustables, todo procesado localmente en tu navegador.",
     "metaKeywords": ["transcodificación de video", "conversión de formato", "conversión MP4", "conversión WebM", "compresión de video", "transcodificación online", "creador de GIF"]
   },
@@ -104,6 +110,8 @@
       "El archivo ICO contiene todos los tamaños seleccionados"
     ],
     "metaTitle": "Generador de Favicon",
+    "pageIntro": "Genera un favicon.ico de varios tamaños e iconos PNG desde una sola imagen, listos para pestañas del navegador, iconos de Apple Touch y manifiestos PWA.",
+    "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tu imagen nunca se sube — nunca sale de tu dispositivo.",
     "metaDescription": "Generador de favicon gratuito online. Sube una imagen para generar favicon.ico e íconos PNG de múltiples tamaños. Soporta tamaños comunes, procesado completamente en tu navegador.",
     "metaKeywords": ["favicon", "generador de favicon", "generador de ico", "ícono de sitio web", "favicon.ico", "herramienta online"]
   },
@@ -134,9 +142,9 @@
     "release": "Soltar para añadir archivos",
     "imageHint": "o haz clic para seleccionar archivos · Soporta JPEG, PNG, WebP, AVIF · Máx 100MB",
     "videoHint": "o haz clic para seleccionar archivos · Soporta MP4, WebM, MOV, AVI · Máx 500MB",
-    "dragAudio": "Arrastra archivos de audio aquí",
-    "addAudio": "Añadir archivos de audio aquí",
-    "audioHint": "o haz clic para seleccionar archivos · Soporta MP3, AAC, OGG, FLAC, WAV, MP4 · Máx 500MB"
+    "dragAudio": "Arrastra archivos de audio o vídeo aquí",
+    "addAudio": "Añade archivos de audio o vídeo aquí",
+    "audioHint": "o haz clic para seleccionar archivos · Soporta MP3, AAC, OGG, FLAC, WAV · Extrae audio de MP4, WebM, MOV, AVI · Máx 500MB"
   },
   "summary": {
     "files": "Archivos",
@@ -157,6 +165,8 @@
     "sampleRate": "Frecuencia de Muestreo",
     "sampleRateHint": "Dejar en Auto para mantener frecuencia original",
     "metaTitle": "Transcodificación de Audio",
+    "pageIntro": "Transcodifica audio entre MP3, AAC, OGG, FLAC y WAV. Ajusta el bitrate y la frecuencia de muestreo, o extrae el audio de un vídeo.",
+    "privacyNote": "Todo el procesamiento se realiza localmente en tu navegador. Tus archivos de audio nunca se suben — nunca salen de tu dispositivo.",
     "metaDescription": "Herramienta gratuita online de transcodificación de audio que soporta MP3, AAC, OGG, FLAC, WAV. Extrae audio de video, ajusta tasa de bits y frecuencia de muestreo. Todo procesado localmente en tu navegador.",
     "metaKeywords": ["transcodificación de audio", "conversión de audio", "convertidor MP3", "extractor de audio", "video a audio", "formato de audio", "herramienta de audio online"]
   },

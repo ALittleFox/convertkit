@@ -3,14 +3,26 @@
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
 
-interface AudioTranscodeMessage {
+type MediaKind = "audio" | "video";
+
+interface MediaTranscodeMessage {
   id: string;
+  kind: MediaKind;
   fileData: ArrayBuffer;
   fileName: string;
   options: {
+    // audio
     outputFormat: string;
     bitrate?: number;
     sampleRate?: number;
+    // video
+    videoCodec?: string;
+    crf?: number;
+    scaleWidth?: number;
+    scaleHeight?: number;
+    removeAudio?: boolean;
+    // audio codec for video output
+    audioBitrate?: number;
   };
 }
 
@@ -35,10 +47,14 @@ async function loadFFmpeg(): Promise<void> {
   loaded = true;
 }
 
-function buildArgs(
+/**
+ * Build ffmpeg arguments for audio transcoding / extraction.
+ * Handles both audio inputs and video inputs (video track is dropped via -vn).
+ */
+function buildAudioArgs(
   inputName: string,
   outputName: string,
-  options: AudioTranscodeMessage["options"]
+  options: MediaTranscodeMessage["options"]
 ): string[] {
   const args: string[] = ["-i", inputName];
 
@@ -83,8 +99,68 @@ function buildArgs(
   return args;
 }
 
-self.onmessage = async (e: MessageEvent<AudioTranscodeMessage>) => {
-  const { id, fileData, fileName, options } = e.data;
+/**
+ * Build ffmpeg arguments for video transcoding.
+ */
+function buildVideoArgs(
+  inputName: string,
+  outputName: string,
+  options: MediaTranscodeMessage["options"]
+): string[] {
+  const args: string[] = ["-i", inputName];
+
+  // Video codec
+  if (options.outputFormat !== "gif") {
+    switch (options.videoCodec) {
+      case "h264":
+        args.push("-c:v", "libx264");
+        break;
+      case "h265":
+        args.push("-c:v", "libx265");
+        break;
+      case "vp9":
+        args.push("-c:v", "libvpx-vp9");
+        break;
+      default:
+        args.push("-c:v", "libx264");
+    }
+
+    // CRF quality
+    if (options.crf !== undefined) {
+      args.push("-crf", String(options.crf));
+    }
+  }
+
+  // Resolution scaling
+  if (options.scaleWidth || options.scaleHeight) {
+    const w = options.scaleWidth || -2; // -2 = auto (maintain aspect ratio)
+    const h = options.scaleHeight || -2;
+    args.push("-vf", `scale=${w}:${h}`);
+  }
+
+  // Audio
+  if (options.removeAudio) {
+    args.push("-an");
+  } else if (options.outputFormat !== "gif") {
+    // Re-encode audio to AAC at a sane bitrate for mp4/webm/mov.
+    args.push("-c:a", "aac");
+    args.push("-b:a", `${options.audioBitrate || 192}k`);
+  }
+
+  // GIF special handling
+  if (options.outputFormat === "gif") {
+    args.push("-f", "gif");
+  }
+
+  // Overwrite without asking
+  args.push("-y");
+  args.push(outputName);
+
+  return args;
+}
+
+self.onmessage = async (e: MessageEvent<MediaTranscodeMessage>) => {
+  const { id, kind, fileData, options } = e.data;
   const errorLogs: string[] = [];
 
   try {
@@ -92,7 +168,7 @@ self.onmessage = async (e: MessageEvent<AudioTranscodeMessage>) => {
 
     if (!ffmpeg) throw new Error("FFmpeg not loaded");
 
-    const ext = options.outputFormat || "mp3";
+    const ext = options.outputFormat || (kind === "video" ? "mp4" : "mp3");
     const inputName = `input_${id}`;
     const outputName = `output_${id}.${ext}`;
 
@@ -128,7 +204,10 @@ self.onmessage = async (e: MessageEvent<AudioTranscodeMessage>) => {
     ffmpeg.on("log", logHandler);
 
     // Build and run FFmpeg command
-    const args = buildArgs(inputName, outputName, options);
+    const args =
+      kind === "video"
+        ? buildVideoArgs(inputName, outputName, options)
+        : buildAudioArgs(inputName, outputName, options);
     await ffmpeg.exec(args);
 
     // Remove event listeners

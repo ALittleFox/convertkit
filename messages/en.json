@@ -41,6 +41,8 @@
     "effortHint": "Higher value = slower speed, better quality",
     "qualityHint": "Only affects JPEG, WebP, AVIF. PNG uses lossless optimization",
     "metaTitle": "Batch Image Compression",
+    "pageIntro": "Compress JPEG, PNG, WebP and AVIF images in batch. Adjust output quality or use lossless optimization to shrink files while keeping visual quality.",
+    "privacyNote": "All processing runs locally in your browser. Your images are never uploaded — they never leave your device.",
     "metaDescription": "Free online batch image compression tool supporting JPEG, PNG, WebP, AVIF. Adjustable quality, lossless compression, all processed locally in your browser.",
     "metaKeywords": ["image compression", "batch compression", "JPEG compression", "PNG compression", "WebP compression", "AVIF compression", "lossless compression", "online compression"]
   },
@@ -56,6 +58,8 @@
     "effortHint": "Higher value = slower speed, better quality",
     "qualityHint": "Only affects JPEG, WebP, AVIF. PNG uses lossless optimization",
     "metaTitle": "Batch Format Conversion",
+    "pageIntro": "Convert images between JPEG, PNG, WebP and AVIF in batch. Pick a target format, adjust quality, and download the results.",
+    "privacyNote": "All processing runs locally in your browser. Your images are never uploaded — they never leave your device.",
     "metaDescription": "Free online batch image format conversion tool supporting JPEG, PNG, WebP, AVIF. Adjustable output quality, all processed locally in your browser.",
     "metaKeywords": ["format conversion", "image conversion", "WebP conversion", "AVIF conversion", "PNG to JPEG", "JPEG to PNG", "online conversion", "batch conversion"]
   },
@@ -76,6 +80,8 @@
     "mobileNotice": "Video Transcoding is Desktop Only",
     "mobileNoticeDesc": "Video transcoding requires significant memory and processing power. Please use this feature on a computer.",
     "metaTitle": "Video Transcoding",
+    "pageIntro": "Transcode videos between MP4, WebM, MOV and GIF. Choose the codec, quality (CRF), resolution scaling and audio options.",
+    "privacyNote": "All processing runs locally in your browser. Your videos are never uploaded — they never leave your device.",
     "metaDescription": "Free online video transcoding tool supporting MP4, WebM, MOV, GIF. Adjustable codec and quality, all processed locally in your browser.",
     "metaKeywords": ["video transcoding", "format conversion", "MP4 conversion", "WebM conversion", "video compression", "online transcoding", "GIF maker"]
   },
@@ -104,6 +110,8 @@
       "ICO file contains all selected sizes"
     ],
     "metaTitle": "Favicon Generator",
+    "pageIntro": "Generate a multi-size favicon.ico and PNG icons from a single image, ready for browser tabs, Apple Touch icons and PWA manifests.",
+    "privacyNote": "All processing runs locally in your browser. Your image is never uploaded — it never leaves your device.",
     "metaDescription": "Free online favicon generator. Upload an image to generate multi-size favicon.ico and PNG icons. Supports common sizes, processed entirely in your browser.",
     "metaKeywords": ["favicon", "favicon generator", "ico generator", "website icon", "favicon.ico", "online tool"]
   },
@@ -134,9 +142,9 @@
     "release": "Release to add files",
     "imageHint": "or click to select files · Supports JPEG, PNG, WebP, AVIF · Max 100MB",
     "videoHint": "or click to select files · Supports MP4, WebM, MOV, AVI · Max 500MB",
-    "dragAudio": "Drag audio files here",
-    "addAudio": "Add audio files here",
-    "audioHint": "or click to select files · Supports MP3, AAC, OGG, FLAC, WAV, MP4 · Max 500MB"
+    "dragAudio": "Drag audio or video files here",
+    "addAudio": "Add audio or video files here",
+    "audioHint": "or click to select files · Supports MP3, AAC, OGG, FLAC, WAV · Extract audio from MP4, WebM, MOV, AVI · Max 500MB"
   },
   "summary": {
     "files": "Files",
@@ -157,6 +165,8 @@
     "sampleRate": "Sample Rate",
     "sampleRateHint": "Leave as Auto to keep original sample rate",
     "metaTitle": "Audio Transcoding",
+    "pageIntro": "Transcode audio between MP3, AAC, OGG, FLAC and WAV. Adjust the bitrate and sample rate, or extract audio from a video file.",
+    "privacyNote": "All processing runs locally in your browser. Your audio files are never uploaded — they never leave your device.",
     "metaDescription": "Free online audio transcoding tool supporting MP3, AAC, OGG, FLAC, WAV. Extract audio from video, adjust bitrate and sample rate. All processed locally in your browser.",
     "metaKeywords": ["audio transcoding", "audio conversion", "MP3 converter", "audio extractor", "video to audio", "audio format", "online audio tool"]
   },

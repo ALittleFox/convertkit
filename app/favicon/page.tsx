@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
-import { Palette, Download, Upload, Trash2 } from "lucide-react";
+import { Palette, Download, Upload, Trash2, Info, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -356,7 +356,10 @@ export default function FaviconPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          
+        </div>
+      </div>
+<Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm">{t("usage")}</CardTitle>
             </CardHeader>
@@ -368,6 +371,18 @@ export default function FaviconPage() {
               </ul>
             </CardContent>
           </Card>
+      <div className="rounded-xl border bg-muted/40 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("pageIntro")}
+          </p>
+        </div>
+        <div className="flex items-start gap-3 mt-3">
+          <Shield className="h-5 w-5 mt-0.5 shrink-0 text-green-500" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("privacyNote")}
+          </p>
         </div>
       </div>
     </div>
