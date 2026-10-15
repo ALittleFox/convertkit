@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Image, Shrink, ArrowRightLeft, Film, Palette, Music, Shield, Menu, X } from "lucide-react";
+import { Image, Shrink, ArrowRightLeft, Film, Palette, Music, Shield, Menu, X, Mic2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -21,6 +21,7 @@ export function Header() {
     { href: "/favicon", label: t("favicon"), icon: Palette },
     { href: "/transcode", label: t("transcode"), icon: Film },
     { href: "/audio", label: t("audio"), icon: Music },
+    { href: "/lyrics", label: t("lyrics"), icon: Mic2 },
   ];
 
   return (

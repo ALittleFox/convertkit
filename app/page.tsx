@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Shrink, ArrowRightLeft, Palette, Film, Music, Shield, ArrowRight } from "lucide-react";
+import { Shrink, ArrowRightLeft, Palette, Film, Music, Shield, ArrowRight, Mic2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -63,6 +63,13 @@ export default async function HomePage() {
       title: t("audioTitle"),
       desc: t("audioDesc"),
       color: "text-pink-500 bg-pink-500/10",
+    },
+    {
+      href: "/lyrics",
+      icon: Mic2,
+      title: t("lyricsTitle"),
+      desc: t("lyricsDesc"),
+      color: "text-red-500 bg-red-500/10",
     },
   ];
 

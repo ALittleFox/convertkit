@@ -30,6 +30,16 @@
 - 可移除音频轨道
 - 单文件下载 / ZIP 打包下载
 
+### 苹果音乐歌词封装 (`/lyrics`)
+
+- 上传 AAC（M4A）音频 + 同名 `.lrc` 歌词文件
+- 按文件名严格配对为工程行（同名才视为一组）
+- 点击工程行弹出歌词时间轴，可简单编辑（开始/结束/文本）
+- 单行封装 / 批量勾选封装（完整行默认勾选）
+- 缺少音频或歌词的行不可勾选，封装按钮禁用
+- 音频无损复制（不重新编码），歌词写入 tx3g 文本轨
+- 输出可直接下载的 `歌名.m4a`
+
 ## 技术栈
 
 | 类别 | 技术 |
@@ -39,6 +49,7 @@
 | 主题 | next-themes (跟随系统 / 手动切换) |
 | 图片 WASM | @jsquash/jpeg, @jsquash/webp, @jsquash/avif, @jsquash/png |
 | 视频转码 | @ffmpeg/ffmpeg + @ffmpeg/core |
+| 歌词封装 | mp4box.js (M4A 音轨复制 + tx3g 文本轨混流) |
 | 并发处理 | Web Worker 池 (自动匹配 CPU 核心数, 最多 4 个) |
 | ZIP 打包 | fflate |
 | 测试 | Playwright E2E |
@@ -62,18 +73,22 @@ pic-html/
 │   ├── globals.css             # Tailwind CSS v4 + 主题变量
 │   ├── compress/page.tsx       # 压缩页面
 │   ├── convert/page.tsx        # 转换页面
-│   └── transcode/page.tsx      # 转码页面
+│   ├── favicon/page.tsx        # Favicon 生成页面
+│   ├── transcode/page.tsx      # 视频转码页面
+│   ├── audio/page.tsx          # 音频转码页面
+│   ├── lyrics/page.tsx         # 苹果音乐歌词封装页面
+│   └── privacy/page.tsx        # 隐私声明页面
 ├── components/
 │   ├── ui/                     # shadcn/ui 组件
 │   ├── header.tsx              # 导航栏
 │   ├── drop-zone.tsx           # 拖拽上传区
-│   ├── file-card.tsx           # 图片文件卡片
+│   ├── file-card/              # 媒体文件卡片
 │   ├── settings-panel.tsx      # 图片设置面板
-│   ├── video-file-card.tsx     # 视频文件卡片
 │   ├── video-settings-panel.tsx # 视频设置面板
-│   ├── video-preview-modal.tsx # 视频预览弹窗
+│   ├── audio-settings-panel.tsx # 音频设置面板
+│   ├── lyrics-editor.tsx       # 歌词时间轴编辑弹窗
 │   ├── summary-bar.tsx         # 统计摘要栏
-│   ├── preview-modal.tsx       # 图片预览对比弹窗
+│   ├── preview-modal/          # 预览对比弹窗
 │   ├── theme-provider.tsx      # next-themes Provider
 │   └── theme-toggle.tsx        # 主题切换按钮
 ├── hooks/
@@ -87,7 +102,10 @@ pic-html/
 │   ├── worker-manager.ts       # WorkerPool 类
 │   ├── batch-engine.ts         # 图片批处理引擎
 │   ├── audio-batch-engine.ts   # 音频批处理引擎
-│   └── video-batch-engine.ts   # 视频批处理引擎
+│   ├── video-batch-engine.ts   # 视频批处理引擎
+│   ├── lyrics-utils.ts         # LRC 解析 + tx3g 采样编码
+│   ├── lyrics-projects.ts      # 歌词工程分组/配对
+│   └── lyrics-muxer.ts         # mp4box M4A 混流核心
 ├── workers/
 │   ├── codec.worker.ts         # 图片 WASM 编解码 Worker
 │   └── media-transcode.worker.ts  # FFmpeg 音视频转码 Worker（音视频共用）
