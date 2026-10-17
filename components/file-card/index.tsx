@@ -41,6 +41,8 @@ export function FileCard<T extends BaseTask>({
   metadata,
 }: FileCardProps<T>) {
   const tc = useTranslations("common");
+  // Worker failures surface either a raw message or a stable code.
+  const te = useTranslations("errors");
 
   const statusBadge = {
     pending: <Badge variant="secondary">{tc("pending")}</Badge>,
@@ -110,7 +112,11 @@ export function FileCard<T extends BaseTask>({
             })()}
 
             {task.status === "error" && (
-              <p className="text-xs text-destructive mt-1">{task.error}</p>
+              <p className="text-xs text-destructive mt-1">
+                {task.error === "PROCESS_FAILED"
+                  ? te("processFailed")
+                  : task.error}
+              </p>
             )}
           </div>
 

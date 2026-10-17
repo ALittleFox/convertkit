@@ -174,7 +174,21 @@
     "notFound": "頁面不存在",
     "serverError": "伺服器錯誤",
     "backHome": "返回首頁",
-    "retry": "重試"
+    "retry": "重試",
+    "unsupportedFormat": "不支援的格式: {type}",
+    "unknown": "未知",
+    "fileTooLarge": "檔案過大: {size}MB (最大 {max})",
+    "toastProcessFailed": "{name} 處理失敗",
+    "toastProcessDone": "處理完成",
+    "toastProcessPartial": "{ok} 個成功，{failed} 個失敗",
+    "toastFilesSkipped": "{count} 個檔案被跳過",
+    "toastFilesAddedProcessing": "已新增 {count} 個檔案，正在處理…",
+    "toastFilesAdded": "已新增 {count} 個檔案",
+    "toastNoPending": "沒有待處理的檔案",
+    "toastNothingToDownload": "沒有可下載的檔案",
+    "toastZipDone": "ZIP 下載完成",
+    "processFailed": "處理失敗",
+    "file": "檔案"
   },
   "theme": {
     "light": "淺色模式",

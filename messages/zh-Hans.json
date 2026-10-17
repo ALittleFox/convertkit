@@ -174,7 +174,21 @@
     "notFound": "页面不存在",
     "serverError": "服务器错误",
     "backHome": "返回首页",
-    "retry": "重试"
+    "retry": "重试",
+    "unsupportedFormat": "不支持的格式: {type}",
+    "unknown": "未知",
+    "fileTooLarge": "文件过大: {size}MB (最大 {max})",
+    "toastProcessFailed": "{name} 处理失败",
+    "toastProcessDone": "处理完成",
+    "toastProcessPartial": "{ok} 个成功，{failed} 个失败",
+    "toastFilesSkipped": "{count} 个文件被跳过",
+    "toastFilesAddedProcessing": "已添加 {count} 个文件，正在处理…",
+    "toastFilesAdded": "已添加 {count} 个文件",
+    "toastNoPending": "没有待处理的文件",
+    "toastNothingToDownload": "没有可下载的文件",
+    "toastZipDone": "ZIP 下载完成",
+    "processFailed": "处理失败",
+    "file": "文件"
   },
   "theme": {
     "light": "浅色模式",

@@ -3,6 +3,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { downloadAsZip, downloadSingle } from "@/lib/zip-stream";
 import type { BaseTask, BaseTaskResult } from "@/lib/task-types";
+import type { ValidationError } from "@/lib/file-utils";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 export interface Stats {
@@ -18,7 +20,10 @@ export interface Stats {
 export interface UseBatchProcessConfig<T extends BaseTask, O> {
   defaultOptions: O;
   validator: {
-    filterValid(files: File[]): { valid: File[]; invalid: { file: File; error: string }[] };
+    filterValid(files: File[]): {
+      valid: File[];
+      invalid: { file: File; error: ValidationError }[];
+    };
   };
   createTask: (file: File, counter: number) => T | Promise<T>;
   processBatch: (
@@ -40,6 +45,15 @@ export interface UseBatchProcessConfig<T extends BaseTask, O> {
 export function useBatchProcess<T extends BaseTask, O>(
   config: UseBatchProcessConfig<T, O>
 ) {
+  const t = useTranslations("errors");
+  // Localise a structured validation error ({code, ...params}).
+  const formatValidation = useCallback(
+    (error: ValidationError): string =>
+      error.code === "unsupportedFormat"
+        ? t("unsupportedFormat", { type: error.type || t("unknown") })
+        : t("fileTooLarge", { size: error.size, max: error.max }),
+    [t]
+  );
   const [tasks, setTasks] = useState<T[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [options, setOptions] = useState<O>(config.defaultOptions);
@@ -98,9 +112,12 @@ export function useBatchProcess<T extends BaseTask, O>(
           } else if (status === "error") {
             errorCount++;
             updateTask(taskId, { status: "error", error } as Partial<T>);
-            toast.error(`${task?.file.name || "文件"} 处理失败`, {
-              description: error || "未知错误",
-            });
+            toast.error(
+              t("toastProcessFailed", {
+                name: task?.file.name || t("file"),
+              }),
+              { description: error }
+            );
           } else if (status === "processing" && progress !== undefined) {
             updateTask(taskId, {
               status: "processing",
@@ -112,10 +129,13 @@ export function useBatchProcess<T extends BaseTask, O>(
 
       setIsProcessing(false);
       if (errorCount === 0) {
-        toast.success("处理完成");
+        toast.success(t("toastProcessDone"));
       } else if (errorCount < tasksToProcess.length) {
         toast.warning(
-          `${tasksToProcess.length - errorCount} 个成功，${errorCount} 个失败`
+          t("toastProcessPartial", {
+            ok: tasksToProcess.length - errorCount,
+            failed: errorCount,
+          })
         );
       }
     },
@@ -127,11 +147,14 @@ export function useBatchProcess<T extends BaseTask, O>(
       const { valid, invalid } = config.validator.filterValid(files);
 
       if (invalid.length > 0) {
-        toast.error(`${invalid.length} 个文件被跳过`, {
-          description: invalid
-            .map((i) => `${i.file.name}: ${i.error}`)
-            .join("\n"),
-        });
+        toast.error(
+          t("toastFilesSkipped", { count: invalid.length }),
+          {
+            description: invalid
+              .map((i) => `${i.file.name}: ${formatValidation(i.error)}`)
+              .join("\n"),
+          }
+        );
       }
 
       if (valid.length === 0) return;
@@ -143,10 +166,12 @@ export function useBatchProcess<T extends BaseTask, O>(
       setTasks((prev) => [...prev, ...newTasks]);
 
       if (autoProcessRef.current) {
-        toast.success(`已添加 ${valid.length} 个文件，正在压缩…`);
+        toast.success(
+          t("toastFilesAddedProcessing", { count: valid.length })
+        );
         processTaskList(newTasks);
       } else {
-        toast.success(`已添加 ${valid.length} 个文件`);
+        toast.success(t("toastFilesAdded", { count: valid.length }));
       }
     },
     [config, processTaskList]
@@ -174,7 +199,7 @@ export function useBatchProcess<T extends BaseTask, O>(
   const startProcess = useCallback(async () => {
     const pendingTasks = tasksRef.current.filter((t) => t.status === "pending");
     if (pendingTasks.length === 0) {
-      toast.warning("没有待处理的文件");
+      toast.warning(t("toastNoPending"));
       return;
     }
 
@@ -199,7 +224,7 @@ export function useBatchProcess<T extends BaseTask, O>(
     );
 
     if (completedTasks.length === 0) {
-      toast.warning("没有可下载的文件");
+      toast.warning(t("toastNothingToDownload"));
       return;
     }
 
@@ -211,7 +236,7 @@ export function useBatchProcess<T extends BaseTask, O>(
     );
 
     await downloadAsZip(files, config.zipName ?? "files.zip");
-    toast.success("ZIP 下载完成");
+    toast.success(t("toastZipDone"));
   }, [tasks, options, config]);
 
   const stats: Stats = {

@@ -81,7 +81,7 @@ export function createWorkerBatchEngine<T extends BaseTask, O>(
           task.id,
           "error",
           undefined,
-          err instanceof Error ? err.message : "处理失败"
+          err instanceof Error ? err.message : "PROCESS_FAILED"
         );
       }
     }

@@ -37,7 +37,7 @@ export async function processBatch(
 
       onProgress(task.id, "done", result);
     } catch (err) {
-      onProgress(task.id, "error", undefined, err instanceof Error ? err.message : "处理失败");
+      onProgress(task.id, "error", undefined, err instanceof Error ? err.message : "PROCESS_FAILED");
     }
   };
 

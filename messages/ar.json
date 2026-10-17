@@ -175,7 +175,21 @@
     "notFound": "الصفحة غير موجودة",
     "serverError": "خطأ في الخادم",
     "backHome": "العودة إلى الرئيسية",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "unsupportedFormat": "صيغة غير مدعومة: {type}",
+    "unknown": "غير معروف",
+    "fileTooLarge": "الملف كبير جدًا: {size} ميجابايت (الحد {max})",
+    "toastProcessFailed": "فشل {name}",
+    "toastProcessDone": "اكتملت المعالجة",
+    "toastProcessPartial": "{ok} نجح، {failed} فشل",
+    "toastFilesSkipped": "تم تخطي {count} ملف",
+    "toastFilesAddedProcessing": "تمت إضافة {count} ملف، جارٍ المعالجة…",
+    "toastFilesAdded": "تمت إضافة {count} ملف",
+    "toastNoPending": "لا توجد ملفات للمعالجة",
+    "toastNothingToDownload": "لا يوجد ما يمكن تنزيله",
+    "toastZipDone": "اكتمل تنزيل ZIP",
+    "processFailed": "فشلت المعالجة",
+    "file": "ملف"
   },
   "theme": {
     "light": "وضع فاتح",

@@ -174,7 +174,21 @@
     "notFound": "Page Not Found",
     "serverError": "Server Error",
     "backHome": "Back to Home",
-    "retry": "Retry"
+    "retry": "Retry",
+    "unsupportedFormat": "Unsupported format: {type}",
+    "unknown": "unknown",
+    "fileTooLarge": "File too large: {size}MB (max {max})",
+    "toastProcessFailed": "{name} failed",
+    "toastProcessDone": "Processing complete",
+    "toastProcessPartial": "{ok} succeeded, {failed} failed",
+    "toastFilesSkipped": "{count} file(s) skipped",
+    "toastFilesAddedProcessing": "Added {count} file(s), processing…",
+    "toastFilesAdded": "Added {count} file(s)",
+    "toastNoPending": "No files to process",
+    "toastNothingToDownload": "Nothing to download",
+    "toastZipDone": "ZIP download complete",
+    "processFailed": "Processing failed",
+    "file": "File"
   },
   "theme": {
     "light": "Light Mode",

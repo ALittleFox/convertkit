@@ -1,11 +1,23 @@
+/**
+ * Validation failures carry a stable error code plus the parameters needed to
+ * render a localised message. Keeping the message out of the data layer lets
+ * the UI translate it with next-intl.
+ */
+export type ValidationError =
+  | { code: "unsupportedFormat"; type: string }
+  | { code: "fileTooLarge"; size: string; max: string };
+
 export interface ValidationResult {
   valid: boolean;
-  error?: string;
+  error?: ValidationError;
 }
 
 export interface FileValidator {
   validate(file: File): ValidationResult;
-  filterValid(files: File[]): { valid: File[]; invalid: { file: File; error: string }[] };
+  filterValid(files: File[]): {
+    valid: File[];
+    invalid: { file: File; error: ValidationError }[];
+  };
 }
 
 export function createFileValidator(
@@ -15,12 +27,19 @@ export function createFileValidator(
 ): FileValidator {
   function validate(file: File): ValidationResult {
     if (!allowedTypes.includes(file.type)) {
-      return { valid: false, error: `不支持的格式: ${file.type || "未知"}` };
+      return {
+        valid: false,
+        error: { code: "unsupportedFormat", type: file.type },
+      };
     }
     if (file.size > maxSize) {
       return {
         valid: false,
-        error: `文件过大: ${(file.size / 1024 / 1024).toFixed(1)}MB (最大 ${maxLabel})`,
+        error: {
+          code: "fileTooLarge",
+          size: (file.size / 1024 / 1024).toFixed(1),
+          max: maxLabel,
+        },
       };
     }
     return { valid: true };
@@ -28,7 +47,7 @@ export function createFileValidator(
 
   function filterValid(files: File[]) {
     const valid: File[] = [];
-    const invalid: { file: File; error: string }[] = [];
+    const invalid: { file: File; error: ValidationError }[] = [];
     for (const file of files) {
       const result = validate(file);
       if (result.valid) {

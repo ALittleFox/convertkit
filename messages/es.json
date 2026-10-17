@@ -174,7 +174,21 @@
     "notFound": "Página No Encontrada",
     "serverError": "Error del Servidor",
     "backHome": "Volver al Inicio",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "unsupportedFormat": "Formato no compatible: {type}",
+    "unknown": "desconocido",
+    "fileTooLarge": "Archivo demasiado grande: {size}MB (máx. {max})",
+    "toastProcessFailed": "{name} falló",
+    "toastProcessDone": "Procesamiento completado",
+    "toastProcessPartial": "{ok} correctos, {failed} fallidos",
+    "toastFilesSkipped": "{count} archivo(s) omitido(s)",
+    "toastFilesAddedProcessing": "{count} archivo(s) añadido(s), procesando…",
+    "toastFilesAdded": "{count} archivo(s) añadido(s)",
+    "toastNoPending": "No hay archivos para procesar",
+    "toastNothingToDownload": "Nada para descargar",
+    "toastZipDone": "Descarga ZIP completada",
+    "processFailed": "Error al procesar",
+    "file": "Archivo"
   },
   "theme": {
     "light": "Modo Claro",
