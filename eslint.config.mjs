@@ -12,7 +12,21 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated / vendored assets that are not our source.
+    "public/ffmpeg/**",
   ]),
+  {
+    // These pages render local `blob:` URLs (uploaded-file thumbnails and
+    // before/after previews). next/image cannot optimise blob URLs, so plain
+    // <img> is the correct choice here.
+    files: [
+      "app/compress/**/*.tsx",
+      "app/convert/**/*.tsx",
+      "app/favicon/**/*.tsx",
+      "app/transcode/**/*.tsx",
+    ],
+    rules: { "@next/next/no-img-element": "off" },
+  },
 ]);
 
 export default eslintConfig;

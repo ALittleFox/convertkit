@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Image, Shrink, ArrowRightLeft, Film, Palette, Music, Shield, Menu, X } from "lucide-react";
+import { Image as ImageIcon, Shrink, ArrowRightLeft, Film, Palette, Music, Shield, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -28,7 +28,7 @@ export function Header() {
       <div className="container flex h-14 items-center m-auto px-4 sm:px-6">
         <Link href="/" className="mr-6 flex items-center space-x-2.5 group">
           <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
-            <Image className="h-4.5 w-4.5" />
+            <ImageIcon className="h-4.5 w-4.5" aria-hidden="true" />
           </div>
           <span className="font-bold tracking-tight text-foreground">{t("appName")}</span>
         </Link>

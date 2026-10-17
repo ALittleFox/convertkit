@@ -139,7 +139,7 @@ export function useBatchProcess<T extends BaseTask, O>(
         );
       }
     },
-    [config, updateTask]
+    [config, updateTask, t]
   );
 
   const addFiles = useCallback(
@@ -174,7 +174,7 @@ export function useBatchProcess<T extends BaseTask, O>(
         toast.success(t("toastFilesAdded", { count: valid.length }));
       }
     },
-    [config, processTaskList]
+    [config, processTaskList, t, formatValidation]
   );
 
   const removeTask = useCallback((taskId: string) => {
@@ -204,7 +204,7 @@ export function useBatchProcess<T extends BaseTask, O>(
     }
 
     await processTaskList(pendingTasks);
-  }, [processTaskList]);
+  }, [processTaskList, t]);
 
   const downloadResult = useCallback(
     async (taskId: string) => {
@@ -237,7 +237,7 @@ export function useBatchProcess<T extends BaseTask, O>(
 
     await downloadAsZip(files, config.zipName ?? "files.zip");
     toast.success(t("toastZipDone"));
-  }, [tasks, options, config]);
+  }, [tasks, options, config, t]);
 
   const stats: Stats = {
     total: tasks.length,
