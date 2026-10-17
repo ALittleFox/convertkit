@@ -52,8 +52,9 @@ test.describe("Compress page", () => {
     await expect(page.getByText("1 个文件", { exact: true })).toBeVisible();
     await expect(page.getByText("test.png")).toBeVisible();
     await expect(page.getByRole("button", { name: "清空" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "开始压缩" })).toBeVisible();
-    await expect(page.getByText("等待中")).toBeVisible();
+    // Auto-compress is on by default, so the manual "开始压缩" button is not
+    // rendered; the file is processed immediately instead.
+    await expect(page.getByText("压缩设置")).toBeVisible();
   });
 
   test("can add multiple files", async ({ page }) => {

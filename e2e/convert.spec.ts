@@ -15,8 +15,10 @@ test.describe("Convert page", () => {
 
   test("shows convert settings with target format selector", async ({ page }) => {
     await expect(page.getByText("转换设置")).toBeVisible();
-    await expect(page.getByText("目标格式")).toBeVisible();
-    await expect(page.getByText("质量", { exact: true })).toBeVisible();
+    // "目标格式" is rendered both as the field label and inside the select
+    // trigger, so scope to the label element to avoid strict-mode violations.
+    await expect(page.getByText("目标格式").first()).toBeVisible();
+    await expect(page.getByText("质量", { exact: true }).first()).toBeVisible();
   });
 
   test("target format defaults to WebP", async ({ page }) => {

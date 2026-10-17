@@ -1,31 +1,41 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Theme", () => {
+  // The theme toggle lives in the header's right-side action group. Using
+  // `button.last()` picked up the mobile menu button instead, so target it by
+  // its accessible label.
   test("theme toggle button is visible", async ({ page }) => {
     await page.goto("/compress");
-    const toggle = page.locator("header").locator("button").last();
-    await expect(toggle).toBeVisible();
+    const header = page.locator("header");
+    await expect(
+      header.getByRole("button", { name: /浅色|深色|跟随系统/ })
+    ).toBeVisible();
   });
 
   test("can toggle theme", async ({ page }) => {
     await page.goto("/compress");
 
-    // Default should be system/light
+    // The button's aria-label reflects the current theme and always changes on
+    // click. The <html> class is not a reliable signal because the initial
+    // `system` theme and `light` both resolve to the same "light" class.
+    const toggle = page
+      .locator("header")
+      .getByRole("button", { name: /浅色|深色|跟随系统/ });
+
+    const before = await toggle.first().getAttribute("aria-label");
+    await toggle.first().click();
+    await expect
+      .poll(async () => toggle.first().getAttribute("aria-label"), { timeout: 5000 })
+      .not.toBe(before);
+
+    const afterOne = await toggle.first().getAttribute("aria-label");
+    await toggle.first().click();
+    await expect
+      .poll(async () => toggle.first().getAttribute("aria-label"), { timeout: 5000 })
+      .not.toBe(afterOne);
+
+    // And the <html> element does pick up a concrete theme class.
     const html = page.locator("html");
-    const toggle = page.locator("header").locator("button").last();
-
-    // Click to switch theme
-    await toggle.click();
-    // After first click, theme should change
-    // The class on html element should change
-    const classAfterFirstClick = await html.getAttribute("class");
-
-    // Click again to cycle
-    await toggle.click();
-    const classAfterSecondClick = await html.getAttribute("class");
-
-    // Classes should be different (cycling through light/dark/system)
-    // At least one transition should happen
-    expect(true).toBe(true); // Smoke test - toggle doesn't crash
+    await expect(html).toHaveClass(/light|dark/);
   });
 });

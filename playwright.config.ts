@@ -10,6 +10,11 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
+    // Pin the UI language. The app negotiates locale from Accept-Language, and
+    // headless Chrome sends en-US by default, which made every Chinese-text
+    // assertion fail. Desktop Chrome defaults are applied per-project below.
+    locale: "zh-CN",
+    extraHTTPHeaders: { "Accept-Language": "zh-Hans,zh-CN;q=0.9,zh;q=0.8" },
   },
   projects: [
     {
