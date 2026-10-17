@@ -35,11 +35,6 @@ export async function processBatch(
       const buffer = await task.file.arrayBuffer();
       const result = await pool.process(buffer, type, options);
 
-      const mime = type === "convert" && options.targetFormat
-        ? `image/${options.targetFormat}`
-        : task.file.type;
-
-      const blob = new Blob([result.data], { type: mime });
       onProgress(task.id, "done", result);
     } catch (err) {
       onProgress(task.id, "error", undefined, err instanceof Error ? err.message : "处理失败");

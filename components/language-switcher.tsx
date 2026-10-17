@@ -5,7 +5,6 @@ import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Link from 'next/link';
 
 const LOCALES = [
   { value: "zh-Hans", label: "简体中文" },

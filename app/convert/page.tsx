@@ -12,7 +12,7 @@ import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
 import { filterValidFiles, getFilenameWithoutExt } from "@/lib/file-utils";
 import { processBatch } from "@/lib/batch-engine";
-import { formatSize, mimeToExt, mimeToName } from "@/lib/utils";
+import { formatSize, mimeToName } from "@/lib/utils";
 import type { FileTask } from "@/lib/task-types";
 import type { ProcessOptions } from "@/lib/batch-engine";
 

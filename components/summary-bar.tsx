@@ -1,6 +1,6 @@
 "use client";
 
-import { File, HardDrive, TrendingDown, Loader2 } from "lucide-react";
+import { File, HardDrive, TrendingDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn, formatSize } from "@/lib/utils";
