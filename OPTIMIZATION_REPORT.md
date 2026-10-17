@@ -375,7 +375,7 @@ pnpm build      → success
 | # | 项目 | 说明 |
 |---|---|---|
 | 4 | `[locale]` 静态化改造 | 收益最大但会变更 URL 结构、影响 SEO，需要单独规划迁移与 301 策略 |
-| 9 | FFmpeg 31MB 加载进度 | 体验优化，需设计加载 UI |
+| 9 | FFmpeg 31MB 加载进度 | ✅ 已完成 |
 | 10 | batch engine 抽象统一 | ✅ 已完成（见下方「补充」） |
 | 12 | sitemap 生成方式 | 与静态化方案耦合，建议一并处理 |
 | 13 | 字体 | ✅ 已完成（并修复全局字体 bug，见下） |
@@ -429,3 +429,21 @@ CJK 回退栈（Geist 仅含拉丁字形）。同时移除未使用的 `Geist_Mo
 
 `e2e/csp.spec.ts` 不仅校验头部内容，还实测**图片 worker 与 FFmpeg WASM
 在 CSP 下零违规**（并额外用真实 `next start` 生产构建验证过）。
+
+### 补充：P2-9 FFmpeg 加载进度
+
+`ffmpeg.load()` 需要下载约 31 MB 的 WASM core，此前完全没有反馈，首次使用看起来像卡死在 0%。
+
+- worker 改用 `toBlobURL` 内置的 progress 回调，发出 `loading`（progress + phase
+  `core-js`/`core-wasm`）与最终的 `loaded` 事件，两个资源合并为一个百分比。
+- **消息去重**：仅在整数百分比变化时才 postMessage。31 MB 流会产生数千次回调，
+  原始实现约 1036 条消息，去重后约 98 条，避免主线程卡顿。
+- transport 新增 `ProgressStage`（`loading` / `processing`），经 batch engine 和
+  `useBatchProcess` 透传到 `BaseTask.stage`；`file-card` 在进度条下方显示
+  「正在加载引擎… N%」（7 语言）。
+
+> 踩坑记录：最初自己用 `new Blob(chunks)` 流式下载，漏了 MIME type，导致
+> `ffmpeg.load()` 在 96% 处失败（报「转码失败」）。`toBlobURL` 会正确设置
+> `text/javascript` / `application/wasm` 并自带进度回调，改用之。
+
+`e2e/engine-loading.spec.ts` 断言：存在进度事件、单调非递减、已去重、以 `loaded` 结束。
