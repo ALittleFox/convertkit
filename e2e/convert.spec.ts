@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Convert page", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/convert");
+    await page.goto("/zh-Hans/convert");
   });
 
   test("shows page heading", async ({ page }) => {

@@ -1,45 +1,20 @@
 import { getRequestConfig } from "next-intl/server";
-import { headers } from "next/headers";
+import { hasLocale } from "next-intl";
+import { routing } from "./routing";
 
-const LOCALES = ["zh-Hans", "zh-Hant", "en", "es", "fr", "pt", "ar"] as const;
-export type Locale = (typeof LOCALES)[number];
-
-export const locales = LOCALES;
-export const defaultLocale: Locale = "en";
-
-function parseAcceptLanguage(acceptLanguage: string): Locale {
-  const languages = acceptLanguage
-    .split(",")
-    .map((lang) => {
-      const [code, q] = lang.trim().split(";q=");
-      return { code: code.trim(), q: q ? parseFloat(q) : 1 };
-    })
-    .sort((a, b) => b.q - a.q);
-
-  for (const { code } of languages) {
-    if (LOCALES.includes(code as Locale)) return code as Locale;
-    if (code === "zh-TW" || code === "zh-Hant" || code === "zh-Hant-TW") return "zh-Hant";
-    if (code === "zh-CN" || code === "zh-Hans" || code === "zh-Hans-CN") return "zh-Hans";
-    if (code.startsWith("zh")) return "zh-Hans";
-    if (code.startsWith("es")) return "es";
-    if (code.startsWith("fr")) return "fr";
-    if (code.startsWith("pt")) return "pt";
-    if (code.startsWith("ar")) return "ar";
-    if (code.startsWith("en")) return "en";
-  }
-
-  return defaultLocale;
-}
-
-export default getRequestConfig(async () => {
-  const headerStore = await headers();
-
-  // Middleware sets x-locale header from URL path (e.g. /convert/zh-Hans) or ?locale= param
-  const overrideLocale = headerStore.get("x-locale");
-  const locale =
-    overrideLocale && LOCALES.includes(overrideLocale as Locale)
-      ? (overrideLocale as Locale)
-      : parseAcceptLanguage(headerStore.get("accept-language") || "");
+/**
+ * Resolves messages for the locale carried by the URL segment.
+ *
+ * This must NOT read `headers()`: any dynamic API here forces every page in the
+ * tree to render per request, which defeats static generation and made the
+ * `revalidate` exports no-ops. The locale now comes purely from the route
+ * (`app/[locale]/...`), so pages can be prerendered at build time.
+ */
+export default getRequestConfig(async ({ requestLocale }) => {
+  const requested = await requestLocale;
+  const locale = hasLocale(routing.locales, requested)
+    ? requested
+    : routing.defaultLocale;
 
   return {
     locale,

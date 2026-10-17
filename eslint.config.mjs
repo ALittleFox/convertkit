@@ -20,10 +20,10 @@ const eslintConfig = defineConfig([
     // before/after previews). next/image cannot optimise blob URLs, so plain
     // <img> is the correct choice here.
     files: [
-      "app/compress/**/*.tsx",
-      "app/convert/**/*.tsx",
-      "app/favicon/**/*.tsx",
-      "app/transcode/**/*.tsx",
+      "app/[[]locale]/compress/**/*.tsx",
+      "app/[[]locale]/convert/**/*.tsx",
+      "app/[[]locale]/favicon/**/*.tsx",
+      "app/[[]locale]/transcode/**/*.tsx",
     ],
     rules: { "@next/next/no-img-element": "off" },
   },

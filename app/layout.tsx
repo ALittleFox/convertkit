@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Toaster } from "@/components/ui/sonner";
 
 export const revalidate = 31536000; // 1 year
 
@@ -15,8 +11,19 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("meta");
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale?: string }>;
+}): Promise<Metadata> {
+  // Pass the locale explicitly so this runs at build time (static) instead of
+  // falling back to request headers.
+  const { locale } = await params;
+  const safeLocale =
+    locale && (routing.locales as readonly string[]).includes(locale)
+      ? locale
+      : routing.defaultLocale;
+  const t = await getTranslations({ locale: safeLocale, namespace: "meta" });
   return {
     title: {
       default: t("rootTitle"),
@@ -39,30 +46,32 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/**
+ * Minimal document shell. Providers and chrome live in `app/[locale]/layout.tsx`
+ * so that the locale (and therefore the message bundle) is scoped to the route.
+ */
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale?: string }>;
 }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
+  // Read from the URL rather than getLocale(): the latter depends on request
+  // context and would make the whole tree dynamic.
+  const { locale } = await params;
+  const lang =
+    locale && (routing.locales as readonly string[]).includes(locale)
+      ? locale
+      : routing.defaultLocale;
 
   return (
     <html
-      lang={locale}
+      lang={lang}
       className={`${geistSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider>
-          <NextIntlClientProvider messages={messages}>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <Toaster />
-          </NextIntlClientProvider>
-        </ThemeProvider>
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

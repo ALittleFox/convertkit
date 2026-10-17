@@ -11,6 +11,7 @@ import { rmSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
 rmSync(".next/types", { recursive: true, force: true });
+rmSync(".next/dev/types", { recursive: true, force: true });
 
 const result = spawnSync("npx", ["tsc", "--noEmit"], { stdio: "inherit" });
 process.exit(result.status ?? 1);

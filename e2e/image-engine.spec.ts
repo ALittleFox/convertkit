@@ -11,7 +11,7 @@ test.describe("Image engine (pooled transport)", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
 
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
     await page
       .locator('input[type="file"]')
       .setInputFiles(
@@ -29,7 +29,7 @@ test.describe("Image engine (pooled transport)", () => {
   });
 
   test("keeps decoded dimensions available to the preview", async ({ page }) => {
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
     await page
       .locator('input[type="file"]')
       .setInputFiles({ name: "dim.png", mimeType: "image/png", buffer: PNG });
@@ -43,7 +43,7 @@ test.describe("Image engine (pooled transport)", () => {
   });
 
   test("converts to another format", async ({ page }) => {
-    await page.goto("/convert");
+    await page.goto("/zh-Hans/convert");
     await page
       .locator('input[type="file"]')
       .setInputFiles({ name: "x.png", mimeType: "image/png", buffer: PNG });

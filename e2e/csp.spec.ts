@@ -27,7 +27,7 @@ test.describe("CSP compatibility", () => {
       }
     });
 
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
     await page
       .locator('input[type="file"]')
       .setInputFiles({ name: "csp.png", mimeType: "image/png", buffer: PNG });
@@ -45,7 +45,7 @@ test.describe("CSP compatibility", () => {
       }
     });
 
-    await page.goto("/transcode");
+    await page.goto("/zh-Hans/transcode");
     await page.locator('input[type="file"]').setInputFiles(MP4);
 
     await expect(page.getByText("结果大小")).toBeVisible({ timeout: 180_000 });

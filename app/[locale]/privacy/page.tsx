@@ -1,18 +1,37 @@
 import { Shield } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
 
 export const revalidate = 31536000; // 1 year
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("privacy");
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const safeLocale = (routing.locales as readonly string[]).includes(locale)
+    ? locale
+    : routing.defaultLocale;
+  const t = await getTranslations({ locale: safeLocale, namespace: "privacy" });
   return {
     title: t("title"),
     description: t("subtitleDesc"),
   };
 }
 
-export default async function PrivacyPage() {
+export default async function PrivacyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = (routing.locales as readonly string[]).includes(locale)
+    ? locale
+    : routing.defaultLocale;
+  setRequestLocale(safeLocale);
+
   const t = await getTranslations("privacy");
   const technicalItems = t.raw("technicalItems") as string[];
 

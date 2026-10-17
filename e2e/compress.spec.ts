@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Compress page", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
   });
 
   test("shows drop zone with correct text", async ({ page }) => {

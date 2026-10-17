@@ -38,7 +38,7 @@ test.describe("Engine loading progress", () => {
       window.Worker = Patched as unknown as typeof Worker;
     });
 
-    await page.goto("/audio");
+    await page.goto("/zh-Hans/audio");
     await page
       .locator('input[type="file"]')
       .setInputFiles("e2e/fixtures/sample.m4a");

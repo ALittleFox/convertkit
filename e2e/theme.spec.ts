@@ -5,7 +5,7 @@ test.describe("Theme", () => {
   // `button.last()` picked up the mobile menu button instead, so target it by
   // its accessible label.
   test("theme toggle button is visible", async ({ page }) => {
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
     const header = page.locator("header");
     await expect(
       header.getByRole("button", { name: /浅色|深色|跟随系统/ })
@@ -13,7 +13,7 @@ test.describe("Theme", () => {
   });
 
   test("can toggle theme", async ({ page }) => {
-    await page.goto("/compress");
+    await page.goto("/zh-Hans/compress");
 
     // The button's aria-label reflects the current theme and always changes on
     // click. The <html> class is not a reliable signal because the initial
