@@ -380,7 +380,7 @@ pnpm build      → success
 | 12 | sitemap 生成方式 | 与静态化方案耦合，建议一并处理 |
 | 13 | 字体 | ✅ 已完成（并修复全局字体 bug，见下） |
 | 14 | CSP | ✅ 已完成（Report-Only in dev / 强制 in prod） |
-| 16 | Vercel + Cloudflare 双配置 | 需明确主部署目标 |
+| 16 | 双部署配置 | ✅ 已完成（移除 Cloudflare，统一 Vercel） |
 
 ### 补充：P2-10 已完成
 
@@ -447,3 +447,27 @@ CJK 回退栈（Geist 仅含拉丁字形）。同时移除未使用的 `Geist_Mo
 > `text/javascript` / `application/wasm` 并自带进度回调，改用之。
 
 `e2e/engine-loading.spec.ts` 断言：存在进度事件、单调非递减、已去重、以 `loaded` 结束。
+
+### 补充：P2-16 双部署配置
+
+仓库曾并存两套部署配置，且无任何文档说明主次。实际排查结果：
+
+**Cloudflare 一套是未完成品**：`wrangler.jsonc` 指向 `.open-next/worker.js`，
+但 `package.json` 里没有 `opennextjs-cloudflare build` 脚本 → 该文件永远不会生成；
+`open-next.config.ts` 是未改动的脚手架；`wrangler.name` 仍是 `pic-html-temp`；
+全项目无任何 Cloudflare 特有代码。而 CI 只部署 Vercel。
+
+**处理**：删除 `wrangler.jsonc`、`open-next.config.ts`，移除
+`@opennextjs/cloudflare` 与 `wrangler` 依赖（lockfile 减少约 3k 行）。
+
+**同时修掉两个隐患**：
+
+1. `vercel.json` 重复声明了 COOP/COEP（头已统一在 `next.config.ts`），
+   且后来新增的 CSP 等头它完全没有 → 删除其 `headers`，避免两处不一致。
+2. **`build` 曾隐式依赖 npm 的 `prebuild` 钩子**，而 `next build` 不会触发它
+   ——直接用 `next build` 构建会得到**缺少 FFmpeg core** 的产物。已改为
+   `build` 脚本内联执行 `scripts/copy-ffmpeg.mjs`。
+
+验证：删掉 `public/ffmpeg` 后分别用 `npm run build` / `pnpm build` 构建均能正确产出；
+`next start` 下 `/ffmpeg/ffmpeg-core.wasm` 返回 200 / 32 MB /
+`Content-Type: application/wasm` / `immutable`。README 新增「部署」章节。
