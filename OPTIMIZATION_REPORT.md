@@ -338,3 +338,47 @@ grep -rn "[一-龥]" lib hooks --include="*.ts" | grep -v "^Binary"
 4. **依赖/死代码/i18n 债务**（P1–P2）——清理成本低、收益明确
 
 建议先做「第 1 周」的三件事，项目即可恢复到**可信赖的工程状态**；静态化改造收益最大但需谨慎处理 URL 兼容。
+
+---
+
+## 附：修复进展（2026-10-17）
+
+以下条目已按本报告逐条修复，每项一次独立提交：
+
+| # | 项目 | 状态 | Commit |
+|---|---|---|---|
+| 1 | E2E 测试套件失效（7/26 → 26/26） | ✅ 完成 | `5f2ecc1` |
+| 2 | 源码 ESLint error（10 个） | ✅ 完成 | `cc2ffcf` |
+| 3 | `.next` 类型残留导致 tsc 报错 | ✅ 完成（新增 `pnpm typecheck`） | `808997a` |
+| 5 | 依赖冗余（name / @ffmpeg/core） | ✅ 部分完成（见注 1） | `4f2c74c` |
+| 6 | 死代码清理 | ✅ 完成 | `c0341a3` |
+| 7 | 硬编码中文 → i18n | ✅ 完成（7 语言 + 结构化错误码） | `19a1a94` |
+| 8 | `<img>` / a11y warning | ✅ 完成（全项目 0 warning） | `682b353` |
+| 11 | blob URL 释放（favicon 页） | ✅ 完成 | `20ea887` |
+| 15 | dev 环境 Cache-Control 警告 + 安全头 | ✅ 完成 | `1299ded` |
+| 17 | middleware.ts → proxy.ts | ✅ 完成 | `415c1f7` |
+
+**注 1**：报告原判「`shadcn` 零引用可删除」是**错误**的——它被 `app/globals.css`
+的 `@import "shadcn/tailwind.css"` 引用，删除会导致构建失败。已保留。
+
+### 当前基线
+
+```
+pnpm typecheck  → 0 errors
+eslint .        → 0 errors, 0 warnings
+pnpm test:e2e   → 26/26 passed
+pnpm build      → success
+```
+
+### 仍未处理（需产品/架构决策）
+
+| # | 项目 | 说明 |
+|---|---|---|
+| 4 | `[locale]` 静态化改造 | 收益最大但会变更 URL 结构、影响 SEO，需要单独规划迁移与 301 策略 |
+| 9 | FFmpeg 31MB 加载进度 | 体验优化，需设计加载 UI |
+| 10 | batch engine 抽象统一 | 中等重构，收益偏内部一致性 |
+| 12 | sitemap 生成方式 | 与静态化方案耦合，建议一并处理 |
+| 13 | 字体（Geist 无中文字形） | 需确认设计意图 |
+| 14 | CSP | 需逐项梳理内联脚本/样式来源，风险较高 |
+| 16 | Vercel + Cloudflare 双配置 | 需明确主部署目标 |
+
