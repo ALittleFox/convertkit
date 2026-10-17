@@ -11,9 +11,6 @@ importers:
       '@base-ui/react':
         specifier: ^1.4.1
         version: 1.4.1(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ffmpeg/core':
-        specifier: ^0.12.10
-        version: 0.12.10
       '@ffmpeg/ffmpeg':
         specifier: 0.12.10
         version: 0.12.10
@@ -78,6 +75,9 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
     devDependencies:
+      '@ffmpeg/core':
+        specifier: ^0.12.10
+        version: 0.12.10
       '@opennextjs/cloudflare':
         specifier: ^1.19.5
         version: 1.19.5(next@16.2.4(@babel/core@7.29.0)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(wrangler@4.87.0)
