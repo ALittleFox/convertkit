@@ -6,8 +6,7 @@
     "copy:ffmpeg": "node scripts/copy-ffmpeg.mjs",
     "predev": "node scripts/copy-ffmpeg.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/copy-ffmpeg.mjs",
-    "build": "next build --webpack",
+    "build": "node scripts/copy-ffmpeg.mjs && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "node scripts/typecheck.mjs",
@@ -39,7 +38,6 @@
   },
   "devDependencies": {
     "@ffmpeg/core": "^0.12.10",
-    "@opennextjs/cloudflare": "^1.19.5",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -48,7 +46,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.87.0"
+    "typescript": "^5"
   }
 }

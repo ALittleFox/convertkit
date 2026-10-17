@@ -98,11 +98,30 @@ pic-html/
 
 ```bash
 pnpm dev        # 启动开发服务器
-pnpm build      # 构建生产版本
+pnpm build      # 构建生产版本（会先拷贝 FFmpeg WASM core）
 pnpm start      # 启动生产服务器
 pnpm lint       # ESLint 检查
+pnpm typecheck  # 类型检查（先清除 .next/types，避免陈旧生成物误报）
 pnpm test:e2e   # 运行 E2E 测试
 ```
+
+## 部署
+
+**生产环境为 Vercel**，由 `.github/workflows/deploy.yml` 在推送到 `main` 时通过
+`vercel build` + `vercel deploy --prebuilt` 自动部署。
+
+部署相关的两个要点：
+
+1. **安全响应头**（COOP/COEP、CSP、X-Frame-Options 等）统一声明在
+   `next.config.ts` 的 `headers()` 中，与平台无关。`vercel.json` 只保留构建命令，
+   不再重复配置头部，避免两处不一致。
+2. **FFmpeg WASM core 是构建产物**：`public/ffmpeg/` 已被 `.gitignore` 忽略，
+   由 `scripts/copy-ffmpeg.mjs` 在构建时从 `node_modules/@ffmpeg/core` 拷贝。
+   `build` 脚本内联了这一步，因此不依赖 npm 的 `prebuild` 生命周期钩子
+   （`next build` 不会触发它）。
+
+> 注：仓库曾同时保留 Cloudflare Workers 的配置（`wrangler.jsonc` /
+> `open-next.config.ts`），但从未配置完整且无对应构建脚本，已移除。
 
 ## License
 
