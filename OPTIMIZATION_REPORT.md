@@ -378,8 +378,8 @@ pnpm build      → success
 | 9 | FFmpeg 31MB 加载进度 | 体验优化，需设计加载 UI |
 | 10 | batch engine 抽象统一 | ✅ 已完成（见下方「补充」） |
 | 12 | sitemap 生成方式 | 与静态化方案耦合，建议一并处理 |
-| 13 | 字体（Geist 无中文字形） | 需确认设计意图 |
-| 14 | CSP | 需逐项梳理内联脚本/样式来源，风险较高 |
+| 13 | 字体 | ✅ 已完成（并修复全局字体 bug，见下） |
+| 14 | CSP | ✅ 已完成（Report-Only in dev / 强制 in prod） |
 | 16 | Vercel + Cloudflare 双配置 | 需明确主部署目标 |
 
 ### 补充：P2-10 已完成
@@ -396,3 +396,36 @@ pnpm build      → success
 
 验证：新增 `e2e/image-engine.spec.ts`（压缩/转换/尺寸预览）与 `e2e/media-engine.spec.ts`
 （音频 m4a→mp3、视频 mp4→mp4，使用 `e2e/fixtures/` 真实媒体），E2E 共 31 项全过。
+
+### 补充：P2-13 字体（含一个真实 bug）
+
+排查时发现 `globals.css` 里写的是：
+
+```css
+--font-sans: var(--font-sans);   /* 自引用 */
+```
+
+自引用导致 `--font-sans` 解析为空，**整站实际渲染成了浏览器默认的 Times**。
+已改为指向 `layout.tsx` 中 next/font 注入的 `--font-geist-sans`，并补充
+CJK 回退栈（Geist 仅含拉丁字形）。同时移除未使用的 `Geist_Mono`。
+
+实测：`font-family` 由 `Times` 变为 `Geist, "Geist Fallback", ui-sans-serif,
+…, "PingFang SC", "Microsoft YaHei", …`。
+
+### 补充：P2-14 CSP
+
+新增 CSP，生产强制、开发 Report-Only。
+
+关键约束（已写入配置注释）：
+
+| 指令 | 原因 |
+|---|---|
+| `script-src 'unsafe-inline'` | Next App Router 每页约 14 个内联脚本（RSC payload + next-themes 防闪烁），内容每次不同，无法用 hash；用 nonce 会强制全站动态渲染，与 ISR 冲突 |
+| `script-src/worker-src blob:` | FFmpeg 通过 `toBlobURL()` 加载 core |
+| `script-src 'wasm-unsafe-eval'` | 实例化 codec / FFmpeg WASM |
+| `img-src/media-src blob:` | 预览使用 `createObjectURL` |
+| `'unsafe-eval'` | 仅 development（React Refresh） |
+| `upgrade-insecure-requests` | 仅 production |
+
+`e2e/csp.spec.ts` 不仅校验头部内容，还实测**图片 worker 与 FFmpeg WASM
+在 CSP 下零违规**（并额外用真实 `next start` 生产构建验证过）。
