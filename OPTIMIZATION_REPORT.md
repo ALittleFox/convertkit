@@ -376,9 +376,23 @@ pnpm build      → success
 |---|---|---|
 | 4 | `[locale]` 静态化改造 | 收益最大但会变更 URL 结构、影响 SEO，需要单独规划迁移与 301 策略 |
 | 9 | FFmpeg 31MB 加载进度 | 体验优化，需设计加载 UI |
-| 10 | batch engine 抽象统一 | 中等重构，收益偏内部一致性 |
+| 10 | batch engine 抽象统一 | ✅ 已完成（见下方「补充」） |
 | 12 | sitemap 生成方式 | 与静态化方案耦合，建议一并处理 |
 | 13 | 字体（Geist 无中文字形） | 需确认设计意图 |
 | 14 | CSP | 需逐项梳理内联脚本/样式来源，风险较高 |
 | 16 | Vercel + Cloudflare 双配置 | 需明确主部署目标 |
 
+### 补充：P2-10 已完成
+
+`lib/worker-transport.ts` 引入「传输层」抽象，把**并发策略**与**任务迭代**拆开：
+
+| 层 | 职责 | 实现 |
+|---|---|---|
+| `Transport` | 如何在 worker 上跑一个任务 | `createPooledTransport`（图片，N worker + 队列 + 崩溃恢复）、`createSingleTransport`（音视频，单 worker + progress） |
+| `createWorkerBatchEngine` | 如何遍历任务并上报进度 | 仅依赖 `Transport`，并发度由 transport 决定 |
+
+结果：三个引擎（图片/音频/视频）现在共用同一 `processBatch(tasks, options, onProgress)` 签名，
+`lib/worker-manager.ts` 与 `processFile` 已删除。
+
+验证：新增 `e2e/image-engine.spec.ts`（压缩/转换/尺寸预览）与 `e2e/media-engine.spec.ts`
+（音频 m4a→mp3、视频 mp4→mp4，使用 `e2e/fixtures/` 真实媒体），E2E 共 31 项全过。
