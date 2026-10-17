@@ -4,12 +4,28 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Geist only ships Latin glyphs, so CJK text falls back to whatever the OS
+ * picks. Declaring an explicit stack keeps Chinese/Japanese/Korean rendering
+ * consistent and avoids ending up with a serif fallback on some systems.
+ */
+:root {
+  --font-sans-fallback: ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+    "Source Han Sans SC", sans-serif;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  /*
+   * Point at the CSS variables injected by next/font in layout.tsx.
+   * This used to be `var(--font-sans)` — a self-reference that resolved to
+   * nothing, so the whole app fell back to the browser default (Times).
+   */
+  --font-sans: var(--font-geist-sans), var(--font-sans-fallback);
+  --font-heading: var(--font-geist-sans), var(--font-sans-fallback);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
