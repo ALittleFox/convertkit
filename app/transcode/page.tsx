@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Film, Download, Trash2, Play, Monitor, Info, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -18,17 +18,24 @@ import { formatDuration } from "@/lib/video-utils";
 import type { VideoFileTask } from "@/lib/task-types";
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  // `useSyncExternalStore` gives a stable server snapshot (`false`) and the
+  // real client value without the cascading re-render of setState-in-effect.
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => {
+      const ua = navigator.userAgent;
+      return (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
+        ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 1)
+      );
+    },
+    () => false
+  );
+}
 
-  useEffect(() => {
-    const ua = navigator.userAgent;
-    const mobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua) ||
-      ("maxTouchPoints" in navigator && navigator.maxTouchPoints > 1);
-    setIsMobile(mobile);
-  }, []);
-
-  return isMobile;
+// The mobile check never changes during a session, so nothing to subscribe to.
+function subscribeNoop() {
+  return () => {};
 }
 
 export default function TranscodePage() {

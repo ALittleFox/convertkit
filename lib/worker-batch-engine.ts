@@ -17,7 +17,11 @@ export interface WorkerBatchEngine<T extends BaseTask, O> {
 
 export function createWorkerBatchEngine<T extends BaseTask, O>(
   workerFactory: () => Worker,
-  buildMessage: (task: T, buffer: ArrayBuffer, options: O) => { data: any; transfers?: ArrayBuffer[] }
+  buildMessage: (
+    task: T,
+    buffer: ArrayBuffer,
+    options: O
+  ) => { data: Record<string, unknown>; transfers?: ArrayBuffer[] }
 ): WorkerBatchEngine<T, O> {
   let worker: Worker | null = null;
 

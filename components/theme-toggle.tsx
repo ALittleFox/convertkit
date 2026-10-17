@@ -1,19 +1,33 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
+// Nothing to subscribe to — this only distinguishes server render from client.
+function subscribeNoop() {
+  return () => {};
+}
+
+/**
+ * True only after hydration. Used to avoid rendering theme-dependent UI during
+ * SSR (the server cannot know the stored theme). `useSyncExternalStore` keeps
+ * the server snapshot stable without a setState-in-effect cascade.
+ */
+function useMounted() {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false
+  );
+}
+
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const t = useTranslations("theme");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return (

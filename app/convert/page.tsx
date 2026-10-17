@@ -187,13 +187,17 @@ export default function ConvertPage() {
             ? mimeToName(previewTask.resultBlob.type)
             : undefined
         }
-        renderStats={(task) =>
-          task.result && "width" in task.result ? (
+        renderStats={(task) => {
+          const result = task.result as
+            | { width?: number; height?: number }
+            | undefined;
+          if (result?.width == null || result.height == null) return null;
+          return (
             <span className="text-muted-foreground">
-              {(task.result as any).width} x {(task.result as any).height}
+              {result.width} x {result.height}
             </span>
-          ) : null
-        }
+          );
+        }}
       />
     </div>
   );

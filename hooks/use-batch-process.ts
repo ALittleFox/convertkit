@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { downloadAsZip, downloadSingle } from "@/lib/zip-stream";
 import type { BaseTask, BaseTaskResult } from "@/lib/task-types";
 import { toast } from "sonner";
@@ -45,12 +45,25 @@ export function useBatchProcess<T extends BaseTask, O>(
   const [options, setOptions] = useState<O>(config.defaultOptions);
   const [autoProcess, setAutoProcess] = useState(true);
   const taskIdCounter = useRef(0);
+  // Refs mirror the latest state so the long-running `processBatch` callback
+  // (created once) always reads current values instead of a stale closure.
+  // They are synced in effects — writing them during render is a side effect
+  // React explicitly disallows (react-hooks/refs).
   const tasksRef = useRef<T[]>([]);
-  tasksRef.current = tasks;
   const optionsRef = useRef<O>(options);
-  optionsRef.current = options;
   const autoProcessRef = useRef(autoProcess);
-  autoProcessRef.current = autoProcess;
+
+  useEffect(() => {
+    tasksRef.current = tasks;
+  }, [tasks]);
+
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
+
+  useEffect(() => {
+    autoProcessRef.current = autoProcess;
+  }, [autoProcess]);
 
   const updateTask = useCallback(
     (taskId: string, updates: Partial<T>) => {
