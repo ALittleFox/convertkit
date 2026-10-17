@@ -304,6 +304,19 @@ export default function FaviconPage() {
               </div>
             </div>
           )}
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">{t("usage")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-xs text-muted-foreground space-y-2">
+                {usageTips.map((tip: string, i: number) => (
+                  <li key={i}>- {tip}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Right: Settings */}
@@ -359,18 +372,7 @@ export default function FaviconPage() {
           
         </div>
       </div>
-<Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm">{t("usage")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-xs text-muted-foreground space-y-2">
-                {usageTips.map((tip: string, i: number) => (
-                  <li key={i}>- {tip}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+
       <div className="rounded-xl border bg-muted/40 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <Info className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
