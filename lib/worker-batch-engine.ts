@@ -1,96 +1,81 @@
 import type { BaseTask, BaseTaskResult } from "./task-types";
+import type { Transport, TransportMessage } from "./worker-transport";
+
+/** Callback shape shared by every batch engine and the useBatchProcess hook. */
+export type ProgressReporter<T extends BaseTask> = (
+  taskId: string,
+  status: T["status"],
+  result?: BaseTaskResult,
+  error?: string,
+  progress?: number
+) => void;
 
 export interface WorkerBatchEngine<T extends BaseTask, O> {
-  processBatch(
-    tasks: T[],
-    options: O,
-    onProgress: (
-      taskId: string,
-      status: T["status"],
-      result?: BaseTaskResult,
-      error?: string,
-      progress?: number
-    ) => void
-  ): Promise<void>;
+  processBatch(tasks: T[], options: O, onProgress: ProgressReporter<T>): Promise<void>;
+  /** How many tasks may run concurrently (pool size). */
+  readonly concurrency: number;
   terminate(): void;
 }
 
+/**
+ * Generic batch engine: iterates tasks and runs each through a Transport.
+ *
+ * Concurrency comes from the transport, so the same loop serves both the
+ * multi-worker image pool and the single-worker FFmpeg engines.
+ */
 export function createWorkerBatchEngine<T extends BaseTask, O>(
-  workerFactory: () => Worker,
-  buildMessage: (
-    task: T,
-    buffer: ArrayBuffer,
-    options: O
-  ) => { data: Record<string, unknown>; transfers?: ArrayBuffer[] }
+  transport: Transport,
+  buildMessage: (task: T, buffer: ArrayBuffer, options: O) => TransportMessage
 ): WorkerBatchEngine<T, O> {
-  let worker: Worker | null = null;
+  async function runTask(task: T, options: O, onProgress: ProgressReporter<T>) {
+    onProgress(task.id, "processing", undefined, undefined, 0);
 
-  function getWorker(): Worker {
-    if (!worker) {
-      worker = workerFactory();
+    try {
+      const buffer = await task.file.arrayBuffer();
+      const message = buildMessage(task, buffer, options);
+
+      const result = await transport.run(message, {
+        onProgress: (progress) =>
+          onProgress(task.id, "processing", undefined, undefined, progress),
+      });
+
+      onProgress(task.id, "done", {
+        data: result.data,
+        originalSize: result.originalSize,
+        resultSize: result.resultSize,
+        // Workers may report extra fields (image width/height); keep them.
+        ...(result.extra ?? {}),
+      } as BaseTaskResult);
+    } catch (err) {
+      onProgress(
+        task.id,
+        "error",
+        undefined,
+        err instanceof Error ? err.message : "PROCESS_FAILED"
+      );
     }
-    return worker;
   }
 
   async function processBatch(
     tasks: T[],
     options: O,
-    onProgress: (
-      taskId: string,
-      status: T["status"],
-      result?: BaseTaskResult,
-      error?: string,
-      progress?: number
-    ) => void
+    onProgress: ProgressReporter<T>
   ): Promise<void> {
-    const w = getWorker();
+    // Pull from a shared queue so up to `concurrency` workers stay busy.
+    const queue = [...tasks];
 
-    for (const task of tasks) {
-      onProgress(task.id, "processing", undefined, undefined, 0);
-
-      try {
-        const buffer = await task.file.arrayBuffer();
-        const msg = buildMessage(task, buffer, options);
-
-        const result = await new Promise<BaseTaskResult>((resolve, reject) => {
-          const handler = (e: MessageEvent) => {
-            if (e.data.id !== task.id) return;
-
-            if (e.data.type === "progress") {
-              onProgress(task.id, "processing", undefined, undefined, e.data.progress);
-            } else if (e.data.type === "result") {
-              w.removeEventListener("message", handler);
-              resolve({
-                data: e.data.data,
-                originalSize: e.data.originalSize,
-                resultSize: e.data.resultSize,
-              });
-            } else if (e.data.type === "error") {
-              w.removeEventListener("message", handler);
-              reject(new Error(e.data.error));
-            }
-          };
-
-          w.addEventListener("message", handler);
-          w.postMessage(msg.data, msg.transfers ? [msg.transfers[0]] : []);
-        });
-
-        onProgress(task.id, "done", result);
-      } catch (err) {
-        onProgress(
-          task.id,
-          "error",
-          undefined,
-          err instanceof Error ? err.message : "PROCESS_FAILED"
-        );
+    const runners = Array.from({ length: Math.max(1, transport.concurrency) }, async () => {
+      for (let task = queue.shift(); task; task = queue.shift()) {
+        await runTask(task, options, onProgress);
       }
-    }
+    });
+
+    await Promise.all(runners);
   }
 
-  function terminate() {
-    worker?.terminate();
-    worker = null;
-  }
-
-  return { processBatch, terminate };
+  return {
+    processBatch,
+    concurrency: transport.concurrency,
+    terminate: () => transport.terminate(),
+  };
 }

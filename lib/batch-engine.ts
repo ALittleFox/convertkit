@@ -1,5 +1,6 @@
-import { getPool, type WorkerResult } from "./worker-manager";
 import type { FileTask } from "./task-types";
+import { createWorkerBatchEngine } from "./worker-batch-engine";
+import { createPooledTransport } from "./worker-transport";
 
 export type { FileTask };
 
@@ -10,52 +11,69 @@ export interface ProcessOptions {
   targetFormat?: string;
 }
 
-export async function processFile(
-  file: File,
-  type: "compress" | "convert",
-  options: ProcessOptions
-): Promise<WorkerResult> {
-  const pool = getPool();
-  const buffer = await file.arrayBuffer();
-  return pool.process(buffer, type, options);
+/** Options actually handed to the engine: caller options + the mode. */
+interface ImageEngineOptions extends ProcessOptions {
+  mode: "compress" | "convert";
 }
 
+/** How many image-codec workers to run in parallel. */
+function poolSize(): number {
+  return Math.min(navigator.hardwareConcurrency || 2, 4);
+}
+
+function createImageEngine() {
+  return createWorkerBatchEngine<FileTask, ImageEngineOptions>(
+    createPooledTransport(
+      () =>
+        new Worker(new URL("../workers/codec.worker.ts", import.meta.url), {
+          type: "module",
+        }),
+      poolSize()
+    ),
+    (task, buffer, options) => ({
+      data: {
+        id: task.id,
+        data: buffer,
+        // `type` tells the codec worker whether to keep the format or switch.
+        type: options.mode,
+        options: {
+          quality: options.quality,
+          lossless: options.lossless,
+          effort: options.effort,
+          targetFormat: options.targetFormat,
+        },
+      },
+      transfers: [buffer],
+    })
+  );
+}
+
+let engine: ReturnType<typeof createImageEngine> | null = null;
+
+/**
+ * Lazily create the shared image engine. Creating it eagerly would spawn
+ * workers during SSR or on pages that never process images.
+ */
+function getEngine() {
+  if (!engine) engine = createImageEngine();
+  return engine;
+}
+
+export type ImageMode = "compress" | "convert";
+
+/**
+ * Process a batch of images. The signature mirrors the audio/video engines so
+ * `useBatchProcess` can treat all three identically.
+ */
 export async function processBatch(
   tasks: FileTask[],
-  type: "compress" | "convert",
+  mode: ImageMode,
   options: ProcessOptions,
-  onProgress: (taskId: string, status: FileTask["status"], result?: WorkerResult, error?: string) => void
+  onProgress: Parameters<ReturnType<typeof getEngine>["processBatch"]>[2]
 ): Promise<void> {
-  const pool = getPool();
-
-  const processTask = async (task: FileTask) => {
-    onProgress(task.id, "processing");
-
-    try {
-      const buffer = await task.file.arrayBuffer();
-      const result = await pool.process(buffer, type, options);
-
-      onProgress(task.id, "done", result);
-    } catch (err) {
-      onProgress(task.id, "error", undefined, err instanceof Error ? err.message : "PROCESS_FAILED");
-    }
-  };
-
-  const concurrency = pool["maxWorkers"] || 4;
-  const queue = [...tasks];
-
-  const workers = Array.from({ length: concurrency }, async () => {
-    while (queue.length > 0) {
-      const task = queue.shift();
-      if (task) {
-        await processTask(task);
-      }
-    }
-  });
-
-  await Promise.all(workers);
+  return getEngine().processBatch(tasks, { ...options, mode }, onProgress);
 }
 
 export function getPoolSize(): number {
-  return getPool()["maxWorkers"] || 4;
+  return getEngine().concurrency;
 }

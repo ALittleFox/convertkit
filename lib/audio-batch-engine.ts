@@ -1,5 +1,6 @@
 import type { AudioFileTask, BaseTaskResult } from "./task-types";
 import { createWorkerBatchEngine } from "./worker-batch-engine";
+import { createSingleTransport } from "./worker-transport";
 
 export type { AudioFileTask };
 export type AudioWorkerResult = BaseTaskResult;
@@ -11,11 +12,14 @@ export interface AudioProcessOptions {
 }
 
 const engine = createWorkerBatchEngine<AudioFileTask, AudioProcessOptions>(
-  () =>
-    new Worker(
-      new URL("../workers/media-transcode.worker.ts", import.meta.url),
-      { type: "module" }
-    ),
+  // FFmpeg keeps a large WASM heap per worker, so audio/video run one at a time.
+  createSingleTransport(
+    () =>
+      new Worker(
+        new URL("../workers/media-transcode.worker.ts", import.meta.url),
+        { type: "module" }
+      )
+  ),
   (task, buffer, options) => ({
     data: {
       id: task.id,

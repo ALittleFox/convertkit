@@ -1,9 +1,13 @@
-import type { WorkerResult } from "./worker-manager";
-
 export interface BaseTaskResult {
   data: ArrayBuffer;
   originalSize: number;
   resultSize: number;
+}
+
+/** Image results additionally carry the decoded dimensions. */
+export interface WorkerResult extends BaseTaskResult {
+  width: number;
+  height: number;
 }
 
 export interface BaseTask {
