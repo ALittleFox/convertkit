@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const LOCALES = ["zh-Hans", "zh-Hant", "en", "es", "fr", "pt", "ar"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
 
