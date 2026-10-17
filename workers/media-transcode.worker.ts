@@ -26,6 +26,22 @@ interface MediaTranscodeMessage {
   };
 }
 
+type LoadPhase = "core-js" | "core-wasm";
+
+function postLoad(progress: number, phase: LoadPhase) {
+  self.postMessage({ type: "loading", progress, phase });
+}
+
+/**
+ * Approximate byte sizes of the two core assets, used to blend both downloads
+ * into a single percentage. Only a denominator for the UI, so an estimate is
+ * fine here.
+ */
+const ASSET_BYTES: Record<LoadPhase, number> = {
+  "core-js": 112 * 1024,
+  "core-wasm": 32 * 1024 * 1024,
+};
+
 let ffmpeg: FFmpeg | null = null;
 let loaded = false;
 
@@ -35,16 +51,54 @@ async function loadFFmpeg(): Promise<void> {
   ffmpeg = new FFmpeg();
 
   const baseURL = "/ffmpeg";
+  const totalBytes = ASSET_BYTES["core-js"] + ASSET_BYTES["core-wasm"];
 
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-    wasmURL: await toBlobURL(
-      `${baseURL}/ffmpeg-core.wasm`,
-      "application/wasm"
-    ),
-  });
+  let currentPhase: LoadPhase = "core-js";
+  let received = 0;
+  let lastPct = -1;
+
+  // `toBlobURL` reports per-asset progress; blend both into one percentage.
+  const report =
+    (phase: LoadPhase) =>
+    (event: { received: number }) => {
+      const offset = phase === "core-wasm" ? ASSET_BYTES["core-js"] : 0;
+      received = offset + event.received;
+      // Cap at 99: 100% is reserved for "engine ready".
+      const pct = Math.min(99, Math.floor((received / totalBytes) * 100));
+      // Only message on change; a 31 MB stream yields thousands of callbacks
+      // and flooding the main thread with duplicates causes jank.
+      if (pct === lastPct) return;
+      lastPct = pct;
+      postLoad(pct, phase);
+    };
+
+  postLoad(0, currentPhase);
+
+  // Use @ffmpeg/util's toBlobURL: it sets the correct MIME type (required by
+  // emscripten's importScripts/WebAssembly.instantiate) and accepts a progress
+  // callback, so no hand-rolled streaming is needed.
+  const coreURL = await toBlobURL(
+    `${baseURL}/ffmpeg-core.js`,
+    "text/javascript",
+    true,
+    report("core-js")
+  );
+
+  currentPhase = "core-wasm";
+  lastPct = -1;
+  const wasmURL = await toBlobURL(
+    `${baseURL}/ffmpeg-core.wasm`,
+    "application/wasm",
+    true,
+    report("core-wasm")
+  );
+
+  postLoad(99, currentPhase);
+
+  await ffmpeg.load({ coreURL, wasmURL });
 
   loaded = true;
+  self.postMessage({ type: "loaded" });
 }
 
 /**

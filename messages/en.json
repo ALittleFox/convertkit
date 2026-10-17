@@ -27,7 +27,8 @@
     "saved": "Saved",
     "original": "Original",
     "result": "Result",
-    "increase": "Increase"
+    "increase": "Increase",
+    "loadingEngine": "Loading engine… {percent}%"
   },
   "compress": {
     "title": "Batch Image Compression",

@@ -27,7 +27,8 @@
     "saved": "节省",
     "original": "原始",
     "result": "结果",
-    "increase": "增加"
+    "increase": "增加",
+    "loadingEngine": "正在加载引擎… {percent}%"
   },
   "compress": {
     "title": "批量图片压缩",

@@ -15,6 +15,8 @@ export interface BaseTask {
   file: File;
   status: "pending" | "processing" | "done" | "error";
   progress: number;
+  /** Set while an engine is still loading (e.g. FFmpeg's WASM core). */
+  stage?: "loading" | "processing";
   result?: BaseTaskResult;
   resultBlob?: Blob;
   error?: string;

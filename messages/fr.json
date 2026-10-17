@@ -27,7 +27,8 @@
     "saved": "Économisé",
     "original": "Original",
     "result": "Résultat",
-    "increase": "Augmentation"
+    "increase": "Augmentation",
+    "loadingEngine": "Chargement du moteur… {percent} %"
   },
   "compress": {
     "title": "Compression d'images par lots",

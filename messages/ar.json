@@ -27,7 +27,8 @@
     "saved": "تم التوفير",
     "original": "الأصلي",
     "result": "الناتج",
-    "increase": "زيادة"
+    "increase": "زيادة",
+    "loadingEngine": "جارٍ تحميل المحرك… {percent}%"
   },
   "compress": {
     "title": "ضغط الصور الجماعي",

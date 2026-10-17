@@ -88,7 +88,14 @@ export function FileCard<T extends BaseTask>({
             </div>
 
             {task.status === "processing" && (
-              <Progress value={task.progress} className="mt-2 h-1" />
+              <div className="mt-2 space-y-1">
+                <Progress value={task.progress} className="h-1" />
+                {task.stage === "loading" && (
+                  <p className="text-xs text-muted-foreground">
+                    {tc("loadingEngine", { percent: task.progress })}
+                  </p>
+                )}
+              </div>
             )}
 
             {task.status === "done" && task.result && (() => {

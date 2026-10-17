@@ -27,7 +27,8 @@
     "saved": "Economizado",
     "original": "Original",
     "result": "Resultado",
-    "increase": "Aumento"
+    "increase": "Aumento",
+    "loadingEngine": "Carregando mecanismo… {percent}%"
   },
   "compress": {
     "title": "Compressão de Imagens em Lote",

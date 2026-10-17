@@ -25,8 +25,16 @@ export interface TransportMessage {
   transfers?: Transferable[];
 }
 
+/**
+ * Which phase a progress update belongs to.
+ * - "loading"   : the worker is still fetching/instantiating its engine
+ *                 (FFmpeg's 31 MB WASM core); progress is download %.
+ * - "processing": the actual conversion is running.
+ */
+export type ProgressStage = "loading" | "processing";
+
 export interface TransportCallbacks {
-  onProgress?: (progress: number) => void;
+  onProgress?: (progress: number, stage?: ProgressStage) => void;
 }
 
 export interface Transport {
@@ -46,7 +54,9 @@ interface RawWorkerResponse {
   /** codec.worker style */
   success?: boolean;
   /** audio/video worker style */
-  type?: "progress" | "result" | "error";
+  type?: "progress" | "result" | "error" | "loading" | "loaded";
+  /** which asset is downloading, when type === "loading" */
+  phase?: string;
   progress?: number;
   data?: ArrayBuffer;
   originalSize?: number;
@@ -91,8 +101,13 @@ export function createSingleTransport(workerFactory: () => Worker): Transport {
         const handler = (e: MessageEvent<RawWorkerResponse>) => {
           const res = e.data;
 
+          if (res.type === "loading" || res.type === "loaded") {
+            onProgress?.(res.type === "loaded" ? 100 : res.progress ?? 0, "loading");
+            return;
+          }
+
           if (res.type === "progress") {
-            onProgress?.(res.progress ?? 0);
+            onProgress?.(res.progress ?? 0, "processing");
             return;
           }
 
@@ -128,7 +143,7 @@ export function createPooledTransport(
 
   interface Pending {
     message: TransportMessage;
-    onProgress?: (progress: number) => void;
+    onProgress?: (progress: number, stage?: ProgressStage) => void;
     resolve: (r: TransportResult) => void;
     reject: (e: Error) => void;
   }
@@ -147,8 +162,13 @@ export function createPooledTransport(
 
       const res = e.data;
 
+      if (res.type === "loading" || res.type === "loaded") {
+        job.onProgress?.(res.type === "loaded" ? 100 : res.progress ?? 0, "loading");
+        return;
+      }
+
       if (res.type === "progress") {
-        job.onProgress?.(res.progress ?? 0);
+        job.onProgress?.(res.progress ?? 0, "processing");
         return;
       }
 

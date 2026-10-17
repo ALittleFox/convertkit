@@ -1,5 +1,9 @@
 import type { BaseTask, BaseTaskResult } from "./task-types";
-import type { Transport, TransportMessage } from "./worker-transport";
+import type {
+  ProgressStage,
+  Transport,
+  TransportMessage,
+} from "./worker-transport";
 
 /** Callback shape shared by every batch engine and the useBatchProcess hook. */
 export type ProgressReporter<T extends BaseTask> = (
@@ -7,7 +11,8 @@ export type ProgressReporter<T extends BaseTask> = (
   status: T["status"],
   result?: BaseTaskResult,
   error?: string,
-  progress?: number
+  progress?: number,
+  stage?: ProgressStage
 ) => void;
 
 export interface WorkerBatchEngine<T extends BaseTask, O> {
@@ -35,8 +40,8 @@ export function createWorkerBatchEngine<T extends BaseTask, O>(
       const message = buildMessage(task, buffer, options);
 
       const result = await transport.run(message, {
-        onProgress: (progress) =>
-          onProgress(task.id, "processing", undefined, undefined, progress),
+        onProgress: (progress, stage) =>
+          onProgress(task.id, "processing", undefined, undefined, progress, stage),
       });
 
       onProgress(task.id, "done", {

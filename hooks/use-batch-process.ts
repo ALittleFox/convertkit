@@ -34,7 +34,8 @@ export interface UseBatchProcessConfig<T extends BaseTask, O> {
       status: T["status"],
       result?: BaseTaskResult,
       error?: string,
-      progress?: number
+      progress?: number,
+      stage?: "loading" | "processing"
     ) => void
   ) => Promise<void>;
   createResultBlob: (task: T, result: BaseTaskResult, options: O) => { blob: Blob; url: string };
@@ -98,7 +99,7 @@ export function useBatchProcess<T extends BaseTask, O>(
       await config.processBatch(
         tasksToProcess,
         optionsRef.current,
-        (taskId, status, result, error, progress) => {
+        (taskId, status, result, error, progress, stage) => {
           const task = tasksRef.current.find((t) => t.id === taskId);
           if (status === "done" && result && task) {
             const { blob, url } = config.createResultBlob(task, result, optionsRef.current);
@@ -122,6 +123,7 @@ export function useBatchProcess<T extends BaseTask, O>(
             updateTask(taskId, {
               status: "processing",
               progress,
+              stage,
             } as Partial<T>);
           }
         }

@@ -27,7 +27,8 @@
     "saved": "節省",
     "original": "原始",
     "result": "結果",
-    "increase": "增加"
+    "increase": "增加",
+    "loadingEngine": "正在載入引擎… {percent}%"
   },
   "compress": {
     "title": "批次圖片壓縮",
