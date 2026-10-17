@@ -36,7 +36,12 @@ export default function FaviconPage() {
     if (!file.type.startsWith("image/")) return;
 
     const url = URL.createObjectURL(file);
-    setSourceImage(url);
+    // Release the previous preview URL before replacing it, otherwise every
+    // re-upload leaks a blob for the lifetime of the page.
+    setSourceImage((prev) => {
+      if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
+      return url;
+    });
 
     try {
       const img = await loadImage(url);
