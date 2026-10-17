@@ -110,12 +110,18 @@ pnpm test:e2e   # 运行 E2E 测试
 **生产环境为 Vercel**，由 `.github/workflows/deploy.yml` 在推送到 `main` 时通过
 `vercel build` + `vercel deploy --prebuilt` 自动部署。
 
-部署相关的两个要点：
+部署相关的几个要点：
 
 1. **安全响应头**（COOP/COEP、CSP、X-Frame-Options 等）统一声明在
    `next.config.ts` 的 `headers()` 中，与平台无关。`vercel.json` 只保留构建命令，
    不再重复配置头部，避免两处不一致。
-2. **FFmpeg WASM core 是构建产物**：`public/ffmpeg/` 已被 `.gitignore` 忽略，
+2. **必须用 webpack 构建，不能用 Turbopack**：`next build`（Next 16 默认的
+   Turbopack）在本项目中会永久挂起——它启动的 `.next/build/postcss.js`
+   子进程始终不返回，构建卡在 "Creating an optimized production build ..."。
+   `next dev`（同为 Turbopack）正常，`next build --webpack` 正常，因此问题仅
+   存在于 Turbopack 的生产构建链路。
+   `scripts/build.mjs` 会在缺少 `--webpack` 时直接报错退出，避免静默踩坑。
+3. **FFmpeg WASM core 是构建产物**：`public/ffmpeg/` 已被 `.gitignore` 忽略，
    由 `scripts/copy-ffmpeg.mjs` 在构建时从 `node_modules/@ffmpeg/core` 拷贝。
    `build` 脚本内联了这一步，因此不依赖 npm 的 `prebuild` 生命周期钩子
    （`next build` 不会触发它）。
