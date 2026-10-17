@@ -65,4 +65,3 @@ pnpm test:e2e    # Playwright，必须全绿
 ## 参考
 
 - `README.md` —— 功能、结构、部署说明
-- `OPTIMIZATION_REPORT.md` —— 历史优化项与遗留决策
