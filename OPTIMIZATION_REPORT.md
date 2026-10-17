@@ -97,7 +97,7 @@ const locale = headerStore.get("x-locale") ?? parseAcceptLanguage(...);
 
 **后果**：尽管各 `layout.tsx` 都写了 `export const revalidate = 31536000`，**所有页面实际仍是动态渲染（ƒ）**，无法真正静态化，Cloudflare/Vercel 上白白消耗计算资源。
 
-**项目里已经有一份现成的方案文档**（`todo.md`），核心是改为 `app/[locale]/...` + `generateStaticParams`：
+**方案已确认并实施**：改为 `app/[locale]/...` + `generateStaticParams`。
 
 ```
 app/
@@ -241,7 +241,7 @@ const removeTask = (id: string) => {
 
 `public/sitemap.xml` 手写了所有 URL，新增页面需手动同步，容易遗漏。且当前包含 `/zh-Hans` 等路径，与 middleware 的 rewrite 逻辑耦合。
 
-**建议**：改用 `app/sitemap.ts`（Next.js 原生 API），由代码生成。注意：之前 `todo.md` 提到曾移除动态 sitemap，若为纯静态部署需要，可保留静态文件但加一个生成脚本，避免手写。
+**已修复**：改用 `app/sitemap.ts` 由代码生成 49 条 URL 并附带 hreflang 互链（见 P2-12）。
 
 ### 13. 字体加载
 
@@ -303,7 +303,7 @@ Next.js 16 启动警告：
 | **第 1 周** | 修 E2E（重写断言 + 固定 locale）、清 `.next` 修 tsc、修 `use-batch-process` ref 反模式、消除 10 个 ESLint error | 1–2 天 |
 | **第 2 周** | 删除死代码/依赖、i18n 化错误文案、释放 blob URL、CI 加 `lint`+`test` | 1–2 天 |
 | **第 3 周** | 依赖归位（`@ffmpeg/core`→dev、删 `shadcn`）、统一 UI 原语、生产环境才设 Cache-Control | 1 天 |
-| **后续** | `[locale]` 静态化改造（按 `todo.md`）、FFmpeg 加载进度、CSP | 3–5 天 |
+| **后续** | ~~`[locale]` 静态化改造~~、~~FFmpeg 加载进度~~、~~CSP~~（均已完成） | — |
 
 ---
 
