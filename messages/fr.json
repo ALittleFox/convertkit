@@ -31,6 +31,8 @@
     "loadingEngine": "Chargement du moteur… {percent} %"
   },
   "compress": {
+    "faqTitle": "Questions fréquentes",
+    "faqItems": [{"q": "La compression dégrade-t-elle la qualité ?", "a": "JPEG, WebP et AVIF sont des formats avec perte : plus la valeur de qualité est basse, plus le fichier est petit mais plus les artefacts sont visibles. PNG utilise par défaut une optimisation sans perte et ne dégrade pas la qualité."}, {"q": "Quelle valeur de qualité choisir ?", "a": "75–85 convient au partage, 60–80 au web. Pour une fidélité stricte, activez la compression sans perte (PNG) ou dépassez 90."}, {"q": "Qu'est-ce que « Effort » ?", "a": "Cela contrôle l'intensité de recherche de l'encodeur AVIF. Une valeur élevée compresse mieux et produit des fichiers plus petits, mais prend plus de temps. Cela n'affecte pas la qualité."}, {"q": "Quelle taille de fichiers ? Puis-je traiter un lot ?", "a": "Vous pouvez ajouter de nombreuses images d'un coup ; elles sont traitées automatiquement dans l'ordre. Les gros fichiers consomment plus de mémoire : gardez un lot sous quelques centaines de Mo."}, {"q": "Où sont les images compressées ?", "a": "Les résultats ne vivent que dans la mémoire du navigateur. Téléchargez-les individuellement ou via « Tout télécharger ». Recharger la page les supprime."}],
     "title": "Compression d'images par lots",
     "start": "Démarrer la compression",
     "processing": "Compression en cours...",
@@ -38,7 +40,7 @@
     "quality": "Qualité",
     "lossless": "Compression sans perte",
     "effort": "Effort",
-    "autoProcess": "Compression Auto",
+    "autoProcess": "Traitement automatique",
     "effortHint": "Valeur plus élevée = vitesse plus lente, meilleure qualité",
     "qualityHint": "N'affecte que JPEG, WebP, AVIF. PNG utilise l'optimisation sans perte",
     "metaTitle": "Compression d'images par lots",
@@ -48,6 +50,8 @@
     "metaKeywords": ["compression d'images", "compression par lots", "compression JPEG", "compression PNG", "compression WebP", "compression AVIF", "compression sans perte", "compression en ligne"]
   },
   "convert": {
+    "faqTitle": "Questions fréquentes",
+    "faqItems": [{"q": "Entre quels formats puis-je convertir ?", "a": "JPEG, PNG, WebP et AVIF dans les deux sens. Les fichiers déjà au format cible sont ignorés."}, {"q": "La conversion en PNG réduit-elle ou augmente-t-elle la taille ?", "a": "PNG est sans perte, donc généralement plus volumineux que JPEG ou WebP. Choisissez-le pour la transparence ou une copie sans perte."}, {"q": "WebP ou AVIF ?", "a": "AVIF compresse mieux et produit des fichiers plus petits, mais encode plus lentement et reste moins bien pris en charge par les anciens navigateurs. WebP est le choix le plus sûr."}, {"q": "Puis-je extraire une image d'une vidéo ?", "a": "Non. Cet outil ne traite que des images fixes. Pour extraire l'audio d'une vidéo, utilisez la page de transcodage audio."}, {"q": "La transparence est-elle conservée ?", "a": "La conversion vers WebP, AVIF ou PNG conserve le canal alpha. Vers JPEG, les zones transparentes sont remplies d'une couleur unie."}],
     "autoProcess": "Traitement automatique",
     "title": "Conversion de format par lots",
     "start": "Démarrer la conversion",
@@ -66,6 +70,8 @@
     "metaKeywords": ["conversion de format", "conversion d'images", "conversion WebP", "conversion AVIF", "PNG vers JPEG", "JPEG vers PNG", "conversion en ligne", "conversion par lots"]
   },
   "transcode": {
+    "faqTitle": "Questions fréquentes",
+    "faqItems": [{"q": "Pourquoi cela ne fonctionne-t-il pas sur mobile ?", "a": "Le transcodage vidéo demande beaucoup de mémoire et de CPU. Les navigateurs mobiles plantent souvent par manque de mémoire : la fonction est réservée au bureau."}, {"q": "H.264 ou H.265 ?", "a": "H.265 produit des fichiers plus petits à qualité égale, mais encode plus lentement et ne se lit pas sur certains appareils anciens. Choisissez H.264 pour une compatibilité maximale."}, {"q": "Quel CRF utiliser ?", "a": "La plage utile est 18–28. Plus bas signifie meilleure qualité et fichier plus gros. Environ 23 convient à la plupart des contenus."}, {"q": "Pourquoi est-ce si lent ?", "a": "Tout s'exécute dans votre navigateur via WebAssembly. La vitesse dépend du CPU, de la résolution et de la durée de la vidéo. Gardez cet onglet au premier plan et laissez-le terminer."}, {"q": "Puis-je supprimer la piste audio ?", "a": "Oui. Activez « Supprimer l'audio » pour exporter une vidéo muette."}],
     "autoProcess": "Traitement automatique",
     "title": "Transcodage vidéo",
     "start": "Démarrer le transcodage",
@@ -89,6 +95,8 @@
     "metaKeywords": ["transcodage vidéo", "conversion de format", "conversion MP4", "conversion MOV", "compression vidéo", "transcodage en ligne", "H.264", "H.265"]
   },
   "favicon": {
+    "faqTitle": "Questions fréquentes",
+    "faqItems": [{"q": "Quelle image dois-je importer ?", "a": "Une image carrée, par exemple 512×512. Les images non carrées sont recadrées ou complétées, ce qui déforme l'icône."}, {"q": "Quelles tailles choisir ?", "a": "Tout sélectionner est généralement le bon choix. 16×16 et 32×32 servent aux onglets, 180×180 aux icônes Apple Touch, et 192×192 avec 512×512 aux PWA."}, {"q": "ICO ou PNG ?", "a": "favicon.ico est le format traditionnel compris par les navigateurs et les raccourcis Windows ; PNG convient mieux aux navigateurs modernes et aux PWA. Téléchargez les deux."}, {"q": "Comment utiliser les fichiers générés ?", "a": "Placez-les à la racine du site et ajoutez les balises <link rel=\"icon\"> correspondantes dans le <head>."}, {"q": "Le fond transparent est-il pris en charge ?", "a": "Oui. Importez un PNG ou un SVG avec canal alpha : les icônes générées conservent les zones transparentes."}],
     "title": "Générateur de Favicon",
     "upload": "Télécharger une image pour générer le favicon",
     "uploadHint": "Prend en charge PNG, JPG, WebP, SVG · Images carrées recommandées",
@@ -158,6 +166,8 @@
     "failed": "Échoué"
   },
   "audio": {
+    "faqTitle": "Questions fréquentes",
+    "faqItems": [{"q": "Quels formats audio sont pris en charge ?", "a": "MP3, AAC, M4A, OGG, FLAC et WAV, convertibles dans les deux sens."}, {"q": "Puis-je extraire l'audio d'une vidéo ?", "a": "Oui. Importez directement un fichier MP4, WebM, MOV ou AVI et choisissez un format de sortie ; seule la piste audio est conservée."}, {"q": "Quel débit choisir ?", "a": "192–320 kbps pour la musique, 96–128 kbps suffisent pour la voix. Un débit plus élevé améliore la qualité et augmente la taille."}, {"q": "La conversion en FLAC améliore-t-elle la qualité ?", "a": "Non. FLAC est sans perte : il conserve exactement la source. Convertir un fichier avec perte en FLAC l'alourdit sans améliorer la qualité."}, {"q": "La fréquence d'échantillonnage « Auto » suffit-elle ?", "a": "Généralement oui. Elle conserve la fréquence d'origine et évite un rééchantillonnage inutile."}],
     "autoProcess": "Traitement automatique",
     "title": "Transcodage audio",
     "start": "Démarrer le transcodage",

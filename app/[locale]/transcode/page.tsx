@@ -8,6 +8,7 @@ import { DropZone } from "@/components/drop-zone";
 import { FileCard } from "@/components/file-card";
 import { VideoSettingsPanel } from "@/components/video-settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
+import { Faq } from "@/components/faq";
 import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
 import { filterValidVideoFiles, getVideoOutputMime, generateVideoThumbnail } from "@/lib/video-utils";
@@ -232,6 +233,8 @@ export default function TranscodePage() {
           </p>
         </div>
       </div>
+
+      <Faq namespace="transcode" />
 
       <PreviewModal
         task={previewTask}

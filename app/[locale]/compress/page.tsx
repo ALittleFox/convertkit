@@ -8,6 +8,7 @@ import { DropZone } from "@/components/drop-zone";
 import { FileCard } from "@/components/file-card";
 import { SettingsPanel } from "@/components/settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
+import { Faq } from "@/components/faq";
 import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
 import { filterValidFiles } from "@/lib/file-utils";
@@ -169,6 +170,8 @@ export default function CompressPage() {
           </p>
         </div>
       </div>
+
+      <Faq namespace="compress" />
 
       <PreviewModal
         task={previewTask}

@@ -31,6 +31,8 @@
     "loadingEngine": "Loading engine… {percent}%"
   },
   "compress": {
+    "faqTitle": "Frequently Asked Questions",
+    "faqItems": [{"q": "Does compression reduce image quality?", "a": "JPEG, WebP and AVIF are lossy: a lower quality value means a smaller file but more visible artifacts. PNG uses lossless optimization by default and loses no quality."}, {"q": "What quality value should I use?", "a": "75–85 is a good default for sharing, 60–80 for the web. If you need strict fidelity, enable lossless (PNG) or go above 90."}, {"q": "What is \"Effort\"?", "a": "It controls how hard the AVIF encoder searches. Higher values compress more thoroughly and produce smaller files, but take longer. It does not affect quality."}, {"q": "How large can files be? Can I batch?", "a": "You can add many images at once and they are processed automatically in sequence. Larger files use more memory, so keep a single batch within a few hundred MB."}, {"q": "Where are the compressed images?", "a": "Results live only in browser memory. Download them individually or use \"Download all\". Refreshing the page discards them."}],
     "title": "Batch Image Compression",
     "start": "Start Compression",
     "processing": "Processing...",
@@ -38,7 +40,7 @@
     "quality": "Quality",
     "lossless": "Lossless Compression",
     "effort": "Effort",
-    "autoProcess": "Auto Compress",
+    "autoProcess": "Auto Process",
     "effortHint": "Higher value = slower speed, better quality",
     "qualityHint": "Only affects JPEG, WebP, AVIF. PNG uses lossless optimization",
     "metaTitle": "Batch Image Compression",
@@ -48,6 +50,8 @@
     "metaKeywords": ["image compression", "batch compression", "JPEG compression", "PNG compression", "WebP compression", "AVIF compression", "lossless compression", "online compression"]
   },
   "convert": {
+    "faqTitle": "Frequently Asked Questions",
+    "faqItems": [{"q": "Which formats can I convert between?", "a": "JPEG, PNG, WebP and AVIF in any direction. Files already in the target format are skipped."}, {"q": "Will converting to PNG make my file smaller or larger?", "a": "PNG is lossless, so it is usually larger than JPEG or WebP. Choose it when you need transparency or a lossless copy."}, {"q": "WebP or AVIF?", "a": "AVIF compresses better and produces smaller files, but encodes slower and has weaker support in older browsers. WebP is the safer default."}, {"q": "Can I extract a frame from a video?", "a": "No. This tool only handles still images. To extract audio from a video, use the Audio Transcoding page."}, {"q": "Is transparency preserved?", "a": "Converting to WebP, AVIF or PNG keeps the alpha channel. Converting to JPEG fills transparent areas with a solid color."}],
     "autoProcess": "Auto Process",
     "title": "Batch Format Conversion",
     "start": "Start Conversion",
@@ -66,6 +70,8 @@
     "metaKeywords": ["format conversion", "image conversion", "WebP conversion", "AVIF conversion", "PNG to JPEG", "JPEG to PNG", "online conversion", "batch conversion"]
   },
   "transcode": {
+    "faqTitle": "Frequently Asked Questions",
+    "faqItems": [{"q": "Why doesn't this work on mobile?", "a": "Video transcoding needs a lot of memory and CPU. Mobile browsers tend to crash with out-of-memory errors, so the feature is desktop only."}, {"q": "H.264 or H.265?", "a": "H.265 gives smaller files at the same quality but encodes slower and won't play on some older devices. Pick H.264 for maximum compatibility."}, {"q": "What CRF should I use?", "a": "18–28 is the useful range. Lower means better quality and a larger file. Around 23 suits most content."}, {"q": "Why is transcoding so slow?", "a": "Everything runs in your browser through WebAssembly. Speed depends on your CPU, the resolution and the length of the video. Keep this tab in the foreground and let it finish."}, {"q": "Can I remove the audio track?", "a": "Yes. Enable \"Remove audio\" to export a silent video."}],
     "autoProcess": "Auto Process",
     "title": "Video Transcoding",
     "start": "Start Transcoding",
@@ -89,6 +95,8 @@
     "metaKeywords": ["video transcoding", "format conversion", "MP4 conversion", "MOV conversion", "video compression", "online transcoding", "H.264", "H.265"]
   },
   "favicon": {
+    "faqTitle": "Frequently Asked Questions",
+    "faqItems": [{"q": "What kind of image should I upload?", "a": "A square image such as 512×512. Non-square images are cropped or padded, which distorts the icon."}, {"q": "Which sizes do I need?", "a": "Selecting all is usually right. 16×16 and 32×32 are for browser tabs, 180×180 for Apple Touch icons, and 192×192 plus 512×512 for PWA."}, {"q": "ICO or PNG?", "a": "favicon.ico is the traditional format understood by browsers and Windows shortcuts; PNG suits modern browsers and PWA. Download both."}, {"q": "How do I use the generated files?", "a": "Put them in your site root and add the matching <link rel=\"icon\"> tags to your <head>."}, {"q": "Is a transparent background supported?", "a": "Yes. Upload a PNG or SVG with an alpha channel and the generated icons keep the transparent areas."}],
     "title": "Favicon Generator",
     "upload": "Upload Image to Generate Favicon",
     "uploadHint": "Supports PNG, JPG, WebP, SVG · Square images recommended",
@@ -158,6 +166,8 @@
     "failed": "Failed"
   },
   "audio": {
+    "faqTitle": "Frequently Asked Questions",
+    "faqItems": [{"q": "Which audio formats are supported?", "a": "MP3, AAC, M4A, OGG, FLAC and WAV, convertible in any direction."}, {"q": "Can I extract audio from a video?", "a": "Yes. Upload an MP4, WebM, MOV or AVI file directly and pick an output format; only the audio track is kept."}, {"q": "What bitrate should I choose?", "a": "192–320 kbps for music, 96–128 kbps is fine for speech. Higher means better quality and a larger file."}, {"q": "Does converting to FLAC improve quality?", "a": "No. FLAC is lossless, so it preserves the source exactly. Converting a lossy file to FLAC makes it larger without improving quality."}, {"q": "Is \"Auto\" sample rate fine?", "a": "Usually yes. It keeps the original sample rate and avoids an unnecessary resampling step."}],
     "autoProcess": "Auto Process",
     "title": "Audio Transcoding",
     "start": "Start Transcoding",

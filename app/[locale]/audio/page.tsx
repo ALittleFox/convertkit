@@ -8,6 +8,7 @@ import { DropZone } from "@/components/drop-zone";
 import { FileCard } from "@/components/file-card";
 import { AudioSettingsPanel } from "@/components/audio-settings-panel";
 import { SummaryBar } from "@/components/summary-bar";
+import { Faq } from "@/components/faq";
 import { PreviewModal } from "@/components/preview-modal";
 import { useBatchProcess } from "@/hooks/use-batch-process";
 import { filterValidAudioFiles, getAudioOutputMime, getAudioDuration, isVideoFile } from "@/lib/audio-utils";
@@ -192,6 +193,8 @@ export default function AudioPage() {
           </p>
         </div>
       </div>
+
+      <Faq namespace="audio" />
 
       <PreviewModal
         task={previewTask}
