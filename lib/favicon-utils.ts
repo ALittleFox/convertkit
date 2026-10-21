@@ -7,14 +7,19 @@ export interface FaviconSize {
   selected: boolean;
 }
 
+/**
+ * All sizes are selected by default: generating the full set is cheap and
+ * means the user can download everything without thinking about which sizes
+ * they need.
+ */
 export const FAVICON_SIZES: FaviconSize[] = [
   { size: 16, label: "16×16", selected: true },
   { size: 32, label: "32×32", selected: true },
-  { size: 48, label: "48×48", selected: false },
-  { size: 96, label: "96×96", selected: false },
-  { size: 180, label: "180×180", selected: false },
-  { size: 192, label: "192×192", selected: false },
-  { size: 512, label: "512×512", selected: false },
+  { size: 48, label: "48×48", selected: true },
+  { size: 96, label: "96×96", selected: true },
+  { size: 180, label: "180×180", selected: true },
+  { size: 192, label: "192×192", selected: true },
+  { size: 512, label: "512×512", selected: true },
 ];
 
 export function resizeImage(

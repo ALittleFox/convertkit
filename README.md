@@ -25,7 +25,7 @@
 
 ### Favicon 生成器 — `/favicon`
 
-- 单图生成 `favicon.ico` 及多种尺寸 PNG
+- 单图生成 `favicon.ico` 及多种尺寸 PNG（默认全选 7 种尺寸）
 - 覆盖浏览器标签页、Apple Touch Icon、PWA 常用尺寸
 
 ### 视频转码 — `/transcode`
