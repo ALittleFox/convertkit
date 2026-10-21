@@ -116,10 +116,10 @@ export function SettingsPanel({ type, options, onChange, files, autoProcess, onA
           </div>
         )}
 
-        {type === "compress" && onAutoProcessChange && (
+        {onAutoProcessChange && (
           <div className="flex items-center justify-between pt-2 border-t">
             <Label htmlFor="auto-process" className="text-sm cursor-pointer">
-              {t("autoCompress")}
+              {t("autoProcess")}
             </Label>
             <Switch
               id="auto-process"

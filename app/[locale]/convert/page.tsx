@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRightLeft, Download, Trash2, Play, Info, Shield } from "lucide-react";
+import { ArrowRightLeft, Download, Trash2, Play, Loader2, Info, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -31,6 +31,8 @@ export default function ConvertPage() {
     downloadResult,
     downloadAll,
     isProcessing,
+    autoProcess,
+    setAutoProcess,
     stats,
   } = useBatchProcess<FileTask, ProcessOptions>({
     defaultOptions: { quality: 80, lossless: false, effort: 6, targetFormat: "webp" },
@@ -77,6 +79,8 @@ export default function ConvertPage() {
             type="convert"
             options={options}
             onChange={setOptions}
+          autoProcess={autoProcess}
+          onAutoProcessChange={setAutoProcess}
           />
           {tasks.length > 0 && <SummaryBar stats={stats} />}
         </div>
@@ -107,14 +111,23 @@ export default function ConvertPage() {
                 <Download className="mr-2 h-4 w-4" />
                 {tc("downloadAll")}
               </Button>
-              <Button
-                size="sm"
-                onClick={() => startProcess()}
-                disabled={isProcessing || stats.pending === 0}
-              >
-                <Play className="mr-2 h-4 w-4" />
-                {isProcessing ? t("processing") : t("start")}
-              </Button>
+              {autoProcess ? (
+                isProcessing && (
+                  <Button size="sm" disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("processing")}
+                  </Button>
+                )
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => startProcess()}
+                  disabled={isProcessing || stats.pending === 0}
+                >
+                  <Play className="mr-2 h-4 w-4" />
+                  {isProcessing ? t("processing") : t("start")}
+                </Button>
+              )}
             </div>
           </div>
 

@@ -38,7 +38,7 @@
     "quality": "Quality",
     "lossless": "Lossless Compression",
     "effort": "Effort",
-    "autoCompress": "Auto Compress",
+    "autoProcess": "Auto Compress",
     "effortHint": "Higher value = slower speed, better quality",
     "qualityHint": "Only affects JPEG, WebP, AVIF. PNG uses lossless optimization",
     "metaTitle": "Batch Image Compression",
@@ -48,6 +48,7 @@
     "metaKeywords": ["image compression", "batch compression", "JPEG compression", "PNG compression", "WebP compression", "AVIF compression", "lossless compression", "online compression"]
   },
   "convert": {
+    "autoProcess": "Auto Process",
     "title": "Batch Format Conversion",
     "start": "Start Conversion",
     "processing": "Processing...",
@@ -65,6 +66,7 @@
     "metaKeywords": ["format conversion", "image conversion", "WebP conversion", "AVIF conversion", "PNG to JPEG", "JPEG to PNG", "online conversion", "batch conversion"]
   },
   "transcode": {
+    "autoProcess": "Auto Process",
     "title": "Video Transcoding",
     "start": "Start Transcoding",
     "processing": "Transcoding...",
@@ -156,6 +158,7 @@
     "failed": "Failed"
   },
   "audio": {
+    "autoProcess": "Auto Process",
     "title": "Audio Transcoding",
     "start": "Start Transcoding",
     "processing": "Transcoding...",

@@ -63,16 +63,47 @@ test.describe("Convert page", () => {
     await expect(page.getByText("无损压缩")).not.toBeVisible();
   });
 
-  test("can add files and shows convert button", async ({ page }) => {
+  test("can add files and shows the convert button when auto is off", async ({
+    page,
+  }) => {
     const fileInput = page.locator('input[type="file"]');
     const buffer = Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
       "base64"
     );
 
+    // Auto-processing defaults to on, which hides the manual start button.
+    await page.locator("#auto-process").click();
+    await expect(page.locator("#auto-process")).toHaveAttribute(
+      "data-state",
+      "unchecked"
+    );
+
     await fileInput.setInputFiles({ name: "test.png", mimeType: "image/png", buffer });
 
     await expect(page.getByText("1 个文件", { exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "开始转换" })).toBeVisible();
+  });
+
+  test("auto-process is on by default and starts without a button", async ({
+    page,
+  }) => {
+    await expect(page.locator("#auto-process")).toHaveAttribute(
+      "data-state",
+      "checked"
+    );
+
+    const buffer = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "base64"
+    );
+    await page.locator('input[type="file"]').setInputFiles({
+      name: "test.png",
+      mimeType: "image/png",
+      buffer,
+    });
+
+    // It processes straight away, so no manual start button is offered.
+    await expect(page.getByRole("button", { name: "开始转换" })).not.toBeVisible();
   });
 });

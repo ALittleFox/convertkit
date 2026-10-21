@@ -38,7 +38,7 @@
     "quality": "质量",
     "lossless": "无损压缩",
     "effort": "压缩力度",
-    "autoCompress": "自动压缩",
+    "autoProcess": "自动压缩",
     "effortHint": "值越高速度越慢，质量越好",
     "qualityHint": "仅影响 JPEG、WebP、AVIF，PNG 使用无损优化",
     "metaTitle": "批量图片压缩",
@@ -48,6 +48,7 @@
     "metaKeywords": ["图片压缩", "批量压缩", "JPEG压缩", "PNG压缩", "WebP压缩", "AVIF压缩", "无损压缩", "在线压缩"]
   },
   "convert": {
+    "autoProcess": "自动处理",
     "title": "批量格式转换",
     "start": "开始转换",
     "processing": "处理中...",
@@ -65,6 +66,7 @@
     "metaKeywords": ["格式转换", "图片转换", "WebP转换", "AVIF转换", "PNG转JPEG", "JPEG转PNG", "在线转换", "批量转换"]
   },
   "transcode": {
+    "autoProcess": "自动处理",
     "title": "视频转码",
     "start": "开始转码",
     "processing": "转码中...",
@@ -156,6 +158,7 @@
     "failed": "失败"
   },
   "audio": {
+    "autoProcess": "自动处理",
     "title": "音频转码",
     "start": "开始转码",
     "processing": "转码中...",

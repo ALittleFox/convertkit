@@ -38,7 +38,7 @@
     "quality": "Calidad",
     "lossless": "Compresión Sin Pérdida",
     "effort": "Esfuerzo",
-    "autoCompress": "Compresión Automática",
+    "autoProcess": "Compresión Automática",
     "effortHint": "Valor más alto = velocidad más lenta, mejor calidad",
     "qualityHint": "Solo afecta JPEG, WebP, AVIF. PNG usa optimización sin pérdida",
     "metaTitle": "Compresión por Lotes de Imágenes",
@@ -48,6 +48,7 @@
     "metaKeywords": ["compresión de imágenes", "compresión por lotes", "compresión JPEG", "compresión PNG", "compresión WebP", "compresión AVIF", "compresión sin pérdida", "compresión online"]
   },
   "convert": {
+    "autoProcess": "Procesar automáticamente",
     "title": "Conversión por Lotes de Formato",
     "start": "Iniciar Conversión",
     "processing": "Procesando...",
@@ -65,6 +66,7 @@
     "metaKeywords": ["conversión de formato", "conversión de imágenes", "conversión WebP", "conversión AVIF", "PNG a JPEG", "JPEG a PNG", "conversión online", "conversión por lotes"]
   },
   "transcode": {
+    "autoProcess": "Procesar automáticamente",
     "title": "Transcodificación de Video",
     "start": "Iniciar Transcodificación",
     "processing": "Transcodificando...",
@@ -156,6 +158,7 @@
     "failed": "Fallido"
   },
   "audio": {
+    "autoProcess": "Procesar automáticamente",
     "title": "Transcodificación de Audio",
     "start": "Iniciar Transcodificación",
     "processing": "Transcodificando...",

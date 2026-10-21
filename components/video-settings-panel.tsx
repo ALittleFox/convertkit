@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { type VideoProcessOptions } from "@/lib/video-batch-engine";
@@ -20,6 +21,8 @@ import { useState, useCallback } from "react";
 interface VideoSettingsPanelProps {
   options: VideoProcessOptions;
   onChange: (options: VideoProcessOptions) => void;
+  autoProcess?: boolean;
+  onAutoProcessChange?: (value: boolean) => void;
 }
 
 const FORMAT_OPTIONS = [
@@ -41,6 +44,8 @@ const CODEC_MAP: Record<string, { value: string; label: string }[]> = {
 export function VideoSettingsPanel({
   options,
   onChange,
+  autoProcess,
+  onAutoProcessChange,
 }: VideoSettingsPanelProps) {
   const t = useTranslations("transcode");
   const [aspectLocked, setAspectLocked] = useState(true);
@@ -217,6 +222,18 @@ export function VideoSettingsPanel({
             {t("resolutionHint")}
           </p>
         </div>
+        {onAutoProcessChange && (
+          <div className="flex items-center justify-between pt-2 border-t">
+            <Label htmlFor="auto-process" className="text-sm cursor-pointer">
+              {t("autoProcess")}
+            </Label>
+            <Switch
+              id="auto-process"
+              checked={autoProcess}
+              onCheckedChange={onAutoProcessChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Music, Download, Trash2, Play, Film, Info, Shield } from "lucide-react";
+import { Music, Download, Trash2, Play, Loader2, Film, Info, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { DropZone } from "@/components/drop-zone";
@@ -33,6 +33,8 @@ export default function AudioPage() {
     downloadResult,
     downloadAll,
     isProcessing,
+    autoProcess,
+    setAutoProcess,
     stats,
   } = useBatchProcess<AudioFileTask, AudioProcessOptions>({
     defaultOptions: { outputFormat: "mp3", bitrate: 192 },
@@ -85,7 +87,12 @@ export default function AudioPage() {
           hint={td("audioHint")}
         />
         <div className="space-y-4">
-          <AudioSettingsPanel options={options} onChange={setOptions} />
+          <AudioSettingsPanel
+            options={options}
+            onChange={setOptions}
+            autoProcess={autoProcess}
+            onAutoProcessChange={setAutoProcess}
+          />
           {tasks.length > 0 && <SummaryBar stats={stats} />}
         </div>
       </div>
@@ -115,14 +122,23 @@ export default function AudioPage() {
                 <Download className="mr-2 h-4 w-4" />
                 {tc("downloadAll")}
               </Button>
-              <Button
-                size="sm"
-                onClick={() => startProcess()}
-                disabled={isProcessing || stats.pending === 0}
-              >
-                <Play className="mr-2 h-4 w-4" />
-                {isProcessing ? t("processing") : t("start")}
-              </Button>
+              {autoProcess ? (
+                isProcessing && (
+                  <Button size="sm" disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("processing")}
+                  </Button>
+                )
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => startProcess()}
+                  disabled={isProcessing || stats.pending === 0}
+                >
+                  <Play className="mr-2 h-4 w-4" />
+                  {isProcessing ? t("processing") : t("start")}
+                </Button>
+              )}
             </div>
           </div>
 

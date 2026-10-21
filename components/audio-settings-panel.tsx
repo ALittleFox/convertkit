@@ -10,12 +10,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { type AudioProcessOptions } from "@/lib/audio-batch-engine";
 import { useCallback } from "react";
 
 interface AudioSettingsPanelProps {
   options: AudioProcessOptions;
   onChange: (options: AudioProcessOptions) => void;
+  autoProcess?: boolean;
+  onAutoProcessChange?: (value: boolean) => void;
 }
 
 const FORMAT_OPTIONS = [
@@ -47,6 +50,8 @@ const LOSSLESS_FORMATS = new Set(["flac", "wav"]);
 export function AudioSettingsPanel({
   options,
   onChange,
+  autoProcess,
+  onAutoProcessChange,
 }: AudioSettingsPanelProps) {
   const t = useTranslations("audio");
 
@@ -157,6 +162,18 @@ export function AudioSettingsPanel({
             {t("sampleRateHint")}
           </p>
         </div>
+        {onAutoProcessChange && (
+          <div className="flex items-center justify-between pt-2 border-t">
+            <Label htmlFor="auto-process" className="text-sm cursor-pointer">
+              {t("autoProcess")}
+            </Label>
+            <Switch
+              id="auto-process"
+              checked={autoProcess}
+              onCheckedChange={onAutoProcessChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
