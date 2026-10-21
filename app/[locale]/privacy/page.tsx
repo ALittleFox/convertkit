@@ -2,6 +2,9 @@ import { Shield } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/json-ld";
+import { pageUrl } from "@/lib/site";
+import { OG_LOCALE, SITE_NAME } from "@/lib/site";
 
 export const revalidate = 31536000; // 1 year
 
@@ -18,6 +21,23 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("subtitleDesc"),
+    alternates: {
+      canonical: pageUrl(safeLocale, "/privacy"),
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((alt) => [alt, pageUrl(alt, "/privacy")])
+        ),
+        "x-default": pageUrl(routing.defaultLocale, "/privacy"),
+      },
+    },
+    openGraph: {
+      type: "website",
+      url: pageUrl(safeLocale, "/privacy"),
+      siteName: SITE_NAME,
+      title: t("title"),
+      description: t("subtitleDesc"),
+      locale: OG_LOCALE[safeLocale] ?? safeLocale,
+    },
   };
 }
 
@@ -37,6 +57,12 @@ export default async function PrivacyPage({
 
   return (
     <div className="container py-10 px-4 sm:px-6 max-w-2xl mx-auto">
+      <JsonLd
+        locale={safeLocale}
+        path="/privacy"
+        name={t("title")}
+        description={t("subtitleDesc")}
+      />
       <div className="flex items-center gap-2 mb-8">
         <Shield className="h-6 w-6" />
         <h1 className="text-2xl font-bold">{t("title")}</h1>

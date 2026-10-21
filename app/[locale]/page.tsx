@@ -3,6 +3,9 @@ import { Shrink, ArrowRightLeft, Palette, Film, Music, Shield, ArrowRight } from
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/json-ld";
+import { pageUrl } from "@/lib/site";
+import { OG_LOCALE } from "@/lib/site";
 
 export const revalidate = 31536000;
 
@@ -24,11 +27,22 @@ export async function generateMetadata({
     description: t("rootDescription"),
     keywords: t.raw("metaKeywords") as string[],
     authors: [{ name: "ConvertKit" }],
+    alternates: {
+      canonical: pageUrl(safeLocale),
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((alt) => [alt, pageUrl(alt)])
+        ),
+        "x-default": pageUrl(routing.defaultLocale),
+      },
+    },
     openGraph: {
       type: "website",
+      url: pageUrl(safeLocale),
       title: t("rootTitle"),
       description: t("ogDescription"),
       siteName: "ConvertKit",
+      locale: OG_LOCALE[safeLocale] ?? safeLocale,
     },
   };
 }
@@ -87,6 +101,18 @@ export default async function HomePage({
 
   return (
     <div className="flex flex-col">
+      <JsonLd
+        locale={safeLocale}
+        path=""
+        name={t("title")}
+        description={t("description")}
+        isHome
+        tools={features.map((f) => ({
+          path: f.href,
+          name: f.title,
+          description: f.desc,
+        }))}
+      />
       {/* Hero */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="container m-auto text-center max-w-3xl">

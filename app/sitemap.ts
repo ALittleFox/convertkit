@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
-
-const BASE_URL = "https://convertkit.huangmizhou.com";
+import { SITE_URL } from "@/lib/site";
 
 /** Public pages, relative to the locale segment. */
 const PAGES = [
@@ -26,7 +25,7 @@ const PAGES = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return PAGES.flatMap((page) =>
     routing.locales.map((locale) => ({
-      url: `${BASE_URL}/${locale}${page.path}`,
+      url: `${SITE_URL}/${locale}${page.path}`,
       lastModified: new Date(),
       changeFrequency: page.changeFrequency,
       priority: page.priority,
@@ -34,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages: Object.fromEntries(
           routing.locales.map((alt) => [
             alt,
-            `${BASE_URL}/${alt}${page.path}`,
+            `${SITE_URL}/${alt}${page.path}`,
           ])
         ),
       },

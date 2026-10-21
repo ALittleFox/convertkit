@@ -55,9 +55,20 @@ pnpm test:e2e    # Playwright，必须全绿
 - 新增页面放在 `app/[locale]/<name>/`，并用 `lib/create-layout.tsx`
   的 `createPageMetadata` 生成 metadata。
 
+## 结构化数据（SEO / GEO）
+
+- 站点常量只在 `lib/site.ts`（`SITE_URL` / `OG_LOCALE`），**不要新增硬编码域名**。
+- 功能页的 JSON-LD 由 `lib/create-layout.tsx` 的 `createPageLayout(ns)` 生成，
+  页面 layout 只需 `export default createPageLayout("compress")`。
+- FAQ 的可见文案与 JSON-LD 读的是**同一个** `faqItems`，改文案不会产生不一致。
+- `inLanguage` / `og:locale` 用 `zh_CN` 形式（`zh-Hans` 不是合法值），
+  映射在 `OG_LOCALE`；新增语言必须补这张表。
+- JSON-LD 里的 `<` 已转义为 `\u003c`，否则翻译文案中的 `</script>` 会截断标签。
+
 ## 修改后的自查
 
 - [ ] 新增页面是否已加入 `app/sitemap.ts` 的 `PAGES`？
+- [ ] 新增页面是否接入了 `createPageLayout`（JSON-LD）与 canonical/hreflang？
 - [ ] 新增文案是否 7 种语言齐全？
 - [ ] 是否引入了动态 API（`headers()`/`cookies()`）破坏静态化？
 - [ ] 构建产物仍是 `●`（SSG）而非 `ƒ`（Dynamic）？
