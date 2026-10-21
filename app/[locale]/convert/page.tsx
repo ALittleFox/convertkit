@@ -82,21 +82,6 @@ export default function ConvertPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border bg-muted/40 p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <Info className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {t("pageIntro")}
-          </p>
-        </div>
-        <div className="flex items-start gap-3 mt-3">
-          <Shield className="h-5 w-5 mt-0.5 shrink-0 text-green-500" />
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {t("privacyNote")}
-          </p>
-        </div>
-      </div>
-
       {tasks.length > 0 && (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -165,6 +150,21 @@ export default function ConvertPage() {
           </div>
         </div>
       )}
+
+      <div className="rounded-xl border bg-muted/40 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 mt-0.5 shrink-0 text-primary" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("pageIntro")}
+          </p>
+        </div>
+        <div className="flex items-start gap-3 mt-3">
+          <Shield className="h-5 w-5 mt-0.5 shrink-0 text-green-500" />
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {t("privacyNote")}
+          </p>
+        </div>
+      </div>
 
       <PreviewModal
         task={previewTask}
