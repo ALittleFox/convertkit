@@ -72,6 +72,9 @@ pnpm test:e2e    # Playwright，必须全绿
 - [ ] 新增文案是否 7 种语言齐全？
 - [ ] 是否引入了动态 API（`headers()`/`cookies()`）破坏静态化？
 - [ ] 构建产物仍是 `●`（SSG）而非 `ƒ`（Dynamic）？
+- [ ] **本次改动是否影响了 `README.md` / `AGENTS.md`？** 有则同步更新：
+      新增/删除文件 → README 结构树；新增功能 → README 功能章节；
+      新增约束或踩过的坑 → AGENTS.md 对应小节。没有实质影响才可跳过。
 
 ## 参考
 

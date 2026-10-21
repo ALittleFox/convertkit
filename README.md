@@ -42,6 +42,13 @@
 - 可调比特率与采样率
 - 支持从 MP4 / WebM / MOV / AVI 视频中提取音频
 
+### 各页面通用
+
+- **自动处理**（默认开启）：添加文件后立即开始，可在设置面板关闭改为手动确认
+- **常见问题**：每个页面底部附 5 条 FAQ
+- **结构化数据**：每页输出 JSON-LD（`WebApplication` / `FAQPage` / `BreadcrumbList`），
+  利于搜索富结果与 AI 助手理解页面用途
+
 ## 技术栈
 
 | 类别 | 技术 |
@@ -96,6 +103,8 @@ pic-html/
 │   ├── video-settings-panel.tsx
 │   ├── audio-settings-panel.tsx
 │   ├── summary-bar.tsx         # 统计摘要
+│   ├── faq.tsx                 # 常见问题（原生 <details>，无额外依赖）
+│   ├── json-ld.tsx             # 结构化数据（服务端渲染）
 │   ├── language-switcher.tsx   # 语言切换（纯 URL，无 cookie）
 │   ├── html-lang-sync.tsx      # 同步 <html lang/dir> 与当前语言
 │   ├── theme-provider.tsx
@@ -114,7 +123,9 @@ pic-html/
 │   ├── video-batch-engine.ts   # 视频引擎（单 worker transport）
 │   ├── file-utils.ts           # 文件校验（返回结构化错误码）
 │   ├── video-utils.ts / audio-utils.ts / favicon-utils.ts
-│   ├── create-layout.tsx       # 页面 metadata 工厂
+│   ├── create-layout.tsx       # 页面 metadata + JSON-LD 工厂
+│   ├── site.ts                 # 站点常量（SITE_URL / OG_LOCALE）
+│   ├── structured-data.ts      # JSON-LD 图构建
 │   ├── task-types.ts / utils.ts / zip-stream.ts
 ├── workers/
 │   ├── codec.worker.ts         # 图片 WASM 编解码
