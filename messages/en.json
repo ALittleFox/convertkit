@@ -130,9 +130,9 @@
     "title": "Privacy Policy",
     "subtitle": "Your files never leave your computer",
     "subtitleDesc": "ConvertKit operates entirely in your browser. Your images and videos stay in your device memory from start to finish — they never even reach a neighboring folder, let alone a server.",
-    "whyNotUpload": "Why no uploads? Having a conscience?",
-    "whyNotUploadDesc": "Not exactly. The main reason is — I'm broke. Servers cost money, bandwidth costs money, storage costs money. I don't even have a proper server, where would I upload to?",
-    "whyNotUploadDesc2": "But here's the silver lining: being broke means your privacy is perfectly protected. No server, no leaks. This is what they call 'poverty breeds virtue' 😭.",
+    "whyNotUpload": "Why no uploads?",
+    "whyNotUploadDesc": "I can't afford a server.",
+    "whyNotUploadDesc2": "",
     "technical": "Under the Hood",
     "technicalItems": [
       "Everything runs in browser sandbox — safer than your front door lock",
@@ -141,9 +141,9 @@
       "No cookies, no tracking, no ads — cleaner than a freshly formatted hard drive"
     ],
     "whatData": "What data do I collect?",
-    "whatDataDesc": "Absolutely nothing. No registration, no login, no email, no phone number. You come here, process some images, and walk away — I know nothing. Even if the FBI asked, I'd just shrug and say 'no idea'.",
+    "whatDataDesc": "Absolutely nothing. No registration, no login, no email, no phone number. You come here, process some images, and walk away — I know nothing.",
     "summary": "TL;DR: You're safe because the developer is broke",
-    "summaryDesc": "Just use it. Relax. Your images are safer here than on your own hard drive — at least someone could touch your hard drive, while my server literally doesn't exist."
+    "summaryDesc": "Just use it. Relax."
   },
   "dropzone": {
     "dragImage": "Drag images here",

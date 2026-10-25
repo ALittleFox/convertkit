@@ -130,9 +130,9 @@
     "title": "Politique de confidentialité",
     "subtitle": "Vos fichiers ne quittent jamais votre ordinateur",
     "subtitleDesc": "ConvertKit fonctionne entièrement dans votre navigateur. Vos images et vidéos restent dans la mémoire de votre appareil du début à la fin — elles n'atteignent même pas un dossier voisin, encore moins un serveur.",
-    "whyNotUpload": "Pourquoi pas de téléversement ? C'est une question de conscience ?",
-    "whyNotUploadDesc": "Pas exactement. La raison principale est — je suis fauché. Les serveurs coûtent de l'argent, la bande passante coûte de l'argent, le stockage coûte de l'argent. Je n'ai même pas de serveur correct, où vais-je téléverser ?",
-    "whyNotUploadDesc2": "Mais voici le côté positif : être fauché signifie que votre vie privée est parfaitement protégée. Pas de serveur, pas de fuites. C'est ce qu'on appelle 'la misère fait la vertu' 😭.",
+    "whyNotUpload": "Pourquoi pas de téléversement ?",
+    "whyNotUploadDesc": "Je n'ai pas les moyens de payer un serveur.",
+    "whyNotUploadDesc2": "",
     "technical": "Sous le capot",
     "technicalItems": [
       "Tout s'exécute dans le bac à sable du navigateur — plus sûr que la serrure de votre porte d'entrée",
@@ -141,9 +141,9 @@
       "Pas de cookies, pas de suivi, pas de publicité — plus propre qu'un disque dur récemment formaté"
     ],
     "whatData": "Quelles données收集-je ?",
-    "whatDataDesc": "Absolument rien. Pas d'inscription, pas de connexion, pas d'email, pas de numéro de téléphone. Vous venez ici, traitez des images, et partez — je ne sais rien. Même si le FBI le demandait, je hausserais les épaules et dirais 'aucune idée'.",
-    "summary": "TL;DR : Vous êtes en sécurité parce que le développeur est fauché",
-    "summaryDesc": "Utilisez-le simplement. Détendez-vous. Vos images sont plus en sécurité ici que sur votre propre disque dur — en tout cas quelqu'un pourrait toucher votre disque dur, alors que mon serveur n'existe littéralement pas."
+    "whatDataDesc": "Absolument rien. Pas d'inscription, pas de connexion, pas d'email, pas de numéro de téléphone. Vous venez ici, traitez des images et partez — je ne sais rien.",
+    "summary": "TL;DR : vous êtes en sécurité parce que le développeur est fauché",
+    "summaryDesc": "Utilisez-le simplement. Détendez-vous."
   },
   "dropzone": {
     "dragImage": "Glissez les images ici",

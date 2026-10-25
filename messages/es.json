@@ -130,9 +130,9 @@
     "title": "Política de Privacidad",
     "subtitle": "Tus archivos nunca salen de tu computadora",
     "subtitleDesc": "ConvertKit funciona completamente en tu navegador. Tus imágenes y videos permanecen en la memoria de tu dispositivo de principio a fin — ni siquiera llegan a una carpeta vecina, y mucho menos a un servidor.",
-    "whyNotUpload": "¿Por qué no subir? ¿Tienes conciencia?",
-    "whyNotUploadDesc": "No exactamente. La razón principal es — estoy sin dinero. Los servidores cuestan, el ancho de banda cuesta, el almacenamiento cuesta. Ni siquiera tengo un servidor decente, ¿dónde voy a subir?",
-    "whyNotUploadDesc2": "Pero hay un lado bueno: estar sin dinero significa que tu privacidad está perfectamente protegida. Sin servidor, sin filtraciones. Esto es lo que llaman 'la pobreza es virtud' 😭.",
+    "whyNotUpload": "¿Por qué no hay subida?",
+    "whyNotUploadDesc": "No puedo permitirme un servidor.",
+    "whyNotUploadDesc2": "",
     "technical": "Bajo el Capó",
     "technicalItems": [
       "Todo se ejecuta en el sandbox del navegador — más seguro que tu cerradura de puerta",
@@ -141,9 +141,9 @@
       "Sin cookies, sin rastreo, sin anuncios — más limpio que un disco duro recién formateado"
     ],
     "whatData": "¿Qué datos recopilo?",
-    "whatDataDesc": "Absolutamente nada. Sin registro, sin inicio de sesión, sin correo, sin número de teléfono. Vienes aquí, procesas algunas imágenes, y te vas — no sé nada. Si el FBI preguntara, solo encogería los hombros y diría 'no tengo idea'.",
-    "summary": "Resumen: Estás seguro porque el desarrollador está sin dinero",
-    "summaryDesc": "Solo úsalo. Tranquilo. Tus imágenes están más seguras aquí que en tu propio disco duro — al menos alguien podría tocar tu disco duro, mientras que mi servidor literalmente no existe."
+    "whatDataDesc": "Absolutamente nada. Sin registro, sin inicio de sesión, sin correo, sin número de teléfono. Vienes aquí, procesas algunas imágenes y te vas — no sé nada.",
+    "summary": "Resumen: estás a salvo porque el desarrollador no tiene dinero",
+    "summaryDesc": "Solo úsalo. Tranquilo."
   },
   "dropzone": {
     "dragImage": "Arrastra imágenes aquí",

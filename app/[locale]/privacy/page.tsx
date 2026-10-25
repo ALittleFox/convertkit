@@ -79,9 +79,12 @@ export default async function PrivacyPage({
           <p className="text-muted-foreground leading-7">
             {t("whyNotUploadDesc")}
           </p>
-          <p className="text-muted-foreground leading-7 mt-2">
-            {t("whyNotUploadDesc2")}
-          </p>
+          {/* Optional second paragraph; several locales leave it empty. */}
+          {t("whyNotUploadDesc2") && (
+            <p className="text-muted-foreground leading-7 mt-2">
+              {t("whyNotUploadDesc2")}
+            </p>
+          )}
         </section>
 
         <section>
