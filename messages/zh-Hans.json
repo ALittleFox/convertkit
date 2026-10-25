@@ -132,7 +132,6 @@
     "subtitleDesc": "ConvertKit 所有操作都在你的浏览器里完成。你的图片和视频从头到尾都待在你的设备内存里，连隔壁文件夹都没去过，更别说上传到服务器了。",
     "whyNotUpload": "为什么不上传？",
     "whyNotUploadDesc": "没有钱买服务器",
-    "whyNotUploadDesc2": "",
     "technical": "底层原理",
     "technicalItems": [
       "全部跑在浏览器沙箱里，比你家门锁还安全",
